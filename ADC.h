@@ -9,7 +9,7 @@
 GPIO_InitTypeDef GPIO_InitStructure;
 
 
-//structure used for DAC settings
+//structure used for ADC settings
 ADC_CommonInitTypeDef ADC_CommonInitStructure;
 ADC_InitTypeDef       ADC_InitStructure;
 

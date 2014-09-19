@@ -3,18 +3,20 @@
 
 void adcInit(void){
 /******************************************************
- * - Init DAC I/O ch1 (PA4)
- * - Init DAC settings
- * 		o no trigger
- * 		o no waveform
- * 		o output buffer enable
+ * - Init ADC1 I/O ch10 (PC0)
+ * - Init ADC settings
+ * 		o Independant mode
+ * 		o Prescale 0
+ * 		o no delay 2 samples
+ * 		o 12-bit mode
+ * 		o right aligned MSB 1st
  ******************************************************/
 
 // Init ADC I/O
 	// write access GPIO settings
 	RCC_AHB1PeriphClockCmd(RCC_AHB1Periph_GPIOC, ENABLE);
 
-
+	// init gpio structure
 	GPIO_StructInit(&GPIO_InitStructure);
 
 	//for ADC1 on PC0 using IN10
@@ -27,6 +29,7 @@ void adcInit(void){
 // Init ADC settings
 	// write access ADC settings
 	RCC_APB2PeriphClockCmd(RCC_APB2Periph_ADC1, ENABLE);
+
 
 	ADC_CommonInitStructure.ADC_Mode = ADC_Mode_Independent;
 
@@ -44,22 +47,25 @@ void adcInit(void){
 	ADC_InitStructure.ADC_DataAlign = ADC_DataAlign_Right;
 	ADC_InitStructure.ADC_NbrOfConversion = 1;
 
-
+	// init ADC structure
 	ADC_StructInit(&ADC_InitStructure);
 
+	// init ADC with ADC structure
 	ADC_Init(ADC1, &ADC_InitStructure);
 
+	// configure ADC Channel (ADC1 Ch10) = PC0
 	ADC_RegularChannelConfig(ADC1, ADC_Channel_10, 1, ADC_SampleTime_480Cycles);
+
+	// enable ADC channel
 	ADC_EOCOnEachRegularChannelCmd(ADC1, ENABLE);
 
-	ADC_Cmd(ADC1, ENABLE);    //The ADC is powered on by setting the ADON bit in the ADC_CR2 register.
-	//When the ADON bit is set for the first time, it wakes up the ADC from the Power-down mode.
-
+	// enable ADC
+	ADC_Cmd(ADC1, ENABLE);
 }
 
 uint16_t adcGet(void){
 /******************************************************
- * Get ADC 1 value
+ * Get ADC1 ch10 value
  ******************************************************/
 
 	ADC_SoftwareStartConv(ADC1);

@@ -1,0 +1,29 @@
+<<<<<<< HEAD
+#include "stm32f4xx.h"
+#include "ADC.h"
+=======
+#include "DAC.h"
+
+void gpioInit(void);
+>>>>>>> DAC
+
+
+int main(void)
+{
+<<<<<<< HEAD
+    adcInit();
+=======
+	dacInit();
+	dacPut(0xccc);
+
+	while(1)
+    {
+>>>>>>> DAC
+
+
+
+	while(1)
+    {
+		uint16_t adcData = adcGet();
+    }
+}
