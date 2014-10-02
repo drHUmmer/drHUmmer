@@ -9,5 +9,6 @@
 TIM_TimeBaseInitTypeDef TIM_TimeBaseInitStruct;
 
 void Timer2Init(void);
+void Timer2BPMUpdate(uint32_t BPM);
 
 #endif /* TIMER_HEADER */

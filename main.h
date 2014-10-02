@@ -3,11 +3,15 @@
 
 #include "stm32f4xx.h"
 #include "stm32f4xx_tim.h"
+#include "stm32f4xx_gpio.h"
 #include "misc.h"
 #include "ADC.h"
 #include "DAC.h"
 #include "PLL.h"
 #include "UART.h"
+#include "interrupt.h"
+#include "timer.h"
+#include "delay.h"
 
 int main(void);
 

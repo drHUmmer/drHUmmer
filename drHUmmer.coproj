@@ -80,12 +80,13 @@
     <Component id="524" name="MISC" path="" type="2"/>
   </Components>
   <Files>
-    <File name="includes" path="" type="2"/>
     <File name="includes/ADC.h" path="ADC.h" type="1"/>
+    <File name="includes" path="" type="2"/>
     <File name="cmsis_lib/source/stm32f4xx_gpio.c" path="cmsis_lib/source/stm32f4xx_gpio.c" type="1"/>
     <File name="cmsis_boot/startup/startup_stm32f4xx.c" path="cmsis_boot/startup/startup_stm32f4xx.c" type="1"/>
     <File name="cmsis_lib/source/stm32f4xx_usart.c" path="cmsis_lib/source/stm32f4xx_usart.c" type="1"/>
     <File name="cmsis_lib/source/stm32f4xx_rcc.c" path="cmsis_lib/source/stm32f4xx_rcc.c" type="1"/>
+    <File name="includes/delay.h" path="delay.h" type="1"/>
     <File name="cmsis/core_cmInstr.h" path="cmsis/core_cmInstr.h" type="1"/>
     <File name="source/main.c" path="main.c" type="1"/>
     <File name="cmsis_boot" path="" type="2"/>
@@ -104,14 +105,14 @@
     <File name="cmsis_boot/system_stm32f4xx.c" path="cmsis_boot/system_stm32f4xx.c" type="1"/>
     <File name="cmsis/core_cm4.h" path="cmsis/core_cm4.h" type="1"/>
     <File name="source/PLL.c" path="PLL.c" type="1"/>
-    <File name="cmsis_lib/source/misc.c" path="cmsis_lib/source/misc.c" type="1"/>
     <File name="cmsis" path="" type="2"/>
-    <File name="cmsis_lib/include/stm32f4xx_tim.h" path="cmsis_lib/include/stm32f4xx_tim.h" type="1"/>
+    <File name="cmsis_lib/source/misc.c" path="cmsis_lib/source/misc.c" type="1"/>
     <File name="cmsis_lib/source/stm32f4xx_adc.c" path="cmsis_lib/source/stm32f4xx_adc.c" type="1"/>
     <File name="source/DAC.c" path="DAC.c" type="1"/>
+    <File name="cmsis_lib/include/stm32f4xx_tim.h" path="cmsis_lib/include/stm32f4xx_tim.h" type="1"/>
     <File name="source/timer.c" path="timer.c" type="1"/>
-    <File name="cmsis_lib" path="" type="2"/>
     <File name="includes/interrupt.h" path="interrupt.h" type="1"/>
+    <File name="cmsis_lib" path="" type="2"/>
     <File name="source/ADC.c" path="ADC.c" type="1"/>
     <File name="cmsis_lib/source" path="" type="2"/>
     <File name="cmsis_lib/source/stm32f4xx_tim.c" path="cmsis_lib/source/stm32f4xx_tim.c" type="1"/>
@@ -122,6 +123,7 @@
     <File name="cmsis_lib/source/stm32f4xx_dac.c" path="cmsis_lib/source/stm32f4xx_dac.c" type="1"/>
     <File name="cmsis_boot/system_stm32f4xx.h" path="cmsis_boot/system_stm32f4xx.h" type="1"/>
     <File name="cmsis_lib/include" path="" type="2"/>
+    <File name="source/delay.c" path="delay.c" type="1"/>
     <File name="cmsis_lib/include/stm32f4xx_rcc.h" path="cmsis_lib/include/stm32f4xx_rcc.h" type="1"/>
     <File name="source/interrupt.c" path="interrupt.c" type="1"/>
     <File name="includes/PLL.h" path="PLL.h" type="1"/>
