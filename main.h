@@ -12,6 +12,7 @@
 #include "interrupt.h"
 #include "timer.h"
 #include "delay.h"
+#include "sequencer.h"
 
 int main(void);
 

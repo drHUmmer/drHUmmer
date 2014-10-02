@@ -1,26 +1,10 @@
 #include "main.h"
 
-/*void us_delay(uint32_t time)
-{
-	RCC_ClocksTypeDef Clk_freqs;
-	uint32_t i,j;
-
-	RCC_GetClocksFreq(&Clk_freqs);
-
-	j = Clk_freqs.HCLK_Frequency/6;
-
-	for(i=0;i<time;i++)
-	{
-		while(j--);
-	}
-}*/
-
 GPIO_InitTypeDef GPIO_InitStruct;
+Sequencer_TypeDef sequencer;
 
 int main(void)
 {
-	uint32_t BPM = 60;
-
 	PLLInit();
 	SysTick_Init();
 	NVICTimer2Init();
@@ -37,19 +21,21 @@ int main(void)
 	GPIO_InitStruct.GPIO_PuPd = GPIO_PuPd_NOPULL;
 	GPIO_Init(GPIOD, &GPIO_InitStruct);
 
+	sequencer.BPM = 60;
+
 	while(1)
     {
-		while(BPM <= 600)
+		while(sequencer.BPM <= 600)
 		{
 			delay_nms(100);
-			BPM++;
-			Timer2BPMUpdate(BPM);
+			sequencer.BPM++;
+			Timer2BPMUpdate(sequencer.BPM);
 		}
-		while(BPM >= 30)
+		while(sequencer.BPM >= 30)
 		{
 			delay_nms(100);
-			BPM--;
-			Timer2BPMUpdate(BPM);
+			sequencer.BPM--;
+			Timer2BPMUpdate(sequencer.BPM);
 		}
     }
 }
