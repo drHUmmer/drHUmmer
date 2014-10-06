@@ -21,21 +21,21 @@ int main(void)
 	GPIO_InitStruct.GPIO_PuPd = GPIO_PuPd_NOPULL;
 	GPIO_Init(GPIOD, &GPIO_InitStruct);
 
-	sequencer.BPM = 60;
+	sequencer.BPM = 150;
 
 	while(1)
     {
-		while(sequencer.BPM <= 600)
+		while(sequencer.BPM <= 300)
 		{
-			delay_nms(100);
-			sequencer.BPM++;
+			sequencer.BPM += 10;
 			Timer2BPMUpdate(sequencer.BPM);
+			delay_nms(100);
 		}
 		while(sequencer.BPM >= 30)
 		{
-			delay_nms(100);
-			sequencer.BPM--;
+			sequencer.BPM -= 10;
 			Timer2BPMUpdate(sequencer.BPM);
+			delay_nms(100);
 		}
     }
 }

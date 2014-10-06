@@ -6,7 +6,8 @@
 #include "stm32f4xx_rcc.h"
 #include "interrupt.h"
 
-TIM_TimeBaseInitTypeDef TIM_TimeBaseInitStruct;
+TIM_TimeBaseInitTypeDef TIM2_TimeBaseInitStruct;
+TIM_OCInitTypeDef TIM2_OCInitStruct;
 
 void Timer2Init(void);
 void Timer2BPMUpdate(uint32_t BPM);

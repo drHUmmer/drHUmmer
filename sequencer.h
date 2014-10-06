@@ -12,6 +12,7 @@ typedef struct
   uint32_t file_length; // Length of file (number of samples?)
   uint16_t buffer_loc;	// Pointer to current location in sample buffer
   uint16_t sample;		// Current sample from buffer
+  uint8_t  debugflag;	// 1 when active at beat, 0 when not
 
 }Instrument_TypeDef;
 
