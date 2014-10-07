@@ -13,7 +13,6 @@ void Timer2Init(void)
 
 	/* Time base configuration */
 	TIM2_TimeBaseInitStruct.TIM_Period 			= ((2*Clk_freqs.PCLK1_Frequency)/24)-1;		// init @ 60 BPM
-	TIM_TimeBaseInitStruct.TIM_Period 			= 1905;
 	TIM2_TimeBaseInitStruct.TIM_Prescaler 		= 0x0;
 	TIM2_TimeBaseInitStruct.TIM_ClockDivision 	= TIM_CKD_DIV1;
 	TIM2_TimeBaseInitStruct.TIM_CounterMode 	= TIM_CounterMode_Up;
@@ -31,6 +30,30 @@ void Timer2Init(void)
 
 	/* TIM2 enable counter */
 	TIM_Cmd(TIM2, ENABLE);
+}
+
+void Timer5Init(void)
+{
+	NVICTimer5Init();
+
+	/* TIM2 clock enable */
+	RCC_APB1PeriphClockCmd(RCC_APB1Periph_TIM5, ENABLE);
+
+	RCC_ClocksTypeDef Clk_freqs;
+	RCC_GetClocksFreq(&Clk_freqs);
+
+	/* Time base configuration */
+	TIM5_TimeBaseInitStruct.TIM_Period 			= 1905;
+	TIM5_TimeBaseInitStruct.TIM_Prescaler 		= 0x0;
+	TIM5_TimeBaseInitStruct.TIM_ClockDivision 	= TIM_CKD_DIV1;
+	TIM5_TimeBaseInitStruct.TIM_CounterMode 	= TIM_CounterMode_Down;
+	TIM_TimeBaseInit(TIM5, &TIM5_TimeBaseInitStruct);
+
+	/* TIM IT enable */
+	TIM_ITConfig(TIM5, (TIM_IT_Update), ENABLE);
+
+	/* TIM2 enable counter */
+	TIM_Cmd(TIM5, ENABLE);
 }
 
 void BPMUpdate(uint32_t BPM)

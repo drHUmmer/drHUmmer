@@ -8,9 +8,6 @@ int main(void)
 	SysTick_Init();
 
 	sequencer.BPM = 60;
-	Timer2Init();
-	dacInit();
-
 	sequencer.beatclk = 0;
 	sequencer.beatmask = 0x8000;	// MSB, first beat
 
@@ -30,8 +27,11 @@ int main(void)
 	GPIO_InitStruct.GPIO_PuPd = GPIO_PuPd_NOPULL;
 	GPIO_Init(GPIOD, &GPIO_InitStruct);
 
+	dacInit();
 	NVICTimer2Init();
+	NVICTimer5Init();
 	Timer2Init();
+	Timer5Init();
 
 	while(1)
     {
