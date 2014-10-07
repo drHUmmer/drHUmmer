@@ -13,6 +13,7 @@ void Timer2Init(void)
 
 	/* Time base configuration */
 	TIM2_TimeBaseInitStruct.TIM_Period 			= ((2*Clk_freqs.PCLK1_Frequency)/24)-1;		// init @ 60 BPM
+	TIM_TimeBaseInitStruct.TIM_Period 			= 1905;
 	TIM2_TimeBaseInitStruct.TIM_Prescaler 		= 0x0;
 	TIM2_TimeBaseInitStruct.TIM_ClockDivision 	= TIM_CKD_DIV1;
 	TIM2_TimeBaseInitStruct.TIM_CounterMode 	= TIM_CounterMode_Up;

@@ -11,7 +11,6 @@ GPIO_InitTypeDef GPIO_InitStructure;
 //structure used for DAC settings
 DAC_InitTypeDef dacSettings;
 
-
 void dacInit(void);
 void dacPut(uint16_t data);
 

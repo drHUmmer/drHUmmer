@@ -8,6 +8,9 @@ int main(void)
 	SysTick_Init();
 
 	sequencer.BPM = 60;
+	Timer2Init();
+	dacInit();
+
 	sequencer.beatclk = 0;
 	sequencer.beatmask = 0x8000;	// MSB, first beat
 
