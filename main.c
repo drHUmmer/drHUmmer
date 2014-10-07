@@ -1,14 +1,20 @@
 #include "main.h"
 
 GPIO_InitTypeDef GPIO_InitStruct;
-Sequencer_TypeDef sequencer;
 
 int main(void)
 {
 	PLLInit();
 	SysTick_Init();
-	NVICTimer2Init();
-	Timer2Init();
+
+	sequencer.BPM = 60;
+	sequencer.beatclk = 0;
+	sequencer.beatmask = 0x8000;	// MSB, first beat
+
+	sequencer.snaredrum.sequence = 0xAAAA;
+	sequencer.bassdrum.sequence = 0x8080;
+	sequencer.instr0.sequence = 0xFFFF;
+	sequencer.instr1.sequence = 0x5555;
 
 	RCC_AHB1PeriphClockCmd(RCC_AHB1Periph_GPIOD, ENABLE);
 	RCC_AHB1PeriphClockCmd(RCC_AHB1Periph_GPIOA, ENABLE);
@@ -21,21 +27,22 @@ int main(void)
 	GPIO_InitStruct.GPIO_PuPd = GPIO_PuPd_NOPULL;
 	GPIO_Init(GPIOD, &GPIO_InitStruct);
 
-	sequencer.BPM = 150;
+	NVICTimer2Init();
+	Timer2Init();
 
 	while(1)
     {
 		while(sequencer.BPM <= 300)
 		{
 			sequencer.BPM += 10;
-			Timer2BPMUpdate(sequencer.BPM);
-			delay_nms(100);
+			BPMUpdate(sequencer.BPM);
+			delay_nms(1000);
 		}
 		while(sequencer.BPM >= 30)
 		{
 			sequencer.BPM -= 10;
-			Timer2BPMUpdate(sequencer.BPM);
-			delay_nms(100);
+			BPMUpdate(sequencer.BPM);
+			delay_nms(1000);
 		}
     }
 }

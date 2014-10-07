@@ -5,6 +5,7 @@
 #include "stm32f4xx_tim.h"
 #include "stm32f4xx_gpio.h"
 #include "misc.h"
+#include "sequencer.h"
 
 NVIC_InitTypeDef NVIC_InitStruct;
 

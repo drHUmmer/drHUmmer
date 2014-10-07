@@ -19,6 +19,8 @@ typedef struct
 typedef struct
 {
 	uint32_t BPM;		// Current sequencer BPM
+	uint16_t beatclk;	// counter, 24/beat
+	uint16_t beatmask;	// the current beat (mask, not a counter)
 
 	Instrument_TypeDef bassdrum;
 	Instrument_TypeDef snaredrum;
@@ -29,5 +31,6 @@ typedef struct
 
 }Sequencer_TypeDef;
 
+Sequencer_TypeDef sequencer;
 
 #endif	/* __SEQUENCER_H */
