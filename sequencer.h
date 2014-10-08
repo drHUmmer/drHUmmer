@@ -10,7 +10,7 @@ typedef struct
   uint16_t tone;		// Tone setting of instrument
   uint32_t file_addr;	// Physical address of file on storage medium
   uint32_t file_length; // Length of file (number of samples?)
-  uint16_t buffer_loc;	// Pointer to current location in sample buffer
+  uint32_t buffer_loc;	// Pointer to current location in sample buffer
   uint16_t sample;		// Current sample from buffer
   uint8_t  triggerflag;	// Tell DAC to play sample
 
@@ -21,6 +21,7 @@ typedef struct
 	uint32_t BPM;		// Current sequencer BPM
 	uint16_t beatclk;	// counter, 24/beat
 	uint16_t beatmask;	// the current beat (mask, not a counter)
+	uint8_t  timerflag;	// tells trigger interrupt whether or not to wait until the next beat (to actually reach 5ms)
 
 	Instrument_TypeDef bassdrum;
 	Instrument_TypeDef snaredrum;

@@ -7,14 +7,19 @@ int main(void)
 	PLLInit();
 	SysTick_Init();
 
-	sequencer.BPM = 60;
+	sequencer.BPM = 120;
 	sequencer.beatclk = 0;
 	sequencer.beatmask = 0x8000;	// MSB, first beat
 
-	sequencer.snaredrum.sequence = 0xAAAA;
-	sequencer.bassdrum.sequence = 0x8080;
-	sequencer.instr0.sequence = 0xFFFF;
-	sequencer.instr1.sequence = 0x5555;
+	sequencer.snaredrum.sequence = 0x3C3C;	// 0011 1100 0011 1100
+	sequencer.bassdrum.sequence = 0xAAAA;	// 1010 1010 1010 1010
+	sequencer.instr0.sequence = 0xFFFF;		// 1111 1111 1111 1111
+	sequencer.instr1.sequence = 0x55F5;		// 0101 0101 1111 0101
+
+	sequencer.instr0.tone = 1;
+	sequencer.instr0.file_length = 16060;
+	sequencer.instr1.tone = 1;
+	sequencer.instr1.file_length = 22051;
 
 	RCC_AHB1PeriphClockCmd(RCC_AHB1Periph_GPIOD, ENABLE);
 	RCC_AHB1PeriphClockCmd(RCC_AHB1Periph_GPIOA, ENABLE);
@@ -28,25 +33,38 @@ int main(void)
 	GPIO_Init(GPIOD, &GPIO_InitStruct);
 
 	dacInit();
+	adcInit();
 	NVICTimer2Init();
 	NVICTimer5Init();
 	Timer2Init();
 	Timer5Init();
 
+	uint8_t i = 0;
+	uint16_t adval[3] = {2048,2048,2048};
+
 	while(1)
     {
-		while(sequencer.BPM <= 300)
+		for(i=0;i<3;i++)
+		{
+			adval[i] = adcGet();
+			delay_nms(50);
+		}
+
+		sequencer.BPM = (((adval[0]+adval[1]+adval[2])*10)/163);
+		BPMUpdate(sequencer.BPM);
+
+/*		while(sequencer.BPM <= 800)
 		{
 			sequencer.BPM += 10;
 			BPMUpdate(sequencer.BPM);
 			delay_nms(1000);
 		}
-		while(sequencer.BPM >= 30)
+		while(sequencer.BPM >= 60)
 		{
 			sequencer.BPM -= 10;
 			BPMUpdate(sequencer.BPM);
 			delay_nms(1000);
-		}
+		}*/
     }
 }
 

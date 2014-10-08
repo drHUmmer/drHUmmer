@@ -21,7 +21,7 @@ void Timer2Init(void)
 	/* Output compare config */
 	TIM2_OCInitStruct.TIM_OCMode				= TIM_OCMode_Timing;
 	TIM2_OCInitStruct.TIM_OutputState			= TIM_OutputState_Enable;
-	TIM2_OCInitStruct.TIM_Pulse					= (2*Clk_freqs.PCLK1_Frequency)/200;	// TimerClkFreq / 200 = 5ms
+	TIM2_OCInitStruct.TIM_Pulse					= (Clk_freqs.PCLK1_Frequency)/100;	// TimerClkFreq (= 2*PCLK1) / 200 -> 5ms
 	TIM2_OCInitStruct.TIM_OCPolarity			= TIM_OCPolarity_High;
 	TIM_OC1Init(TIM2, &TIM2_OCInitStruct);
 
@@ -60,9 +60,15 @@ void BPMUpdate(uint32_t BPM)
 {
 	RCC_ClocksTypeDef Clk_freqs;
 	RCC_GetClocksFreq(&Clk_freqs);
-	uint32_t TIM2_AAR = ((2*Clk_freqs.PCLK1_Frequency)/(BPM*24))*60;	//((120*Clk_freqs.PCLK1_Frequency)/(BPM*24))-1;		// TIM2_CLK = 2*PCLK1;
+	uint32_t TIM2_AAR = ((2*Clk_freqs.PCLK1_Frequency)/(BPM*24))*60;	// TIM2_CLK = 2*PCLK1;
 
 	TIM_SetAutoreload(TIM2, TIM2_AAR);
+	if(TIM2_AAR <= TIM2_OCInitStruct.TIM_Pulse)
+	{
+		TIM_SetCompare1(TIM2, (TIM2_OCInitStruct.TIM_Pulse - TIM2_AAR));
+		sequencer.timerflag = 1;
+	}
+
 	uint32_t TIM2_cnt = TIM_GetCounter(TIM2);
 	if(TIM2_cnt >= TIM2_AAR)						// if somehow Timer2 goes out of range (which is bad
 	{												// and really shouldn't happen)
