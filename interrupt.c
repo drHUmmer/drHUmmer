@@ -1,6 +1,8 @@
 #include "interrupt.h"
 #include "hihat.h"
 #include "snaredrum.h"
+#include "basskick.h"
+#include "cymbal.h"
 
 //float wavCnt = 0;
 
@@ -16,14 +18,14 @@ void TIM2_IRQHandler(void)
 			sequencer.beatclk = 0;
 			sequencer.beatmask = (sequencer.beatmask >> 1) | (sequencer.beatmask << ((sizeof(sequencer.beatmask)*8) - 1));	//rotate right
 
-			if(sequencer.snaredrum.sequence &  sequencer.beatmask)
+/*			if(sequencer.snaredrum.sequence &  sequencer.beatmask)
 			{
 				GPIO_msk |= GPIO_Pin_12;
 			}
 			if(sequencer.bassdrum.sequence &  sequencer.beatmask)
 			{
 				GPIO_msk |= GPIO_Pin_13;
-			}
+			}*/
 			if(sequencer.instr0.sequence &  sequencer.beatmask)
 			{
 				GPIO_msk |= GPIO_Pin_14;
@@ -34,16 +36,16 @@ void TIM2_IRQHandler(void)
 				GPIO_msk |= GPIO_Pin_15;
 				sequencer.instr1.triggerflag = 1;
 			}
-	/*		if(sequencer.instr2.sequence &  sequencer.beatmask)
+			if(sequencer.instr2.sequence &  sequencer.beatmask)
 			{
-				GPIO_msk |= GPIO_Pin_??;
+				GPIO_msk |= GPIO_Pin_12;
 				sequencer.instr2.triggerflag = 1;
 			}
 			if(sequencer.instr3.sequence &  sequencer.beatmask)
 			{
-				GPIO_msk |= GPIO_Pin_??;
+				GPIO_msk |= GPIO_Pin_13;
 				sequencer.instr3.triggerflag = 1;
-			}*/
+			}
 			GPIO_SetBits(GPIOD, GPIO_msk);
 		}
 	}
@@ -77,7 +79,23 @@ void TIM5_IRQHandler(void)
 			sequencer.instr1.triggerflag = 0;
 		}
 
-		sampleMix = (hihatWav[sequencer.instr0.buffer_loc] + snaredrumWav[sequencer.instr1.buffer_loc])/2;
+		if(sequencer.instr2.triggerflag)
+		{
+			sequencer.instr2.buffer_loc = 0;
+			sequencer.instr2.triggerflag = 0;
+		}
+
+		if(sequencer.instr3.triggerflag)
+		{
+			sequencer.instr3.buffer_loc = 0;
+			sequencer.instr3.triggerflag = 0;
+		}
+
+		sampleMix = (hihatWav[sequencer.instr0.buffer_loc] + \
+					 snaredrumWav[sequencer.instr1.buffer_loc] + \
+					 basskickmWav[sequencer.instr2.buffer_loc] + \
+					 cymbalWav[sequencer.instr3.buffer_loc]) / 4;
+
 		dacPut(sampleMix);
 
 		if((sequencer.instr0.buffer_loc += sequencer.instr0.tone) >= sequencer.instr0.file_length)
@@ -88,6 +106,16 @@ void TIM5_IRQHandler(void)
 		if((sequencer.instr1.buffer_loc += sequencer.instr1.tone) >= sequencer.instr1.file_length)
 		{
 			sequencer.instr1.buffer_loc = sequencer.instr1.file_length-1;
+		}
+
+		if((sequencer.instr2.buffer_loc += sequencer.instr2.tone) >= sequencer.instr2.file_length)
+		{
+			sequencer.instr2.buffer_loc = sequencer.instr2.file_length-1;
+		}
+
+		if((sequencer.instr3.buffer_loc += sequencer.instr3.tone) >= sequencer.instr3.file_length)
+		{
+			sequencer.instr3.buffer_loc = sequencer.instr3.file_length-1;
 		}
 	}
 }

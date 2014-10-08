@@ -100,6 +100,7 @@
     <File name="includes/interrupt.h" path="interrupt.h" type="1"/>
     <File name="source/ADC.c" path="ADC.c" type="1"/>
     <File name="cmsis_lib/source" path="" type="2"/>
+    <File name="includes/basskick.h" path="basskick.h" type="1"/>
     <File name="includes/timer.h" path="timer.h" type="1"/>
     <File name="cmsis_boot/stm32f4xx_conf.h" path="cmsis_boot/stm32f4xx_conf.h" type="1"/>
     <File name="cmsis_boot/system_stm32f4xx.h" path="cmsis_boot/system_stm32f4xx.h" type="1"/>
@@ -127,6 +128,7 @@
     <File name="cmsis_lib/source/stm32f4xx_tim.c" path="cmsis_lib/source/stm32f4xx_tim.c" type="1"/>
     <File name="cmsis_lib/include/stm32f4xx_gpio.h" path="cmsis_lib/include/stm32f4xx_gpio.h" type="1"/>
     <File name="cmsis_lib/include/misc.h" path="cmsis_lib/include/misc.h" type="1"/>
+    <File name="includes/cymbal.h" path="cymbal.h" type="1"/>
     <File name="includes/snaredrum.h" path="snaredrum.h" type="1"/>
     <File name="cmsis_lib/include" path="" type="2"/>
     <File name="includes/PLL.h" path="PLL.h" type="1"/>
