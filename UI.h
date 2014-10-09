@@ -5,6 +5,8 @@
 #include "stm32f4xx_rcc.h"
 
 // Defines
+#define UI_GPIO_PORT		GPIOE
+#define UI_GPIO_PORT_PERIPH	RCC_AHB1Periph_GPIOE
 #define UI_LED_CLOCK		GPIO_Pin_9
 #define UI_LED_DATA			GPIO_Pin_10
 #define UI_LED_LATCH		GPIO_Pin_11
