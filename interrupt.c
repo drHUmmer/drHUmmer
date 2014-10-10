@@ -18,32 +18,30 @@ void TIM2_IRQHandler(void)
 			sequencer.beatclk = 0;
 			sequencer.beatmask = (sequencer.beatmask >> 1) | (sequencer.beatmask << ((sizeof(sequencer.beatmask)*8) - 1));	//rotate right
 
-/*			if(sequencer.snaredrum.sequence &  sequencer.beatmask)
+			if(sequencer.snaredrum.sequence &  sequencer.beatmask)
 			{
 				GPIO_msk |= GPIO_Pin_12;
 			}
 			if(sequencer.bassdrum.sequence &  sequencer.beatmask)
 			{
 				GPIO_msk |= GPIO_Pin_13;
-			}*/
+			}
 			if(sequencer.instr0.sequence &  sequencer.beatmask)
 			{
-				GPIO_msk |= GPIO_Pin_14;
+				//GPIO_msk |= GPIO_Pin_14;
 				sequencer.instr0.triggerflag = 1;
 			}
 			if(sequencer.instr1.sequence &  sequencer.beatmask)
 			{
-				GPIO_msk |= GPIO_Pin_15;
+				//GPIO_msk |= GPIO_Pin_15;
 				sequencer.instr1.triggerflag = 1;
 			}
 			if(sequencer.instr2.sequence &  sequencer.beatmask)
 			{
-				GPIO_msk |= GPIO_Pin_12;
 				sequencer.instr2.triggerflag = 1;
 			}
 			if(sequencer.instr3.sequence &  sequencer.beatmask)
 			{
-				GPIO_msk |= GPIO_Pin_13;
 				sequencer.instr3.triggerflag = 1;
 			}
 			GPIO_SetBits(GPIOD, GPIO_msk);

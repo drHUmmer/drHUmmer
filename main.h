@@ -13,6 +13,7 @@
 #include "timer.h"
 #include "delay.h"
 #include "sequencer.h"
+#include "UI.h"
 
 int main(void);
 

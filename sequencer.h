@@ -22,6 +22,7 @@ typedef struct
 	uint16_t beatclk;	// counter, 24/beat
 	uint16_t beatmask;	// the current beat (mask, not a counter)
 	uint8_t  timerflag;	// tells trigger interrupt whether or not to wait until the next beat (to actually reach 5ms)
+	uint8_t	 instrID;
 
 	Instrument_TypeDef bassdrum;
 	Instrument_TypeDef snaredrum;
