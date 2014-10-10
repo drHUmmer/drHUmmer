@@ -8,6 +8,8 @@
 #include "DAC.h"
 #include "PLL.h"
 #include "UART.h"
+#include "CoOS/OsConfig.h"  /*!< CoOS configure header file*/
+#include "CoOS/kernel/coocox.h"  /*!< CoOS header file  */
 
 int main(void);
 

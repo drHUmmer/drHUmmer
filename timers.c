@@ -1,4 +1,4 @@
-#include "timer.h"
+#include "timers.h"
 
 
 void Timer2Init(void){
