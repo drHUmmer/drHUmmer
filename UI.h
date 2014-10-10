@@ -17,10 +17,10 @@
 
 // Function prototypes
 // Initialization functions
-void UIInit();				// Main UI initialization
-void UILEDInit();			// LED initialization
-void UIButtonInit();		// Button initialization
-void UIPlayInit(void);		// Play button init
+void UIInit(void);				// Main UI initialization
+void UILEDInit(void);			// LED initialization
+void UIButtonInit(void);		// Button initialization
+void UIPlayInit(void);			// Play button init
 
 // User functions
 uint16_t UIButtonRead();	// UI button read function
