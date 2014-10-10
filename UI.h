@@ -23,7 +23,8 @@ void UIButtonInit(void);		// Button initialization
 void UIPlayInit(void);			// Play button init
 
 // User functions
-uint16_t UIButtonRead();	// UI button read function
-void UILed(uint16_t value);	// Led write function
+uint16_t UIButtonRead();		// UI button read function
+void UILed(uint16_t value);		// Led write function
+uint8_t UIPlayRead(void);		// Play button read
 
 #endif // UI_H

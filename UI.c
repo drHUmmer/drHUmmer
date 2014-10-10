@@ -6,6 +6,23 @@ void UIInit(void) {
 	UIPlayInit();
 }
 
+uint8_t UIPlayRead(void) {
+	static 	uint8_t buttonHistory	= 0x00;
+			uint8_t buttonValue 	= 0x00;
+			uint8_t returnValue		= 0x00;
+
+	buttonValue = GPIO_ReadInputDataBit(UI_GPIO_PORT, UI_BUTT_PLAY);
+
+	if ((buttonValue) != 0x00) {
+		if ((buttonHistory) == 0x00) {
+			returnValue = 0x01;
+		}
+	}
+
+	buttonHistory = buttonValue;
+	return returnValue;
+}
+
 void UIPlayInit(void) {
 	GPIO_InitTypeDef GPIO_InitStructure;
 	RCC_AHB1PeriphClockCmd(UI_GPIO_PORT_PERIPH, ENABLE);
