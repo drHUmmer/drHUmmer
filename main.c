@@ -6,26 +6,7 @@ int main(void)
 {
 	PLLInit();
 	SysTick_Init();
-
-	sequencer.BPM = 200;
-	sequencer.beatclk = 0;
-	sequencer.beatmask = 0x8000;	// MSB, first beat
-
-	sequencer.snaredrum.sequence = 0x3C3C;	// 0011 1100 0011 1100
-	sequencer.bassdrum.sequence = 0xAAAA;	// 1010 1010 1010 1010
-	sequencer.instr0.sequence = 0xFFFF;		// 1111 1111 1111 1111			//hihat
-	sequencer.instr1.sequence = 0x55F5;		// 0101 0101 1111 0101			//snare
-	sequencer.instr2.sequence = 0xAAAA;		// 1010 1010 1010 1010			//basskick
-	sequencer.instr3.sequence = 0x0080;		// 0000 0000 1000 0000			//cymbal
-
-	sequencer.instr0.tone = 1;
-	sequencer.instr0.file_length = 16060;
-	sequencer.instr1.tone = 1;
-	sequencer.instr1.file_length = 22051;
-	sequencer.instr2.tone = 1;
-	sequencer.instr2.file_length = 18387;
-	sequencer.instr3.tone = 1;
-	sequencer.instr3.file_length = 65135;
+	sequencerInit();
 
 	RCC_AHB1PeriphClockCmd(RCC_AHB1Periph_GPIOD, ENABLE);
 	RCC_AHB1PeriphClockCmd(RCC_AHB1Periph_GPIOA, ENABLE);
@@ -56,7 +37,7 @@ int main(void)
 
 	while(1)
     {
-		if(UIPlayRead())
+/*		if(UIPlayRead())
 		{
 			sequencer.instrID++;
 			if(sequencer.instrID > 5)
@@ -97,7 +78,7 @@ int main(void)
 				break;
 		}
 
-		delay_nms(100);
+		delay_nms(100);*/
 
 
 

@@ -1,8 +1,8 @@
 #include "interrupt.h"
-#include "hihat.h"
-#include "snaredrum.h"
-#include "basskick.h"
-#include "cymbal.h"
+//#include "hihat.h"
+//#include "snaredrum.h"
+//#include "basskick.h"
+//#include "cymbal.h"
 
 //float wavCnt = 0;
 
@@ -13,39 +13,54 @@ void TIM2_IRQHandler(void)
 	if (TIM_GetITStatus(TIM2, TIM_IT_Update) != RESET)
 	{
 		TIM_ClearITPendingBit(TIM2, TIM_IT_Update);
-		if(sequencer.beatclk++ >= 24)
+
+		if(++sequencer.beatclk >= 6)
 		{
 			sequencer.beatclk = 0;
-			sequencer.beatmask = (sequencer.beatmask >> 1) | (sequencer.beatmask << ((sizeof(sequencer.beatmask)*8) - 1));	//rotate right
+			if(++sequencer.stepcnt >= 16)
+			{
+				sequencer.stepcnt = 0;
+			}
 
-			if(sequencer.snaredrum.sequence &  sequencer.beatmask)
-			{
-				GPIO_msk |= GPIO_Pin_12;
-			}
-			if(sequencer.bassdrum.sequence &  sequencer.beatmask)
-			{
-				GPIO_msk |= GPIO_Pin_13;
-			}
-			if(sequencer.instr0.sequence &  sequencer.beatmask)
-			{
-				//GPIO_msk |= GPIO_Pin_14;
-				sequencer.instr0.triggerflag = 1;
-			}
-			if(sequencer.instr1.sequence &  sequencer.beatmask)
-			{
-				//GPIO_msk |= GPIO_Pin_15;
-				sequencer.instr1.triggerflag = 1;
-			}
-			if(sequencer.instr2.sequence &  sequencer.beatmask)
-			{
-				sequencer.instr2.triggerflag = 1;
-			}
-			if(sequencer.instr3.sequence &  sequencer.beatmask)
-			{
-				sequencer.instr3.triggerflag = 1;
-			}
-			GPIO_SetBits(GPIOD, GPIO_msk);
+			sequencer.beatmask = (sequencer.beatmask >> 1) | (sequencer.beatmask << ((sizeof(sequencer.beatmask)*8) - 1));	//rotate right
 		}
+
+		if((sequencer.snaredrum.sequence &  sequencer.beatmask) && \
+				(sequencer.snaredrum.substeps[sequencer.stepcnt] &  sequencer.submask))
+		{
+			GPIO_msk |= GPIO_Pin_12;				//red
+		}
+		if((sequencer.bassdrum.sequence &  sequencer.beatmask) && \
+				  (sequencer.bassdrum.substeps[sequencer.stepcnt] &  sequencer.submask))
+		{
+			GPIO_msk |= GPIO_Pin_13;				//orange
+		}
+		if((sequencer.instr0.sequence &  sequencer.beatmask) && \
+				  (sequencer.instr0.substeps[sequencer.stepcnt] &  sequencer.submask))
+		{
+			GPIO_msk |= GPIO_Pin_14;				//green
+			sequencer.instr0.triggerflag = 1;
+		}
+		if((sequencer.instr1.sequence &  sequencer.beatmask) && \
+				  (sequencer.instr1.substeps[sequencer.stepcnt] &  sequencer.submask))
+		{
+			GPIO_msk |= GPIO_Pin_15;				//blu
+			sequencer.instr1.triggerflag = 1;
+		}
+		if((sequencer.instr2.sequence &  sequencer.beatmask) && \
+				  (sequencer.instr2.substeps[sequencer.stepcnt] &  sequencer.submask))
+		{
+			sequencer.instr2.triggerflag = 1;
+		}
+		if((sequencer.instr3.sequence &  sequencer.beatmask) && \
+				  (sequencer.instr3.substeps[sequencer.stepcnt] &  sequencer.submask))
+		{
+			sequencer.instr3.triggerflag = 1;
+		}
+		GPIO_SetBits(GPIOD, GPIO_msk);
+
+		sequencer.submask = (sequencer.submask >> 1) | ((sequencer.submask & 0x1) << 5);	//rotate right
+
 	}
 	else if (TIM_GetITStatus(TIM2, TIM_IT_CC1) != RESET)
 	{
@@ -89,7 +104,7 @@ void TIM5_IRQHandler(void)
 			sequencer.instr3.triggerflag = 0;
 		}
 
-		sampleMix = (hihatWav[sequencer.instr0.buffer_loc] + \
+/*		sampleMix = (hihatWav[sequencer.instr0.buffer_loc] + \
 					 snaredrumWav[sequencer.instr1.buffer_loc] + \
 					 basskickmWav[sequencer.instr2.buffer_loc] + \
 					 cymbalWav[sequencer.instr3.buffer_loc]) / 4;
@@ -114,7 +129,7 @@ void TIM5_IRQHandler(void)
 		if((sequencer.instr3.buffer_loc += sequencer.instr3.tone) >= sequencer.instr3.file_length)
 		{
 			sequencer.instr3.buffer_loc = sequencer.instr3.file_length-1;
-		}
+		}*/
 	}
 }
 
