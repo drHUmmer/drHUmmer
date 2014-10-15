@@ -34,8 +34,9 @@ void task_a(void){
 
 	for(;;){
 		CoWaitForSingleFlag (a_flag,0);
-		CoPostMail(mbox0,'A');
 		CoTickDelay(20);
+		CoPostMail(mbox0,'A');
+
 	}
 
 
@@ -46,8 +47,9 @@ void task_b(void){
 
 	for(;;){
 		CoWaitForSingleFlag (b_flag,0);
-		CoPostMail(mbox0,'B');
 		CoTickDelay(20);
+		CoPostMail(mbox0,'B');
+
 	}
 }
 
