@@ -2,6 +2,7 @@
 
 GPIO_InitTypeDef GPIO_InitStruct;
 
+#ifndef DEBUG	/* DEBUG not defined; regular operation */
 int main(void)
 {
 	PLLInit();
@@ -30,13 +31,81 @@ int main(void)
 
 	BPMUpdate(sequencer.BPM);
 
-//	uint8_t i = 0;
-//	uint16_t adval[3] = {2048,2048,2048};
+	while(1);
+}
 
-	uint16_t butt_data = 0;
+#else	/* if debug mode */
+
+RingBuffer_TypeDef debug_buff;		// debug buffer
+RingBuffer_TypeDef *debug_buff_p;	// debug buffer pointer
+
+int main(void)
+{
+	PLLInit();
+	SysTick_Init();
+	sequencerInit();
+
+	RCC_AHB1PeriphClockCmd(RCC_AHB1Periph_GPIOD, ENABLE);
+	RCC_AHB1PeriphClockCmd(RCC_AHB1Periph_GPIOA, ENABLE);
+
+	GPIO_InitStruct.GPIO_Pin = GPIO_Pin_15 | GPIO_Pin_14 | GPIO_Pin_13
+	| GPIO_Pin_12;
+	GPIO_InitStruct.GPIO_Mode = GPIO_Mode_OUT;
+	GPIO_InitStruct.GPIO_Speed = GPIO_Speed_100MHz;
+	GPIO_InitStruct.GPIO_OType = GPIO_OType_PP;
+	GPIO_InitStruct.GPIO_PuPd = GPIO_PuPd_NOPULL;
+	GPIO_Init(GPIOD, &GPIO_InitStruct);
+
+	UIInit();
+
+	dacInit();
+	adcInit();
+	NVICTimer2Init();
+	NVICTimer5Init();
+	Timer2Init();
+	Timer5Init();
+
+	BPMUpdate(sequencer.BPM);
+
+	RingBufferInit();
+
+	uint8_t j;
+	for(j=0;j<BUFFER_SIZE;j++)
+	{
+		debug_buff.buffer[j] = 0;
+	}
+	debug_buff.head = 0;
+	debug_buff.tail = 0;
+
+	debug_buff_p = &debug_buff;
 
 	while(1)
     {
+		uint16_t i;
+		uint16_t bpm = 60;
+		//	uint16_t adval[3] = {2048,2048,2048};
+		//	uint16_t butt_data = 0;
+
+		for(i=0;i<100;i++)
+		{
+			if(Write_Rbuffer(debug_buff_p, i + 60))
+			{
+				error_blink();
+			}
+
+			bpm = Read_Rbuffer(debug_buff_p);
+			if(bpm == -1)
+			{
+				error_blink();
+			}
+			else
+			{
+				BPMUpdate(bpm);
+			}
+			delay_nms(500);
+		}
+
+
 /*		if(UIPlayRead())
 		{
 			sequencer.instrID++;
@@ -103,8 +172,25 @@ int main(void)
 			BPMUpdate(sequencer.BPM);
 			delay_nms(1000);
 		}*/
+
     }
 }
+
+void error_blink(void)
+{
+	uint8_t k;
+	uint16_t leds = (GPIO_Pin_15 | GPIO_Pin_14 | GPIO_Pin_13 | GPIO_Pin_12);
+	for(k=0;k<5;k++)
+	{
+		GPIO_SetBits(GPIOD, leds);
+		delay_nms(100);
+		GPIO_ResetBits(GPIOD, leds);
+		delay_nms(100);
+	}
+}
+#endif	/* end debug mode */
+
+
 
 void SysTick_Handler(void)
 {

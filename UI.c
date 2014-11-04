@@ -72,7 +72,7 @@ void UIButtonInit(void) {
 void UILed(uint16_t value) {
 	uint8_t counter = 0x00;
 	uint8_t data	= 0x00;
-	uint8_t delay	= 0x00;
+//	uint8_t delay	= 0x00;
 
 	for (counter = 0; counter < 16; counter ++) {
 		data 	= !!(value & (1 << (15 - counter)));			// Check if the a bit is set or not
