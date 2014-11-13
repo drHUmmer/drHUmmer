@@ -37,7 +37,7 @@ int main(void)
 
 	while(1)
     {
-/*		if(UIPlayRead())
+		if(UIPlayRead())
 		{
 			sequencer.instrID++;
 			if(sequencer.instrID > 5)
@@ -78,7 +78,7 @@ int main(void)
 				break;
 		}
 
-		delay_nms(100);*/
+		delay_nms(100);
 
 
 
