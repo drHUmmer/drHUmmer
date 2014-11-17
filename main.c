@@ -36,9 +36,6 @@ int main(void)
 
 #else	/* if debug mode */
 
-RingBuffer_TypeDef debug_buff;		// debug buffer
-RingBuffer_TypeDef *debug_buff_p;	// debug buffer pointer
-
 int main(void)
 {
 	PLLInit();
@@ -69,22 +66,10 @@ int main(void)
 
 	RingBufferInit();
 
-	uint8_t j;
-	for(j=0;j<BUFFER_SIZE;j++)
-	{
-		debug_buff.buffer[j] = 0;
-	}
-	debug_buff.head = 0;
-	debug_buff.tail = 0;
-
-	debug_buff_p = &debug_buff;
-
 	while(1)
     {
 		uint16_t i;
 		uint16_t bpm = 60;
-		//	uint16_t adval[3] = {2048,2048,2048};
-		//	uint16_t butt_data = 0;
 
 		for(i=0;i<100;i++)
 		{
@@ -102,11 +87,14 @@ int main(void)
 			{
 				BPMUpdate(bpm);
 			}
-			delay_nms(500);
+			delay_nms(200);
 		}
 
 
-/*		if(UIPlayRead())
+/*		//	uint16_t adval[3] = {2048,2048,2048};
+		//	uint16_t butt_data = 0;
+
+		if(UIPlayRead())
 		{
 			sequencer.instrID++;
 			if(sequencer.instrID > 5)

@@ -1,5 +1,6 @@
 #include "ringbuff.h"
 
+
 /***************************************************************
  * 						RingBufferInit
  * 	Description: Initialises ring buffers with 0 for
@@ -13,15 +14,22 @@ void RingBufferInit(void)
 		bass_buff.buffer[i] = 0;
 		snare_buff.buffer[i] = 0;
 		dac_buff.buffer[i] = 0;
+		debug_buff.buffer[i] = 0;
 	}
 	bass_buff.head = 0;
-	bass_buff.tail = 0;
 	snare_buff.head = 0;
-	snare_buff.tail = 0;
 	dac_buff.head = 0;
+	debug_buff.head = 0;
+	
+	bass_buff.tail = 0;
+	snare_buff.tail = 0;
 	dac_buff.tail = 0;
+	debug_buff.tail = 0;
 
-	RingBuffer_TypeDef *bass_buff_p = &bass_buff;
+	bass_buff_p = &bass_buff;
+	snare_buff_p = &snare_buff;
+	dac_buff_p = &dac_buff;
+	debug_buff_p = &debug_buff;
 }
 
 /***************************************************************
