@@ -3,6 +3,10 @@
 #include "snaredrum.h"
 #include "basskick.h"
 #include "cymbal.h"
+#include "filter.h"
+#include "DAC.h"
+
+extern IIRfilter_t testFilter;
 
 //float wavCnt = 0;
 
@@ -74,7 +78,8 @@ void TIM2_IRQHandler(void)
 
 void TIM5_IRQHandler(void)
 {
-	uint16_t sampleMix = 2048;
+	uint16_t sampleMix = DC_COMP;	//was 2048
+	uint16_t audioOut = 0;
 
 	if (TIM_GetITStatus(TIM5, TIM_IT_Update) != RESET)
 	{
@@ -109,7 +114,32 @@ void TIM5_IRQHandler(void)
 					 basskickmWav[sequencer.instr2.buffer_loc] + \
 					 cymbalWav[sequencer.instr3.buffer_loc]) / 4;
 
-		dacPut(sampleMix);
+		//this is where the filter party starts.........
+
+#ifdef FILTER_DEMO	//uncomment FILTER_DEMO in "filter.h" for filter sweep demo
+		static uint8_t freqFlag=0;
+		static uint16_t freq=100, cnt=0;
+
+		if(!((cnt++)%100))
+		{
+			if(freqFlag)
+			{
+				freq-=1;
+				if(freq<=100)
+					freqFlag=0;
+			}
+			else
+			{
+				freq+=1;
+				if(freq>=4500)
+					freqFlag=1;
+			}
+		}
+		IIRFilterCalc(&testFilter, freq, LPF);
+#endif
+
+		IIRFilterDo(&testFilter, sampleMix, &audioOut);	//apply filter
+		dacPut(audioOut);
 
 		if((sequencer.instr0.buffer_loc += sequencer.instr0.tone) >= sequencer.instr0.file_length)
 		{

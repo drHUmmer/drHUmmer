@@ -14,6 +14,7 @@
 #include "delay.h"
 #include "sequencer.h"
 #include "UI.h"
+#include "filter.h"
 
 int main(void);
 

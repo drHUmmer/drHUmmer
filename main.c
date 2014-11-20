@@ -1,6 +1,8 @@
 #include "main.h"
 
+/*VARIABLES*/
 GPIO_InitTypeDef GPIO_InitStruct;
+extern IIRfilter_t testFilter;
 
 int main(void)
 {

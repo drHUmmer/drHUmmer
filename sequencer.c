@@ -10,12 +10,12 @@ void sequencerInit(void)
 	sequencer.beatmask = 0x8000;				// MSB, first beat
 	sequencer.submask = 0x20;					// MSB, first substep
 
-	sequencer.snaredrum.sequence 	= 0x0000;	// 0010 0010 0010 0010			//(a)snare
-	sequencer.bassdrum.sequence 	= 0x0000;	// 1000 1000 1000 1000			//(a)bass
-	sequencer.instr0.sequence 		= 0x0202;	// 1010 1010 1010 1010			//hihat
-	sequencer.instr1.sequence 		= 0x0808;	// 0101 0101 1111 0101			//snare
-	sequencer.instr2.sequence 		= 0x8080;	// 1010 1010 1010 1010			//basskick
-	sequencer.instr3.sequence 		= 0x0000;	// 0000 0000 1000 0000			//cymbal
+	sequencer.snaredrum.sequence 	= 0x0000;	// 0000 0000 0000 0000			//(a)snare
+	sequencer.bassdrum.sequence 	= 0x0000;	// 0000 0000 0000 0000			//(a)bass
+	sequencer.instr0.sequence 		= 0x0202;	// 0000 0010 0000 0010			//hihat
+	sequencer.instr1.sequence 		= 0x0808;	// 0000 1000 0000 1000			//snare
+	sequencer.instr2.sequence 		= 0x8080;	// 1000 1000 1000 1000			//basskick
+	sequencer.instr3.sequence 		= 0x0000;	// 0000 0000 0000 0000			//cymbal
 
 	for(i=0;i<16;i++)
 	{
