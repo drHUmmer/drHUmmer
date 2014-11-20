@@ -6,6 +6,7 @@
 #include "stm32f4xx.h"
 #include "stm32f4xx_tim.h"
 #include "stm32f4xx_gpio.h"
+//#include "stm32f4xx_spi.h"
 #include "misc.h"
 #include "ADC.h"
 #include "DAC.h"
@@ -17,6 +18,7 @@
 #include "sequencer.h"
 #include "UI.h"
 #include "ringbuff.h"
+#include "SPI.h"
 
 int main(void);
 

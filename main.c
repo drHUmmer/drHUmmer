@@ -1,8 +1,6 @@
 #include "main.h"
 
-GPIO_InitTypeDef GPIO_InitStruct;
-
-#ifndef DEBUG	/* DEBUG not defined; regular operation */
+#ifndef DEBUG	/* DEBUG not defined; regular operation (define located in main.h) */
 int main(void)
 {
 	PLLInit();
@@ -12,6 +10,8 @@ int main(void)
 	RCC_AHB1PeriphClockCmd(RCC_AHB1Periph_GPIOD, ENABLE);
 	RCC_AHB1PeriphClockCmd(RCC_AHB1Periph_GPIOA, ENABLE);
 
+	GPIO_InitTypeDef GPIO_InitStruct;
+
 	GPIO_InitStruct.GPIO_Pin = GPIO_Pin_15 | GPIO_Pin_14 | GPIO_Pin_13
 	| GPIO_Pin_12;
 	GPIO_InitStruct.GPIO_Mode = GPIO_Mode_OUT;
@@ -20,10 +20,10 @@ int main(void)
 	GPIO_InitStruct.GPIO_PuPd = GPIO_PuPd_NOPULL;
 	GPIO_Init(GPIOD, &GPIO_InitStruct);
 
-	UIInit();
+//	UIInit();
 
-	dacInit();
-	adcInit();
+//	dacInit();
+//	adcInit();
 	NVICTimer2Init();
 	NVICTimer5Init();
 	Timer2Init();
@@ -41,9 +41,19 @@ int main(void)
 	PLLInit();
 	SysTick_Init();
 	sequencerInit();
+	SPI3_Init();
 
+/*****************
+ * 	LED IO init
+ * 	PD12 =
+ * 	PD13 =
+ * 	PD14 =
+ * 	PD15 =
+ *****************/
 	RCC_AHB1PeriphClockCmd(RCC_AHB1Periph_GPIOD, ENABLE);
 	RCC_AHB1PeriphClockCmd(RCC_AHB1Periph_GPIOA, ENABLE);
+
+	GPIO_InitTypeDef GPIO_InitStruct;
 
 	GPIO_InitStruct.GPIO_Pin = GPIO_Pin_15 | GPIO_Pin_14 | GPIO_Pin_13
 	| GPIO_Pin_12;
@@ -52,42 +62,85 @@ int main(void)
 	GPIO_InitStruct.GPIO_OType = GPIO_OType_PP;
 	GPIO_InitStruct.GPIO_PuPd = GPIO_PuPd_NOPULL;
 	GPIO_Init(GPIOD, &GPIO_InitStruct);
+/* End LED IO init */
 
-	UIInit();
 
-	dacInit();
-	adcInit();
-	NVICTimer2Init();
-	NVICTimer5Init();
-	Timer2Init();
-	Timer5Init();
+/*****************
+ * 	SPI config & init
+ * 	PC8  = PIC NSS
+ * 	PC9  = LED NSS
+ * 	PC10 = SCLK
+ * 	PC11 = MISO
+ * 	PC12 = MOSI
+ *****************/
 
-	BPMUpdate(sequencer.BPM);
+/*	RCC_APB1PeriphClockCmd(RCC_APB1Periph_SPI3, ENABLE);				//enable(?) APB clock for SPI3
+	RCC_AHB1PeriphClockCmd(RCC_AHB1Periph_GPIOC, ENABLE);				//enable AHB peripheral clock for GPIO bank C
 
-	RingBufferInit();
+	//NSS pins configured as GPIO outputs; software managed
+	GPIO_InitStruct.GPIO_Pin = GPIO_Pin_9 | GPIO_Pin_8;
+	GPIO_InitStruct.GPIO_Mode = GPIO_Mode_OUT;
+	GPIO_InitStruct.GPIO_OType = GPIO_OType_PP;
+	GPIO_InitStruct.GPIO_PuPd = GPIO_PuPd_UP;
+	GPIO_InitStruct.GPIO_Speed = GPIO_Speed_50MHz;
+	GPIO_Init(GPIOC, &GPIO_InitStruct);
+
+	GPIO_InitStruct.GPIO_Pin = GPIO_Pin_12 | GPIO_Pin_11 | GPIO_Pin_10;	//MOSI | MISO | CLK
+	GPIO_InitStruct.GPIO_Mode = GPIO_Mode_AF;
+	GPIO_InitStruct.GPIO_OType = GPIO_OType_PP;
+	GPIO_InitStruct.GPIO_PuPd = GPIO_PuPd_NOPULL;			//DOWN;
+	GPIO_InitStruct.GPIO_Speed = GPIO_Speed_50MHz;
+	GPIO_PinAFConfig(GPIOC,GPIO_PinSource12,GPIO_AF_SPI3);		//connect alt functions to pins
+	GPIO_PinAFConfig(GPIOC,GPIO_PinSource11,GPIO_AF_SPI3);
+	GPIO_PinAFConfig(GPIOC,GPIO_PinSource10,GPIO_AF_SPI3);
+	GPIO_Init(GPIOC, &GPIO_InitStruct);
+
+	SPI_InitTypeDef SPI3_InitStruct;
+	SPI3_InitStruct.SPI_CPOL = SPI_CPOL_Low;							//clock idle low
+	SPI3_InitStruct.SPI_CPHA = SPI_CPHA_1Edge;							//capture on 1st edge
+	SPI3_InitStruct.SPI_FirstBit = SPI_FirstBit_MSB;					//Shift MSB first
+	SPI3_InitStruct.SPI_DataSize = SPI_DataSize_8b;						//8 bits per transfer
+	SPI3_InitStruct.SPI_BaudRatePrescaler = SPI_BaudRatePrescaler_16;	//BaudRate = APB1 / Prescaler = 42MHz / 8 = 2.625MHz
+	SPI3_InitStruct.SPI_Mode = SPI_Mode_Master;							//Master mode
+	SPI3_InitStruct.SPI_NSS = SPI_NSS_Soft;								//Software managed Slave Select to leave pin available
+	SPI3_InitStruct.SPI_Direction = SPI_Direction_2Lines_FullDuplex;	//Full duplex over 2 data lines
+	SPI3_InitStruct.SPI_CRCPolynomial = 0x1;							//Not using this, but needs to be >= 0x1
+	SPI_Init(SPI3, &SPI3_InitStruct);
+
+	SPI_CalculateCRC(SPI3, DISABLE);									//Don't calculate CRC
+	SPI_Cmd(SPI3, ENABLE);												//Enable SPI3
+*/
+/*	End SPI config & init	*/
+
+//	UIInit();
+
+//	dacInit();
+//	adcInit();
+//	NVICTimer2Init();
+//	NVICTimer5Init();
+//	Timer2Init();
+//	Timer5Init();
+
+//	BPMUpdate(sequencer.BPM);
+
+//	RingBufferInit();
 
 	while(1)
     {
-		uint16_t i;
-		uint16_t bpm = 60;
+		uint8_t i,debug;
 
-		for(i=0;i<100;i++)
+		for(i=0;i<0xff;i++)
 		{
-			if(Write_Rbuffer(debug_buff_p, i + 60))
+			debug = SPI_PIC_Receive();
+			if(!debug)
 			{
-				error_blink();
-			}
-
-			bpm = Read_Rbuffer(debug_buff_p);
-			if(bpm == -1)
-			{
-				error_blink();
+				SPI_LED_Send(i);
 			}
 			else
 			{
-				BPMUpdate(bpm);
+				SPI_LED_Send(~i);
 			}
-			delay_nms(200);
+			delay_nms(100);
 		}
 
 
@@ -136,30 +189,6 @@ int main(void)
 		}
 
 		delay_nms(100);*/
-
-
-
-/*		for(i=0;i<3;i++)
-		{
-			adval[i] = adcGet();
-			delay_nms(50);
-		}
-
-		sequencer.BPM = (((adval[0]+adval[1]+adval[2])*10)/163);
-		BPMUpdate(sequencer.BPM);*/
-
-/*		while(sequencer.BPM <= 800)
-		{
-			sequencer.BPM += 10;
-			BPMUpdate(sequencer.BPM);
-			delay_nms(1000);
-		}
-		while(sequencer.BPM >= 60)
-		{
-			sequencer.BPM -= 10;
-			BPMUpdate(sequencer.BPM);
-			delay_nms(1000);
-		}*/
 
     }
 }
