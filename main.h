@@ -16,7 +16,7 @@
 #include "timers.h"
 #include "CoOS/OsConfig.h"  /*!< CoOS configure header file*/
 #include "CoOS/kernel/coocox.h"  /*!< CoOS header file  */
-#include "delay.h"
+//#include "delay.h"
 #include "sequencer.h"
 #include "UI.h"
 #include "ringbuff.h"
