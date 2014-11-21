@@ -91,4 +91,24 @@ uint8_t IIRFilterDo(IIRfilter_t *pf, uint16_t input, uint16_t *output)
 	return 0;
 }
 
+/* BitCrush()
+ * Bitcrusher
+ *
+ * Usage:
+ * BitCrush(inputSample, &outputSample, bitDepth);
+ */
+uint8_t BitCrush(uint16_t input, uint16_t *output, uint8_t bits)
+{
+	uint8_t div=0;
+	uint16_t temp=input;
+
+	div = (1<<(DAC_BITS-bits))-1; //divisor for the input signal based on bit depth
+	temp /= div;	//input is divided and TRUNCATED
+	temp *= div;	//input is multiplied and truncated bits are lost, resulting in bit crush effect
+
+	*output = temp;	//store output
+
+	return bits;
+}
+
 

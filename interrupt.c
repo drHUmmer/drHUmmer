@@ -138,7 +138,11 @@ void TIM5_IRQHandler(void)
 		IIRFilterCalc(&testFilter, freq, LPF);
 #endif
 
-		IIRFilterDo(&testFilter, sampleMix, &audioOut);	//apply filter
+		//IIRFilterDo(&testFilter, sampleMix, &audioOut);	//apply filter
+		//BitCrush(audioOut, &audioOut, 4);
+		BitCrush(sampleMix, &audioOut, 4);
+		IIRFilterDo(&testFilter, audioOut, &audioOut);	//apply filter
+
 		dacPut(audioOut);
 
 		if((sequencer.instr0.buffer_loc += sequencer.instr0.tone) >= sequencer.instr0.file_length)
