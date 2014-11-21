@@ -3,6 +3,7 @@
 /*VARIABLES*/
 GPIO_InitTypeDef GPIO_InitStruct;
 extern IIRfilter_t testFilter;
+extern uint16_t filterStatus;
 
 int main(void)
 {
@@ -53,7 +54,7 @@ int main(void)
 		switch(sequencer.instrID)
 		{
 			case 0:
-				sequencer.instr0.sequence ^= butt_data;
+				sequencer.instr0.sequence ^= butt_data;	// ^= is XOR operator
 				UILed(sequencer.instr0.sequence);
 				break;
 			case 1:

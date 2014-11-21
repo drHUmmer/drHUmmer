@@ -11,6 +11,7 @@
 
 /*VARIABLES*/
 IIRfilter_t testFilter;
+uint16_t filterStatus=0;
 
 /*FUNCTIONS*/
 
@@ -75,7 +76,7 @@ uint8_t IIRFilterCalc(IIRfilter_t *pf, uint16_t freq, uint8_t filterType)
  * Apply 1st IIR filter algorithm
  *
  * Usage:
- * IIRFilterDo(&filterStruct, inputSample, &output);
+ * IIRFilterDo(&filterStruct, inputSample, &outputSample);
  */
 uint8_t IIRFilterDo(IIRfilter_t *pf, uint16_t input, uint16_t *output)
 {
@@ -111,4 +112,27 @@ uint8_t BitCrush(uint16_t input, uint16_t *output, uint8_t bits)
 	return bits;
 }
 
+/* DownSample()
+ * Applies down sampling effect, which results in aliasing artifacts...pretty :)
+ *
+ * Usage:
+ * DownSample(inputSample, &outputSample, frequency);
+ */
+uint16_t DownSample(uint16_t input, uint16_t *output, uint16_t freq)
+{
+	uint16_t div=(SAMPLE_RATE/freq);	//divisor for given frequency
+	static uint16_t buff=0, n=1;		//n=1 because 0-1 is undefined for unsigned ints
 
+	if((n%div)<((n-1)%div))	//check if the quotient has looped
+	{
+		*output = input;	//if so, output new sample
+		buff=input;			//and buffer input
+	}
+	else
+	{
+		*output = buff;		//else, output buffered sample
+	}
+	n++;
+
+	return freq;
+}

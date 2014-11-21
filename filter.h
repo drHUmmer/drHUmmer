@@ -17,6 +17,11 @@
 /*DEFINES*/
 #define FILTER_DEMO	//uncomment for filter sweep demo
 
+#define IIR_CALC_ON 		0x0001	//filter status register bits
+#define IIR_ENABLE			0x0002
+#define BIT_CRUSH_ENABLE	0x0004
+#define DOWN_SAMPLE_ENABLE	0x0008
+
 #define LPF 0								//filter types
 #define HPF 1
 #define SAMPLE_RATE 44100					//sample frequency
@@ -38,10 +43,12 @@ typedef struct
 
 /*VARIABLES*/
 extern IIRfilter_t testFilter;
+extern uint16_t filterStatus;
 
 /*FUNCTION PROTOTYPES*/
 uint8_t FirFilter(uint16_t *pInput, uint16_t *pKernel, uint16_t *output);	//obsolete, but keep this for future reference please
 uint8_t IIRFilterCalc(IIRfilter_t *pf, uint16_t freq, uint8_t filterType);
 uint8_t IIRFilterDo(IIRfilter_t *pf, uint16_t input, uint16_t *output);
+uint16_t DownSample(uint16_t input, uint16_t *output, uint16_t freq);
 
 #endif

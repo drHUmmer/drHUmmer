@@ -78,8 +78,8 @@ void TIM2_IRQHandler(void)
 
 void TIM5_IRQHandler(void)
 {
-	uint16_t sampleMix = DC_COMP;	//was 2048
-	uint16_t audioOut = 0;
+	//uint16_t sampleMix = DC_COMP;	//was 2048
+	uint16_t audioOut = DC_COMP;
 
 	if (TIM_GetITStatus(TIM5, TIM_IT_Update) != RESET)
 	{
@@ -109,7 +109,7 @@ void TIM5_IRQHandler(void)
 			sequencer.instr3.triggerflag = 0;
 		}
 
-		sampleMix = (hihatWav[sequencer.instr0.buffer_loc] + \
+		audioOut = (hihatWav[sequencer.instr0.buffer_loc] + \
 					 snaredrumWav[sequencer.instr1.buffer_loc] + \
 					 basskickmWav[sequencer.instr2.buffer_loc] + \
 					 cymbalWav[sequencer.instr3.buffer_loc]) / 4;
@@ -120,7 +120,7 @@ void TIM5_IRQHandler(void)
 		static uint8_t freqFlag=0;
 		static uint16_t freq=100, cnt=0;
 
-		if(!((cnt++)%100))
+		if(!((cnt++)%100))	//code below sweeps variable freq up and down
 		{
 			if(freqFlag)
 			{
@@ -131,7 +131,7 @@ void TIM5_IRQHandler(void)
 			else
 			{
 				freq+=1;
-				if(freq>=4500)
+				if(freq>=8000)
 					freqFlag=1;
 			}
 		}
@@ -140,8 +140,9 @@ void TIM5_IRQHandler(void)
 
 		//IIRFilterDo(&testFilter, sampleMix, &audioOut);	//apply filter
 		//BitCrush(audioOut, &audioOut, 4);
-		BitCrush(sampleMix, &audioOut, 4);
-		IIRFilterDo(&testFilter, audioOut, &audioOut);	//apply filter
+		//BitCrush(audioOut, &audioOut, 4);
+		//IIRFilterDo(&testFilter, audioOut, &audioOut);	//apply filter
+		DownSample(audioOut, &audioOut, freq);
 
 		dacPut(audioOut);
 
