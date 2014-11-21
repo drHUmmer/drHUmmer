@@ -52,16 +52,25 @@ void SPI3_Init(void)
 
 void SPI_PIC_Send(uint8_t data)
 {
-	uint16_t dummy;
+	uint16_t dummy,tmp;
 
 	while(!(SPI3->SR & SPI_I2S_FLAG_TXE));								//wait until SPI3 is available
 	while(SPI3->SR & SPI_I2S_FLAG_BSY);
+
+	if(!(SPI3->CR1 & SPI_CPHA_2Edge))
+	{
+		SPI3->CR1 &= (uint16_t)~((uint16_t)SPI_CR1_SPE);
+		SPI3->CR1 |= (uint16_t)SPI_CPHA_2Edge;
+		SPI3->CR1 |= SPI_CR1_SPE;
+	}
+
 	GPIO_ResetBits(GPIOC, PIC_NSS);										//select PIC
-	SPI_I2S_SendData(SPI3,data);										//send data
+	//SPI_I2S_SendData(SPI3,data);										//send data
+	SPI3->DR = data;
 	while(!(SPI3->SR & SPI_I2S_FLAG_TXE));								//wait until finished sending data
 	while(SPI3->SR & SPI_I2S_FLAG_BSY);									//
 	GPIO_SetBits(GPIOC, PIC_NSS);										//deselect PIC
-	dummy = SPI_I2S_ReceiveData(SPI3);									//access data register to avoid overrun error flag
+	dummy = SPI3->DR;	//SPI_I2S_ReceiveData(SPI3);					//access data register to avoid overrun error flag
 }
 
 void SPI_LED_Send(uint8_t data)
@@ -70,12 +79,21 @@ void SPI_LED_Send(uint8_t data)
 
 	while(!(SPI3->SR & SPI_I2S_FLAG_TXE));								//wait until SPI3 is available
 	while(SPI3->SR & SPI_I2S_FLAG_BSY);
+
+	if(SPI3->CR1 & SPI_CPHA_2Edge)
+		{
+			SPI3->CR1 &= (uint16_t)~((uint16_t)SPI_CR1_SPE);
+			SPI3->CR1 &= (uint16_t)~((uint16_t)SPI_CPHA_2Edge);
+			SPI3->CR1 |= SPI_CR1_SPE;
+		}
+
 	GPIO_SetBits(GPIOC, LED_SS);										//select LEDs
-	SPI_I2S_SendData(SPI3,~data);										//send data
+	//SPI_I2S_SendData(SPI3,~data);										//send data
+	SPI3->DR = ~data;
 	while(!(SPI3->SR & SPI_I2S_FLAG_TXE));								//wait until finished sending data
 	while(SPI3->SR & SPI_I2S_FLAG_BSY);									//
 	GPIO_ResetBits(GPIOC, LED_SS);										//deselect LEDs
-	dummy = SPI_I2S_ReceiveData(SPI3);									//access data register to avoid overrun error flag
+	dummy = SPI3->DR;	// SPI_I2S_ReceiveData(SPI3);					//access data register to avoid overrun error flag
 }
 
 uint8_t SPI_PIC_Receive(void)
@@ -84,13 +102,22 @@ uint8_t SPI_PIC_Receive(void)
 
 	while(!(SPI3->SR & SPI_I2S_FLAG_TXE));								//wait until SPI3 is available
 	while(SPI3->SR & SPI_I2S_FLAG_BSY);
+
+	if(!(SPI3->CR1 & SPI_CPHA_2Edge))
+	{
+		SPI3->CR1 &= (uint16_t)~((uint16_t)SPI_CR1_SPE);
+		SPI3->CR1 |= (uint16_t)SPI_CPHA_2Edge;
+		SPI3->CR1 |= SPI_CR1_SPE;
+	}
+
 	GPIO_ResetBits(GPIOC, PIC_NSS);										//select PIC
-	SPI_I2S_SendData(SPI3,DUMMY_BYTE);									//send dummy
+	//SPI_I2S_SendData(SPI3,DUMMY_BYTE);									//send dummy
+	SPI3->DR = DUMMY_BYTE;
 	while(!(SPI3->SR & SPI_I2S_FLAG_TXE));								//wait until finished sending (receiving)
 	while(SPI3->SR & SPI_I2S_FLAG_BSY);									//
 	GPIO_SetBits(GPIOC, PIC_NSS);										//deselect PIC
 
-	data = SPI_I2S_ReceiveData(SPI3);									//retrieve received data
+	dummy = SPI3->DR;	// SPI_I2S_ReceiveData(SPI3);					//retrieve received data
 
 	return data;
 }

@@ -227,7 +227,10 @@ void leds(void)
 	}
 }
 
+void EXTI1_IRQHandler(void)
+{
 
+}
 
 #endif	/* end debug mode */
 
