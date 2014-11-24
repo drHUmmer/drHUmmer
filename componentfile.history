@@ -15,5 +15,9 @@
   <File usedCount="2" path="cmsis_boot/stm32f4xx_conf.h"/>  
   <File usedCount="2" path="cmsis_boot/system_stm32f4xx.c"/>  
   <File usedCount="2" path="cmsis_boot/system_stm32f4xx.h"/>  
-  <File usedCount="2" path="cmsis_lib/source/stm32f4xx_dac.c"/>
+  <File usedCount="2" path="cmsis_lib/source/stm32f4xx_dac.c"/>  
+  <File usedCount="2" path="cmsis_lib/include/stm32f4xx_exti.h"/>  
+  <File usedCount="2" path="cmsis_lib/include/stm32f4xx_dma.h"/>  
+  <File usedCount="2" path="cmsis_lib/source/stm32f4xx_dma.c"/>  
+  <File usedCount="2" path="cmsis_lib/source/stm32f4xx_exti.c"/> 
 </History>
