@@ -4,6 +4,7 @@ void task_a(void);
 void task_b(void);
 void leds(void);
 
+#ifdef USE_OS
 OS_STK taskA_stk[128];  /*!< define "taskA" task stack */
 OS_STK taskB_stk[128];  /*!< define "taskB" task stack */
 OS_STK led_stk [128];  /*!< define "led" task stack */
@@ -11,9 +12,9 @@ OS_STK led_stk [128];  /*!< define "led" task stack */
 OS_FlagID a_flag,b_flag;
 
 OS_EventID mbox0;
+#endif
 
 #ifndef DEBUG	/* DEBUG not defined; regular operation (define located in main.h) */
-
 int main(void)
 {
 	PLLInit();
@@ -52,16 +53,15 @@ int main(void)
 int main(void)
 {
 	PLLInit();
-	//SysTick_Init();
 	sequencerInit();
 	SPI3_Init();
 
 /*****************
  * 	LED IO init
- * 	PD12 =
- * 	PD13 =
- * 	PD14 =
- * 	PD15 =
+ * 	PD12 = Green
+ * 	PD13 = Orange
+ * 	PD14 = Red
+ * 	PD15 = Blue
  *****************/
 	RCC_AHB1PeriphClockCmd(RCC_AHB1Periph_GPIOD, ENABLE);
 	RCC_AHB1PeriphClockCmd(RCC_AHB1Periph_GPIOA, ENABLE);
@@ -90,33 +90,59 @@ int main(void)
 
 //	RingBufferInit();
 
+
+#ifdef USE_OS
 	CoInitOS();
 	CoCreateTask ((FUNCPtr)task_a,(void *)0,0,&taskA_stk[128-1],128);
 	CoCreateTask ((FUNCPtr)task_b,(void *)0,1,&taskB_stk[128-1],128);
 	CoCreateTask ((FUNCPtr)leds ,(void *)0,2,&led_stk[128-1] ,128);
 
-//		uint8_t i,debug;
-//		uint16_t i;
-//		uint16_t bpm = 60;
-
 	CoStartOS();
 
 	for(;;);
+#endif
 
-/*		for(i=0;i<0xff;i++)
-		{
-			debug = SPI_PIC_Receive();
-			if(!debug)
+#ifndef USE_OS
+	uint16_t i=0x00FF;
+	int8_t	debug;
+//		uint16_t i;
+//		uint16_t bpm = 60;
 
-			{
-				SPI_LED_Send(i);
-			}
-			else
-			{
-				SPI_LED_Send(~i);
-			}
-			delay_nms(100);
-		}*/
+	SysTick_Init();
+
+	while(1)
+	{
+		//SPI_PIC_Send(PIC_GET_ROTARY,0,PIC_ROTARY_1);
+		//delay_nms(1);
+		//debug = SPI_PIC_Receive();
+		//i += debug;
+		SPI_LED_Send(++i);
+//		switch(debug)
+//		{
+//			case 0 :	GPIO_SetBits(GPIOD, GPIO_Pin_14);
+//						GPIO_ResetBits(GPIOD, GPIO_Pin_15);
+//						break;
+//
+//			case 0x01 :	SPI_LED_Send(0x3F);
+//						SPI_LED_Send(~(++i));
+//						SPI_LED_Send(0x00);
+//						GPIO_ResetBits(GPIOD, GPIO_Pin_15 | GPIO_Pin_14 | GPIO_Pin_13);
+//						GPIO_SetBits(GPIOD, GPIO_Pin_12);
+//						break;
+//
+//			case 0xff : SPI_LED_Send(0xCF);
+//						SPI_LED_Send(~(--i));
+//						SPI_LED_Send(0x00);
+//						GPIO_ResetBits(GPIOD, GPIO_Pin_14 | GPIO_Pin_12);
+//						GPIO_SetBits(GPIOD, GPIO_Pin_13);
+//						break;
+//
+//			default : 	GPIO_SetBits(GPIOD, GPIO_Pin_15);
+//						GPIO_ResetBits(GPIOD, GPIO_Pin_14);
+//						break;
+//		}
+		delay_nms(50);
+	}
 
 
 /*		//	uint16_t adval[3] = {2048,2048,2048};
@@ -166,6 +192,8 @@ int main(void)
 		delay_nms(100);*/
 
 }
+
+#else		/*	USE_OS	*/
 
 void task_a(void)
 {
@@ -226,6 +254,7 @@ void leds(void)
 		GPIO_ResetBits(GPIOD, GPIO_Pin_12);
 	}
 }
+#endif	/*	USE_OS	*/
 
 void EXTI1_IRQHandler(void)
 {
@@ -235,8 +264,9 @@ void EXTI1_IRQHandler(void)
 #endif	/* end debug mode */
 
 
-
-/*void SysTick_Handler(void)
+#ifndef USE_OS
+void SysTick_Handler(void)
 {
 	TimeTick_Decrement();
-}*/
+}
+#endif

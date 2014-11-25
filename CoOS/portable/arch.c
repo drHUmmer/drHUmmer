@@ -75,7 +75,7 @@ OS_STK *InitTaskContext(FUNCPtr task,void *param,OS_STK *pstk)
 }
 
 
- 
+#ifdef USE_OS
 /**
  *******************************************************************************
  * @brief      System tick interrupt handler.			 
@@ -124,3 +124,4 @@ void SysTick_Handler(void)
 	TaskSchedReq = Co_TRUE;
     OsSchedUnlock();
 }
+#endif
