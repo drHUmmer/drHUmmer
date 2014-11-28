@@ -12,7 +12,7 @@ void sequencerInit(void)
 
 	sequencer.snaredrum.sequence 	= 0x0000;	// 0000 0000 0000 0000			//(a)snare
 	sequencer.bassdrum.sequence 	= 0x0000;	// 0000 0000 0000 0000			//(a)bass
-	sequencer.instr0.sequence 		= 0x0202;	// 0000 0010 0000 0010			//hihat
+	sequencer.instr0.sequence 		= 0x2222;	// 0010 0010 0010 0010			//hihat
 	sequencer.instr1.sequence 		= 0x0808;	// 0000 1000 0000 1000			//snare
 	sequencer.instr2.sequence 		= 0x8080;	// 1000 1000 1000 1000			//basskick
 	sequencer.instr3.sequence 		= 0x0000;	// 0000 0000 0000 0000			//cymbal

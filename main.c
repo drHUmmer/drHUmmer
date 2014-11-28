@@ -5,6 +5,10 @@ GPIO_InitTypeDef GPIO_InitStruct;
 extern IIRfilter_t testFilter;
 extern uint16_t filterStatus;
 
+#ifdef FILTER_DEMO
+extern uint8_t filterDemo;
+#endif
+
 int main(void)
 {
 	PLLInit();
@@ -21,6 +25,14 @@ int main(void)
 	GPIO_InitStruct.GPIO_OType = GPIO_OType_PP;
 	GPIO_InitStruct.GPIO_PuPd = GPIO_PuPd_NOPULL;
 	GPIO_Init(GPIOD, &GPIO_InitStruct);
+
+#ifdef FILTER_DEMO
+	GPIO_InitStruct.GPIO_Pin = GPIO_Pin_0;
+	GPIO_InitStruct.GPIO_Mode = GPIO_Mode_IN;
+	GPIO_InitStruct.GPIO_Speed = GPIO_Speed_100MHz;
+	GPIO_InitStruct.GPIO_PuPd = GPIO_PuPd_NOPULL;
+	GPIO_Init(GPIOA, &GPIO_InitStruct);
+#endif
 
 	UIInit();
 
@@ -80,6 +92,16 @@ int main(void)
 			default:
 				break;
 		}
+
+#ifdef FILTER_DEMO	//quick 'n dirty user button read, no debouncing
+		uint8_t userButt=0;
+
+		userButt = GPIO_ReadInputDataBit(GPIOA, GPIO_Pin_0);
+		if(userButt)
+		{
+			filterDemo++;
+		}
+#endif
 
 		delay_nms(100);
 

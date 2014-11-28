@@ -22,8 +22,13 @@
 #define BIT_CRUSH_ENABLE	0x0004
 #define DOWN_SAMPLE_ENABLE	0x0008
 
-#define LPF 0								//filter types
-#define HPF 1
+#define NUM_OF_FX 5	//4 effects + 1 clean sounding mode
+
+#define LPF 0x00							//filter types
+#define HPF 0x01
+#define BC 0x02	//bit crusher
+#define DS 0x03	//down sampler
+
 #define SAMPLE_RATE 44100					//sample frequency
 #define MAX_FILT_FREQ ((SAMPLE_RATE/2)-100)	//sets max fcut to 100 Hz under fs/2
 
@@ -45,10 +50,15 @@ typedef struct
 extern IIRfilter_t testFilter;
 extern uint16_t filterStatus;
 
+#ifdef FILTER_DEMO
+extern uint8_t filterDemo;
+#endif
+
 /*FUNCTION PROTOTYPES*/
 uint8_t FirFilter(uint16_t *pInput, uint16_t *pKernel, uint16_t *output);	//obsolete, but keep this for future reference please
 uint8_t IIRFilterCalc(IIRfilter_t *pf, uint16_t freq, uint8_t filterType);
 uint8_t IIRFilterDo(IIRfilter_t *pf, uint16_t input, uint16_t *output);
+uint8_t BitCrush(uint16_t input, uint16_t *output, uint8_t bits);
 uint16_t DownSample(uint16_t input, uint16_t *output, uint16_t freq);
 
 #endif

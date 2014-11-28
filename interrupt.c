@@ -8,6 +8,10 @@
 
 extern IIRfilter_t testFilter;
 
+#ifdef FILTER_DEMO
+extern uint8_t filterDemo;
+#endif
+
 //float wavCnt = 0;
 
 void TIM2_IRQHandler(void)
@@ -109,7 +113,7 @@ void TIM5_IRQHandler(void)
 			sequencer.instr3.triggerflag = 0;
 		}
 
-		audioOut = (hihatWav[sequencer.instr0.buffer_loc] + \
+		 audioOut = (hihatWav[sequencer.instr0.buffer_loc] + \
 					 snaredrumWav[sequencer.instr1.buffer_loc] + \
 					 basskickmWav[sequencer.instr2.buffer_loc] + \
 					 cymbalWav[sequencer.instr3.buffer_loc]) / 4;
@@ -117,34 +121,88 @@ void TIM5_IRQHandler(void)
 		//this is where the filter party starts.........
 
 #ifdef FILTER_DEMO	//uncomment FILTER_DEMO in "filter.h" for filter sweep demo
-		static uint8_t freqFlag=0;
-		static uint16_t freq=100, cnt=0;
+		static uint8_t freqFlag=0, dsFreqFlag=0, bits=5, bitFlag=0;
+		static uint16_t freq=100, cnt=0, dsFreq=500;
 
 		if(!((cnt++)%100))	//code below sweeps variable freq up and down
 		{
 			if(freqFlag)
 			{
-				freq-=1;
+				if(freq<450)
+				{
+					freq-=1;
+				}
+				else
+				{
+					freq-=5;
+				}
 				if(freq<=100)
 					freqFlag=0;
 			}
 			else
 			{
-				freq+=1;
-				if(freq>=8000)
+				if(freq<450)
+				{
+					freq+=1;
+				}
+				else
+				{
+					freq+=5;
+				}
+				if(freq>=5000)
 					freqFlag=1;
 			}
 		}
-		IIRFilterCalc(&testFilter, freq, LPF);
+
+		if(!(cnt%100))	//code below sweeps variable sample freq up and down
+		{
+			if(dsFreqFlag)
+			{
+				dsFreq-=1;
+				if(dsFreq<=100)
+					dsFreqFlag=0;
+			}
+			else
+			{
+				dsFreq+=1;
+				if(dsFreq>=8000)
+					dsFreqFlag=1;
+			}
+		}
+
+		if(!(cnt%30000))
+		{
+			if(bitFlag)
+			{
+				bits--;
+				if(bits<=1)
+					bitFlag=0;
+			}
+			else
+			{
+				bits++;
+				if(bits>=DAC_BITS-1)
+					bitFlag=1;
+			}
+		}
+
+		switch(filterDemo%NUM_OF_FX)	//select which effect to demo with the (blue) user button
+		{
+			case LPF:	IIRFilterCalc(&testFilter, freq, LPF);
+						IIRFilterDo(&testFilter, audioOut, &audioOut);	//apply filter
+						break;
+			case HPF:	IIRFilterCalc(&testFilter, freq, HPF);
+						IIRFilterDo(&testFilter, audioOut, &audioOut);	//apply filter
+						break;
+			case BC:	BitCrush(audioOut, &audioOut, bits);
+						break;
+			case DS:	DownSample(audioOut, &audioOut, dsFreq);
+						break;
+			default:	break;
+		}
 #endif
 
-		//IIRFilterDo(&testFilter, sampleMix, &audioOut);	//apply filter
-		//BitCrush(audioOut, &audioOut, 4);
-		//BitCrush(audioOut, &audioOut, 4);
-		//IIRFilterDo(&testFilter, audioOut, &audioOut);	//apply filter
-		DownSample(audioOut, &audioOut, freq);
-
-		dacPut(audioOut);
+		dacPut(audioOut);	//actual sound is made hear (pun intended)
 
 		if((sequencer.instr0.buffer_loc += sequencer.instr0.tone) >= sequencer.instr0.file_length)
 		{

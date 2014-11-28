@@ -13,6 +13,10 @@
 IIRfilter_t testFilter;
 uint16_t filterStatus=0;
 
+#ifdef FILTER_DEMO
+uint8_t filterDemo=NUM_OF_FX-1;	//to start without effects
+#endif
+
 /*FUNCTIONS*/
 
 /* OBSOLETE, BUT KEEP FOR FUTURE REFERENCE PLZ
@@ -136,3 +140,4 @@ uint16_t DownSample(uint16_t input, uint16_t *output, uint16_t freq)
 
 	return freq;
 }
+
