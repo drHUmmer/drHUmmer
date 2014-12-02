@@ -7,7 +7,7 @@
 #include "stm32f4xx.h"
 #include "stm32f4xx_tim.h"
 #include "stm32f4xx_gpio.h"
-//#include "stm32f4xx_spi.h"
+#include "stm32f4xx_spi.h"
 #include "misc.h"
 #include "ADC.h"
 #include "DAC.h"
@@ -28,7 +28,14 @@
 #include "sequencer.h"
 #include "UI.h"
 #include "ringbuff.h"
-#include "SPI.h"
+
+#include "defines.h"
+#include "stm32f4xx.h"
+#include "tm_stm32f4_delay.h"
+#include "tm_stm32f4_disco.h"
+#include "tm_stm32f4_fatfs.h"
+#include <stdio.h>
+#include <string.h>
 
 int main(void);
 

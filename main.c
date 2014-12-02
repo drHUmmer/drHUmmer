@@ -54,7 +54,7 @@ int main(void)
 {
 	PLLInit();
 	sequencerInit();
-	SPI3_Init();
+	//SPI3_Init();
 
 /*****************
  * 	LED IO init
@@ -90,171 +90,53 @@ int main(void)
 
 //	RingBufferInit();
 
-
-#ifdef USE_OS
-	CoInitOS();
-	CoCreateTask ((FUNCPtr)task_a,(void *)0,0,&taskA_stk[128-1],128);
-	CoCreateTask ((FUNCPtr)task_b,(void *)0,1,&taskB_stk[128-1],128);
-	CoCreateTask ((FUNCPtr)leds ,(void *)0,2,&led_stk[128-1] ,128);
-
-	CoStartOS();
-
-	for(;;);
-#endif
-
-#ifndef USE_OS
-	uint16_t i=0x00FF;
-	int8_t	debug;
-//		uint16_t i;
-//		uint16_t bpm = 60;
-
 	SysTick_Init();
 
-	while(1)
-	{
-		//SPI_PIC_Send(PIC_GET_ROTARY,0,PIC_ROTARY_1);
-		//delay_nms(1);
-		//debug = SPI_PIC_Receive();
-		//i += debug;
-		SPI_LED_Send(++i);
-//		switch(debug)
-//		{
-//			case 0 :	GPIO_SetBits(GPIOD, GPIO_Pin_14);
-//						GPIO_ResetBits(GPIOD, GPIO_Pin_15);
-//						break;
-//
-//			case 0x01 :	SPI_LED_Send(0x3F);
-//						SPI_LED_Send(~(++i));
-//						SPI_LED_Send(0x00);
-//						GPIO_ResetBits(GPIOD, GPIO_Pin_15 | GPIO_Pin_14 | GPIO_Pin_13);
-//						GPIO_SetBits(GPIOD, GPIO_Pin_12);
-//						break;
-//
-//			case 0xff : SPI_LED_Send(0xCF);
-//						SPI_LED_Send(~(--i));
-//						SPI_LED_Send(0x00);
-//						GPIO_ResetBits(GPIOD, GPIO_Pin_14 | GPIO_Pin_12);
-//						GPIO_SetBits(GPIOD, GPIO_Pin_13);
-//						break;
-//
-//			default : 	GPIO_SetBits(GPIOD, GPIO_Pin_15);
-//						GPIO_ResetBits(GPIOD, GPIO_Pin_14);
-//						break;
-//		}
-		delay_nms(50);
-	}
+	//Fatfs object
+	    FATFS FatFs;
+	    //File object
+	    FIL fil;
+	    //Free and total space
+	    uint32_t total, free;
 
+	    //Initialize delays
+	    TM_DELAY_Init();
+	    //Initialize LEDs
+	    TM_DISCO_LedInit();
 
-/*		//	uint16_t adval[3] = {2048,2048,2048};
-		//	uint16_t butt_data = 0;
+	    //Mount drive
+	    if (f_mount(&FatFs, "", 1) == FR_OK) {
+	        //Mounted OK, turn on RED LED
+	        TM_DISCO_LedOn(LED_RED);
 
-		if(UIPlayRead())
-		{
-			sequencer.instrID++;
-			if(sequencer.instrID > 5)
-			{
-				sequencer.instrID = 0;
-			}
-		}
+	        //Try to open file
+	        if (f_open(&fil, "1stfile.txt", FA_OPEN_ALWAYS | FA_READ | FA_WRITE) == FR_OK) {
+	            //File opened, turn off RED and turn on GREEN led
+	            TM_DISCO_LedOn(LED_GREEN);
+	            TM_DISCO_LedOff(LED_RED);
 
-		butt_data = UIButtonRead();
+	            //If we put more than 0 characters (everything OK)
+	            if (f_puts("First string in my file\n", &fil) > 0) {
+	                if (TM_FATFS_DriveSize(&total, &free) == FR_OK) {
+	                    //Data for drive size are valid
+	                }
 
-		switch(sequencer.instrID)
-		{
-			case 0:
-				sequencer.instr0.sequence ^= butt_data;
-				UILed(sequencer.instr0.sequence);
-				break;
-			case 1:
-				sequencer.instr1.sequence ^= butt_data;
-				UILed(sequencer.instr1.sequence);
-				break;
-			case 2:
-				sequencer.instr2.sequence ^= butt_data;
-				UILed(sequencer.instr2.sequence);
-				break;
-			case 3:
-				sequencer.instr3.sequence ^= butt_data;
-				UILed(sequencer.instr3.sequence);
-				break;
-			case 4:
-				sequencer.bassdrum.sequence ^= butt_data;
-				UILed(sequencer.bassdrum.sequence);
-				break;
-			case 5:
-				sequencer.snaredrum.sequence ^= butt_data;
-				UILed(sequencer.snaredrum.sequence);
-				break;
-			default:
-				break;
-		}
+	                //Turn on both leds
+	                TM_DISCO_LedOn(LED_GREEN | LED_RED);
+	            }
 
-		delay_nms(100);*/
+	            //Close file, don't forget this!
+	            f_close(&fil);
+	        }
 
+	        //Unmount drive, don't forget this!
+	        f_mount(0, "", 1);
+	    }
+
+	    while (1) {
+
+	    }
 }
-
-#else		/*	USE_OS	*/
-
-void task_a(void)
-{
-	a_flag = CoCreateFlag (Co_TRUE,0);
-	uint8_t msg = 'A';
-
-	for(;;)
-	{
-		GPIO_SetBits(GPIOD, GPIO_Pin_15);
-		CoWaitForSingleFlag (a_flag,0);
-		CoTickDelay(20);
-		CoPostMail(mbox0,&msg);
-		GPIO_ResetBits(GPIOD, GPIO_Pin_13);
-	}
-}
-
-void task_b(void)
-{
-	b_flag = CoCreateFlag (Co_TRUE,0);
-	uint8_t msg = 'B';
-
-	for(;;)
-	{
-		GPIO_SetBits(GPIOD, GPIO_Pin_13);
-		CoWaitForSingleFlag (b_flag,0);
-		CoTickDelay(20);
-		CoPostMail(mbox0,&msg);
-		GPIO_ResetBits(GPIOD, GPIO_Pin_15);
-	}
-}
-
-void leds(void)
-{
-	void* pmail;
-	StatusType err;
-	uint8_t* data;
-
-	mbox0 = CoCreateMbox(EVENT_SORT_TYPE_PRIO); //Sort by preemptive priority
-
-	for(;;)
-	{
-		GPIO_SetBits(GPIOD, GPIO_Pin_12);
-		pmail = CoPendMail(mbox0,2,&err);
-		data = pmail;
-
-		if (*data == 'A')
-		{
-			//debug = SPI_PIC_Receive();
-			SPI_LED_Send(0xC0);
-			CoSetFlag(b_flag);
-		}
-		else
-		{
-			//debug = SPI_PIC_Receive();
-			SPI_LED_Send(0xA3);
-			CoSetFlag(a_flag);
-		}
-		GPIO_ResetBits(GPIOD, GPIO_Pin_12);
-	}
-}
-#endif	/*	USE_OS	*/
 
 void EXTI1_IRQHandler(void)
 {
@@ -265,8 +147,10 @@ void EXTI1_IRQHandler(void)
 
 
 #ifndef USE_OS
+/*
 void SysTick_Handler(void)
 {
 	TimeTick_Decrement();
 }
+*/
 #endif
