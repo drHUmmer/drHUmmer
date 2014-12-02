@@ -790,20 +790,20 @@ void LCD_FSMCConfig() {
 	RCC_AHB3PeriphClockCmd(RCC_AHB3Periph_FSMC, ENABLE);
 
 	/* Define Read timing parameters */
-	FSMC_NORSRAMTimingInitStructureRead.FSMC_AddressSetupTime = 3;
+	FSMC_NORSRAMTimingInitStructureRead.FSMC_AddressSetupTime = 3;			// 3
 	FSMC_NORSRAMTimingInitStructureRead.FSMC_AddressHoldTime = 0;
-	FSMC_NORSRAMTimingInitStructureRead.FSMC_DataSetupTime = 15;
+	FSMC_NORSRAMTimingInitStructureRead.FSMC_DataSetupTime = 15;			// 15
 	FSMC_NORSRAMTimingInitStructureRead.FSMC_BusTurnAroundDuration = 0;
-	FSMC_NORSRAMTimingInitStructureRead.FSMC_CLKDivision = 1;
+	FSMC_NORSRAMTimingInitStructureRead.FSMC_CLKDivision = 0;				// 1
 	FSMC_NORSRAMTimingInitStructureRead.FSMC_DataLatency = 0;
 	FSMC_NORSRAMTimingInitStructureRead.FSMC_AccessMode = FSMC_AccessMode_A;
 
 	/* Define Write Timing parameters */
-	FSMC_NORSRAMTimingInitStructureWrite.FSMC_AddressSetupTime = 3;
+	FSMC_NORSRAMTimingInitStructureWrite.FSMC_AddressSetupTime = 3;			// 3
 	FSMC_NORSRAMTimingInitStructureWrite.FSMC_AddressHoldTime = 0;
-	FSMC_NORSRAMTimingInitStructureWrite.FSMC_DataSetupTime = 6;
+	FSMC_NORSRAMTimingInitStructureWrite.FSMC_DataSetupTime = 6;			// 6
 	FSMC_NORSRAMTimingInitStructureWrite.FSMC_BusTurnAroundDuration = 0;
-	FSMC_NORSRAMTimingInitStructureWrite.FSMC_CLKDivision = 1;
+	FSMC_NORSRAMTimingInitStructureWrite.FSMC_CLKDivision = 0;				// 1
 	FSMC_NORSRAMTimingInitStructureWrite.FSMC_DataLatency = 0;
 	FSMC_NORSRAMTimingInitStructureWrite.FSMC_AccessMode = FSMC_AccessMode_A;
 

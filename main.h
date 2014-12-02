@@ -20,6 +20,7 @@
 //#include "SSD1289.h"		// SCHERM
 //#include "Julija.h"
 #include "ILI9325.h"
+#include "LCDitems.h"
 //#include "TFTLCD.h"
 
 #ifdef USE_OS

@@ -113,14 +113,22 @@ int main(void)
 
 
 	LCD_Init();
-	LCD_Clear(255, 0, 0);
+	LCD_Clear(ColourConverterDec(Black));
+//	LCD_CreateVertProgressbar(20, 20, 50, 200, Red, Yellow, 25);
 
+//	LCD_CreateVertProgressbar(80, 20, 50, 200, Red, Yellow, 50);
+
+//	LCD_CreateVertProgressbar(140, 20, 50, 200, Red, Yellow, 75);
+
+	u32 Q = 0;
 	while (1) {
-		LCD_DrawCircle(100, 150, 25);
-		break;
+		LCD_CreateVertProgressbar(00, 0, 50, 100, Red, Yellow, 100 - (Q % 100));
+		LCD_CreateVertProgressbar(50, 0, 50, 150, Red, Yellow, 100 - (Q % 100));
+		LCD_CreateVertProgressbar(100, 0, 50, 200, Red, Yellow, 100 - (Q % 100));
+		LCD_CreateVertProgressbar(150, 0, 50, 250, Red, Yellow, 100 - (Q % 100));
+		LCD_CreateVertProgressbar(200, 0, 50, 320, Red, Yellow, 100 - (Q % 100));
+		Q += 2;
 	}
-
-	while (1) {}
 
 //
 //	initGPIO();

@@ -98,6 +98,7 @@
     <File name="cmsis/core_cm4_simd.h" path="cmsis/core_cm4_simd.h" type="1"/>
     <File name="cmsis_lib/source/stm32f4xx_spi.c" path="cmsis_lib/source/stm32f4xx_spi.c" type="1"/>
     <File name="CoOS/Document/readme.txt" path="CoOS/Document/readme.txt" type="1"/>
+    <File name="includes/LCDitems.h" path="LCDitems.h" type="1"/>
     <File name="cmsis/core_cmFunc.h" path="cmsis/core_cmFunc.h" type="1"/>
     <File name="CoOS/portable/GCC" path="" type="2"/>
     <File name="includes/ILI9325.h" path="ILI9325.h" type="1"/>
@@ -133,8 +134,8 @@
     <File name="CoOS/kernel/OsError.h" path="CoOS/kernel/OsError.h" type="1"/>
     <File name="includes/drum_sounds/cymbal.h" path="cymbal.h" type="1"/>
     <File name="cmsis" path="" type="2"/>
-    <File name="source/DAC.c" path="DAC.c" type="1"/>
     <File name="includes/AsciiLib.h" path="AsciiLib.h" type="1"/>
+    <File name="source/DAC.c" path="DAC.c" type="1"/>
     <File name="cmsis_lib" path="" type="2"/>
     <File name="CoOS/kernel/kernelHeap.c" path="CoOS/kernel/kernelHeap.c" type="1"/>
     <File name="cmsis_lib/include/misc.h" path="cmsis_lib/include/misc.h" type="1"/>
@@ -156,6 +157,7 @@
     <File name="includes/timers.h" path="timers.h" type="1"/>
     <File name="cmsis_boot/startup" path="" type="2"/>
     <File name="cmsis/core_cm4.h" path="cmsis/core_cm4.h" type="1"/>
+    <File name="source/LCDitems.c" path="LCDitems.c" type="1"/>
     <File name="CoOS/kernel/OsTask.h" path="CoOS/kernel/OsTask.h" type="1"/>
     <File name="cmsis_lib/source/misc.c" path="cmsis_lib/source/misc.c" type="1"/>
     <File name="cmsis_lib/source/stm32f4xx_adc.c" path="cmsis_lib/source/stm32f4xx_adc.c" type="1"/>
@@ -189,8 +191,8 @@
     <File name="CoOS" path="" type="2"/>
     <File name="cmsis_lib/source/stm32f4xx_tim.c" path="cmsis_lib/source/stm32f4xx_tim.c" type="1"/>
     <File name="cmsis_lib/include/stm32f4xx_gpio.h" path="cmsis_lib/include/stm32f4xx_gpio.h" type="1"/>
-    <File name="CoOS/portable" path="" type="2"/>
     <File name="cmsis_lib/include/stm32f4xx_fsmc.h" path="cmsis_lib/include/stm32f4xx_fsmc.h" type="1"/>
+    <File name="CoOS/portable" path="" type="2"/>
     <File name="CoOS/kernel/OsMM.h" path="CoOS/kernel/OsMM.h" type="1"/>
     <File name="includes/Julija.h" path="../LCDTEST/Julija.h" type="1"/>
     <File name="CoOS/kernel/hook.c" path="CoOS/kernel/hook.c" type="1"/>
