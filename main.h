@@ -16,6 +16,12 @@
 #include "interrupt.h"
 #include "timers.h"
 
+
+//#include "SSD1289.h"		// SCHERM
+//#include "Julija.h"
+#include "ILI9325.h"
+//#include "TFTLCD.h"
+
 #ifdef USE_OS
 #include "CoOS/OsConfig.h"  /*!< CoOS configure header file*/
 #include "CoOS/kernel/coocox.h"  /*!< CoOS header file  */

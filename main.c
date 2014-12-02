@@ -53,8 +53,8 @@ int main(void)
 int main(void)
 {
 	PLLInit();
-	sequencerInit();
-	SPI3_Init();
+//	sequencerInit();
+//	SPI3_Init();
 
 /*****************
  * 	LED IO init
@@ -109,88 +109,62 @@ int main(void)
 //		uint16_t bpm = 60;
 
 	SysTick_Init();
+	UART2_init(57600);
+
+
+	LCD_Init();
+	LCD_Clear(255, 0, 0);
+
+	while (1) {
+		LCD_DrawCircle(100, 150, 25);
+		break;
+	}
+
+	while (1) {}
+
+//
+//	initGPIO();
+//	initFSMC();
+//	reset();
+//	initDisplay();
+//
+//	delayMillis(2000);
+//
+//	drawCircle(50, 50, 10, BLUE);
+//	fillCircle(50, 50, 10, RED);
+
+//	delay_nms(500);
+//	LCD_Init();
+//	delay_nms(500);
+//	LCD_Clear(WHITE);
+//	int q = 1;
+//
+//	LCD_Clear(YELLOW);
+//	LCD_BackLight(100);
+//
+//	while(1)
+//	{
+//		LCD_Clear(WHITE);
+//		LCD_Clear(BLACK);
+//	}
+//	while (1) {
+//		LCD_SetTextColor(CYAN);
+//		LCD_DrawCircle(120,120, (q % 75) + 1);
+//		LCD_DrawCircle(120,120, (q % 75) + 10);
+//		LCD_DrawCircle(120,120, (q % 75) + 20);
+////		Julia2(240,320,120,160,q);
+//		q+=1;
+////		if(q>100)
+////		q=0;
+//
+////		LCD_BackLight(q % 100);
+//		delay_nms(10);
+//	}
 
 	while(1)
 	{
-		//SPI_PIC_Send(PIC_GET_ROTARY,0,PIC_ROTARY_1);
-		//delay_nms(1);
-		//debug = SPI_PIC_Receive();
-		//i += debug;
-		SPI_LED_Send(++i);
-//		switch(debug)
-//		{
-//			case 0 :	GPIO_SetBits(GPIOD, GPIO_Pin_14);
-//						GPIO_ResetBits(GPIOD, GPIO_Pin_15);
-//						break;
-//
-//			case 0x01 :	SPI_LED_Send(0x3F);
-//						SPI_LED_Send(~(++i));
-//						SPI_LED_Send(0x00);
-//						GPIO_ResetBits(GPIOD, GPIO_Pin_15 | GPIO_Pin_14 | GPIO_Pin_13);
-//						GPIO_SetBits(GPIOD, GPIO_Pin_12);
-//						break;
-//
-//			case 0xff : SPI_LED_Send(0xCF);
-//						SPI_LED_Send(~(--i));
-//						SPI_LED_Send(0x00);
-//						GPIO_ResetBits(GPIOD, GPIO_Pin_14 | GPIO_Pin_12);
-//						GPIO_SetBits(GPIOD, GPIO_Pin_13);
-//						break;
-//
-//			default : 	GPIO_SetBits(GPIOD, GPIO_Pin_15);
-//						GPIO_ResetBits(GPIOD, GPIO_Pin_14);
-//						break;
-//		}
 		delay_nms(50);
 	}
-
-
-/*		//	uint16_t adval[3] = {2048,2048,2048};
-		//	uint16_t butt_data = 0;
-
-		if(UIPlayRead())
-		{
-			sequencer.instrID++;
-			if(sequencer.instrID > 5)
-			{
-				sequencer.instrID = 0;
-			}
-		}
-
-		butt_data = UIButtonRead();
-
-		switch(sequencer.instrID)
-		{
-			case 0:
-				sequencer.instr0.sequence ^= butt_data;
-				UILed(sequencer.instr0.sequence);
-				break;
-			case 1:
-				sequencer.instr1.sequence ^= butt_data;
-				UILed(sequencer.instr1.sequence);
-				break;
-			case 2:
-				sequencer.instr2.sequence ^= butt_data;
-				UILed(sequencer.instr2.sequence);
-				break;
-			case 3:
-				sequencer.instr3.sequence ^= butt_data;
-				UILed(sequencer.instr3.sequence);
-				break;
-			case 4:
-				sequencer.bassdrum.sequence ^= butt_data;
-				UILed(sequencer.bassdrum.sequence);
-				break;
-			case 5:
-				sequencer.snaredrum.sequence ^= butt_data;
-				UILed(sequencer.snaredrum.sequence);
-				break;
-			default:
-				break;
-		}
-
-		delay_nms(100);*/
-
 }
 
 #else		/*	USE_OS	*/
