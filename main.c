@@ -119,6 +119,26 @@ int main(void)
 //	LCD_CreateVertProgressbar(80, 20, 50, 200, Red, Yellow, 50);
 
 //	LCD_CreateVertProgressbar(140, 20, 50, 200, Red, Yellow, 75);
+	LCD_SetBackColor(ColourConverterDec(Black));
+	LCD_SetTextColor(ColourConverterDec(Green));
+	LCD_CharSize(24);
+	LCD_PutChar(50, 50,   '0');
+	LCD_PutChar(100, 100, '1');
+	LCD_PutChar(150, 150, '2');
+	LCD_PutChar(200, 200, '3');
+	LCD_PutChar(230, 200, '4');
+	LCD_PutChar(200, 230, '5');
+	LCD_PutChar(200, 300, '6');
+	LCD_StringLine(50, 200,"HalLo");
+	LCD_StringLine(20, 200,"HALLO");
+	while (1);
+
+	LCD_CharSize(24);
+	LCD_StringLine(100, 50,"JAN");
+
+//	LCD_CreateVertProgressbar(00, 0, 50, 100, Red, Yellow, 25);
+
+	while(1);
 
 	u32 Q = 0;
 	while (1) {

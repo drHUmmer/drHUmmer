@@ -64,9 +64,12 @@ void LCD_Init(void) {
 	//LCD_WriteReg(R231, 0x0012); // Internal clock
 	//LCD_WriteReg(R239, 0x1231); // Internal clock
 	LCD_WriteReg(R0, 0x0001); /* Start oscillator */
-	LCD_WriteReg(R1, 0x0000); /* set SS and SM bit */
+	LCD_WriteReg(R1, 0x0000); /* set SS and SM bit */											// 0000
 	LCD_WriteReg(R2, 0x0200); /* set 1 line inversion */
-	LCD_WriteReg(R3, 0xC030 | BRG_Mode); /* 8bits/262K BGR=x. */
+	LCD_WriteReg(R3, 0xC030 | BRG_Mode); /* 8bits/262K BGR=x. */								// C030
+
+//	LCD_SetWindow(0, 0, 319, 239);
+
 	LCD_WriteReg(R4, 0x0000); /* Resize */
 	LCD_WriteReg(R8, 0x0207); /* set the back porch and front porch */
 	LCD_WriteReg(R9, 0x0000); /* set non-display area refresh cycle ISC[3:0] */
@@ -141,6 +144,28 @@ void LCD_Init(void) {
 	LCD_Clear(0, 0, 0);
 	Delay_ms(50);
 }
+
+void LCD_SetWindow(u16 x1, u16 y1, u16 x2, u16 y2)
+{
+//    ILI9325.screen.startx = x1;
+//    ILI9325.screen.starty = y1;
+//    ILI9325.screen.endx = x2;
+//    ILI9325.screen.endy = y2;
+//    ILI9325.screen.width = x2 - x1;
+//    ILI9325.screen.height = y2 - y1;
+
+    //LowCS;    // Enable LCD
+
+    LCD_WriteReg(R50, x1);
+    LCD_WriteReg(R51, x2);
+    LCD_WriteReg(R52, y1);
+    LCD_WriteReg(R53, y2);
+
+    //HighCS;   // Disable LCD
+
+//    ILI9325_setCursor(x1, y1);
+}
+
 
 /*******************************************************************************
  * Function Name  : LCD_Clear
@@ -348,9 +373,9 @@ void LCD_PutChar(int16_t PosX, int16_t PosY, char c) {
 			TmpChar = Buffer[i];
 			for (j = 0; j < 16; j++) {
 				if (((TmpChar >> j) & (0x01)) == 0x01) {
-					Pixel(PosX + j, PosY + i, textRed, textGreen, textBlue);
+					Pixel(PosX + asciisize - i, PosY + j, textRed, textGreen, textBlue);
 				} else {
-					Pixel(PosX + j, PosY + i, backRed, backGreen, backBlue);
+					Pixel(PosX + asciisize - i, PosY + j, backRed, backGreen, backBlue);
 				}
 			}
 		}
@@ -363,23 +388,23 @@ void LCD_StringLine(uint16_t PosX, uint16_t PosY, char *str) {
 	do {
 		TempChar = *str++;
 		LCD_PutChar(PosX, PosY, TempChar);
-		if (PosX < 232) {
-			PosX += 8;
+//		if (PosY < 304) {
+			PosY += 8;
 			if (asciisize == 24) {
-				PosX += 8;
+				PosY += 12;					// 8
 			} else if (asciisize == 14) {
-				PosX += 4;
+				PosY += 4;
 			}
-		}
+//		}
 
-		else if (PosY < 304) {
-
-			PosX = 0;
-			PosY += 16;
-		} else {
-			PosX = 0;
-			PosY = 0;
-		}
+//		else if (PosX < 304) {
+//
+//			PosY = 0;
+//			PosX += 16;
+//		} else {
+//			PosY = 0;
+//			PosX = 0;
+//		}
 	} while (*str != 0);
 }
 
