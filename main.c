@@ -111,83 +111,31 @@ int main(void)
 	SysTick_Init();
 	UART2_init(57600);
 
+	buttonz.buttonBack 	= 0;
+	buttonz.buttonOK 	= 0;
+	buttonz.rotaryValue	= 0;
 
 	LCD_Init();
 	LCD_Clear(ColourConverterDec(Black));
-//	LCD_CreateVertProgressbar(20, 20, 50, 200, Red, Yellow, 25);
-
-//	LCD_CreateVertProgressbar(80, 20, 50, 200, Red, Yellow, 50);
-
-//	LCD_CreateVertProgressbar(140, 20, 50, 200, Red, Yellow, 75);
-	LCD_SetBackColor(ColourConverterDec(Black));
-	LCD_SetTextColor(ColourConverterDec(Green));
-	LCD_CharSize(24);
-	LCD_PutChar(50, 50,   '0');
-	LCD_PutChar(100, 100, '1');
-	LCD_PutChar(150, 150, '2');
-	LCD_PutChar(200, 200, '3');
-	LCD_PutChar(230, 200, '4');
-	LCD_PutChar(200, 230, '5');
-	LCD_PutChar(200, 300, '6');
-	LCD_StringLine(50, 200,"HalLo");
-	LCD_StringLine(20, 200,"HALLO");
-	while (1);
 
 	LCD_CharSize(24);
-	LCD_StringLine(100, 50,"JAN");
+	MenuSetup();
+	UIInit();
 
-//	LCD_CreateVertProgressbar(00, 0, 50, 100, Red, Yellow, 25);
-
-	while(1);
-
-	u32 Q = 0;
 	while (1) {
-		LCD_CreateVertProgressbar(00, 0, 50, 100, Red, Yellow, 100 - (Q % 100));
-		LCD_CreateVertProgressbar(50, 0, 50, 150, Red, Yellow, 100 - (Q % 100));
-		LCD_CreateVertProgressbar(100, 0, 50, 200, Red, Yellow, 100 - (Q % 100));
-		LCD_CreateVertProgressbar(150, 0, 50, 250, Red, Yellow, 100 - (Q % 100));
-		LCD_CreateVertProgressbar(200, 0, 50, 320, Red, Yellow, 100 - (Q % 100));
-		Q += 2;
+		uint16_t buttonvalue = UIButtonRead();
+		buttonz.buttonOK 	= !!(buttonvalue & 0x01);
+		buttonz.buttonBack 	= !!(buttonvalue & 0x02);
+
+		if (buttonvalue & 0x04)
+			buttonz.rotaryValue = 1;
+
+		if (buttonvalue & 0x08)
+			buttonz.rotaryValue = -1;
+
+		MenuUpdateHandler();
+		delay_nms(20);
 	}
-
-//
-//	initGPIO();
-//	initFSMC();
-//	reset();
-//	initDisplay();
-//
-//	delayMillis(2000);
-//
-//	drawCircle(50, 50, 10, BLUE);
-//	fillCircle(50, 50, 10, RED);
-
-//	delay_nms(500);
-//	LCD_Init();
-//	delay_nms(500);
-//	LCD_Clear(WHITE);
-//	int q = 1;
-//
-//	LCD_Clear(YELLOW);
-//	LCD_BackLight(100);
-//
-//	while(1)
-//	{
-//		LCD_Clear(WHITE);
-//		LCD_Clear(BLACK);
-//	}
-//	while (1) {
-//		LCD_SetTextColor(CYAN);
-//		LCD_DrawCircle(120,120, (q % 75) + 1);
-//		LCD_DrawCircle(120,120, (q % 75) + 10);
-//		LCD_DrawCircle(120,120, (q % 75) + 20);
-////		Julia2(240,320,120,160,q);
-//		q+=1;
-////		if(q>100)
-////		q=0;
-//
-////		LCD_BackLight(q % 100);
-//		delay_nms(10);
-//	}
 
 	while(1)
 	{

@@ -391,7 +391,7 @@ void LCD_StringLine(uint16_t PosX, uint16_t PosY, char *str) {
 //		if (PosY < 304) {
 			PosY += 8;
 			if (asciisize == 24) {
-				PosY += 12;					// 8
+				PosY += 10;					// 8
 			} else if (asciisize == 14) {
 				PosY += 4;
 			}
@@ -413,7 +413,7 @@ void LCD_DrawLine(uint16_t Xpos, uint16_t Ypos, uint16_t Length,
 	uint32_t i = 0;
 
 	LCD_SetCursor(Xpos, Ypos);
-	if (Direction == Horizontal) {
+	if (Direction == Vertical) {
 		LCD_WriteRAM_Prepare(); /* Prepare to write GRAM */
 		for (i = 0; i < Length; i++) {
 			LCD_WriteRAM(textRed, textGreen, textBlue);

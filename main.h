@@ -17,11 +17,9 @@
 #include "timers.h"
 
 
-//#include "SSD1289.h"		// SCHERM
-//#include "Julija.h"
 #include "ILI9325.h"
 #include "LCDitems.h"
-//#include "TFTLCD.h"
+#include "userMenu.h"
 
 #ifdef USE_OS
 #include "CoOS/OsConfig.h"  /*!< CoOS configure header file*/

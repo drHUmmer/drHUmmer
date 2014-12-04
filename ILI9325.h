@@ -6,6 +6,7 @@
 #include "stm32f4xx_tim.h"
 #include "stm32f4xx_rcc.h"
 #include "UART.h"
+#include "delay.h"
 
 /* LCD color */
 #define BRG
