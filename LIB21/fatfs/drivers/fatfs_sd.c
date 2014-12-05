@@ -111,7 +111,7 @@ static int wait_ready (	/* 1:Ready, 0:Timeout */
 static void deselect (void)
 {
 	FATFS_CS_HIGH;			/* CS = H */
-	xchg_spi(0xFF);			/* Dummy clock (force DO hi-z for multiple slave SPI) */
+//	xchg_spi(0xFF);			/* Dummy clock (force DO hi-z for multiple slave SPI) */
 	FATFS_DEBUG_SEND_USART("deselect: ok");
 }
 
@@ -124,15 +124,16 @@ static void deselect (void)
 static int select (void)	/* 1:OK, 0:Timeout */
 {
 	FATFS_CS_LOW;
-	xchg_spi(0xFF);	/* Dummy clock (force DO enabled) */
+//	xchg_spi(0xFF);	/* Dummy clock (force DO enabled) */
 
-	if (wait_ready(500)) {
-		FATFS_DEBUG_SEND_USART("select: OK");
-		return 1;	/* OK */
-	}
-	FATFS_DEBUG_SEND_USART("select: no");
-	deselect();
-	return 0;	/* Timeout */
+//	if (wait_ready(500)) {
+//		FATFS_DEBUG_SEND_USART("select: OK");
+//		return 1;	/* OK */
+//	}
+//	FATFS_DEBUG_SEND_USART("select: no");
+//	deselect();
+
+	return 1;	/* Timeout */
 }
 
 
@@ -250,7 +251,14 @@ static BYTE send_cmd (		/* Return value: R1 resp (bit7==1:Failed to send) */
 	n = 10;								/* Wait for response (10 bytes max) */
 	do
 		res = xchg_spi(0xFF);
-	while ((res & 0x80) && --n);
+	//while ((res & 0x80) && --n);
+	while (((res != 0x00) || (res != 0x01)) && --n);
+
+//	uint8_t reply = 0x00;
+//	while(!(res == reply)){
+//		res = xchg_spi(0xFF);
+//	}
+
 
 	return res;							/* Return received response */
 }
@@ -263,7 +271,7 @@ void TM_FATFS_InitPins(void) {
 	GPIO_InitStruct.GPIO_Pin = FATFS_CS_PIN;
 	GPIO_InitStruct.GPIO_Mode = GPIO_Mode_OUT;
 	GPIO_InitStruct.GPIO_OType = GPIO_OType_PP;
-	GPIO_InitStruct.GPIO_PuPd = GPIO_PuPd_DOWN;
+	GPIO_InitStruct.GPIO_PuPd = GPIO_PuPd_UP;
 	GPIO_InitStruct.GPIO_Speed = GPIO_Speed_100MHz;
 	
 	GPIO_Init(FATFS_CS_PORT, &GPIO_InitStruct);
@@ -313,6 +321,8 @@ uint8_t TM_FATFS_WriteEnabled(void) {
 
 DSTATUS TM_FATFS_SD_disk_initialize (void) {
 	BYTE n, cmd, ty, ocr[4];
+	uint8_t res;
+	uint8_t sddata[10][10] = {{0},{0}};
 
 	FATFS_DEBUG_SEND_USART("disk_initialize: inside");
 	
@@ -320,18 +330,164 @@ DSTATUS TM_FATFS_SD_disk_initialize (void) {
 	TM_FATFS_InitPins();
 	init_spi();
 	
+	TM_DELAY_SetTime2(1000);
+	while(TM_DELAY_Time2());
+
+	deselect();
+
 	if (!TM_FATFS_Detect()) {
 		return STA_NODISK;
 	}
 	for (n = 10; n; n--) {
 		xchg_spi(0xFF);
 	}
+
+	//deselect();
+
+	uint32_t teller = 0;
+	while(1)
+	{
+
+//		for (n = 2; n; n--) {
+//			xchg_spi(0xFF);
+//		}
+
+		select();
+
+		sddata[0][0] = xchg_spi(0x40 | CMD0);
+		sddata[0][1] = xchg_spi(0x00);
+		sddata[0][2] = xchg_spi(0x00);
+		sddata[0][3] = xchg_spi(0x00);
+		sddata[0][4] = xchg_spi(0x00);
+		sddata[0][5] = xchg_spi(0x95);
+
+		while(sddata[0][n] != 0x01)
+		{
+			for(n=0;n<10;n++)
+			{
+				sddata[0][n] = TM_SPI_Send(FATFS_SPI, 0xFF);
+				if(sddata[0][n] == 0x01)
+					break;
+			}
+		}
+
+//		deselect();
+//		for (n = 1; n; n--) {
+//			xchg_spi(0xFF);
+//		}
+		select();
+
+		xchg_spi(0x40 | CMD8);
+		xchg_spi(0x00);
+		xchg_spi(0x00);
+		xchg_spi(0x01);
+		xchg_spi(0xAA);
+		xchg_spi(0x87);
+
+		while(sddata[1][n] != 0x3f)
+		{
+			for(n=0;n<10;n++)
+			{
+				sddata[1][n] = TM_SPI_Send(FATFS_SPI, 0xFF);
+				if(sddata[1][n] == 0x3f)
+					break;
+			}
+		}
+
+//		deselect();
+//		for (n = 1; n; n--) {
+//			xchg_spi(0xFF);
+//		}
+		select();
+
+		xchg_spi(0x40 | CMD55);
+		xchg_spi(0x00);
+		xchg_spi(0x00);
+		xchg_spi(0x00);
+		xchg_spi(0x00);
+		xchg_spi(0x95);
+
+		while(sddata[2][n] != 0x00)
+		{
+			for(n=0;n<10;n++)
+			{
+				sddata[2][n] = TM_SPI_Send(FATFS_SPI, 0xFF);
+				if(sddata[2][n] == 0x00)
+					break;
+			}
+		}
+
+//		deselect();
+//		for (n = 1; n; n--) {
+//			xchg_spi(0xFF);
+//		}
+		select();
+
+		xchg_spi(0x40 | ACMD41);
+		xchg_spi(0x40);
+		xchg_spi(0x00);
+		xchg_spi(0x00);
+		xchg_spi(0x00);
+		xchg_spi(0x95);
+
+		while(sddata[3][n] != 0x3f)
+		{
+			for(n=0;n<10;n++)
+			{
+				sddata[3][n] = TM_SPI_Send(FATFS_SPI, 0xFF);
+				if(sddata[3][n] == 0x3f)
+					break;
+			}
+		}
+//		deselect();
+//		for (n = 1; n; n--) {
+//			xchg_spi(0xFF);
+//		}
+		select();
+
+		for(n=0;n<10;n++)
+			sddata[5][n] = TM_SPI_Send(FATFS_SPI, 0xFF);
+
+		xchg_spi(0x40 | CMD16);
+		xchg_spi(0x00);
+		xchg_spi(0x00);
+		xchg_spi(0x00);
+		xchg_spi(0x00);
+		xchg_spi(0x95);
+
+		while(sddata[4][n] != 0x00)
+		{
+			for(n=0;n<10;n++)
+			{
+				sddata[4][n] = TM_SPI_Send(FATFS_SPI, 0xFF);
+				if(sddata[4][n] == 0x00)
+					break;
+			}
+		}
+
+		deselect();
+
+		n = 0;
+	}
+
+	while(!(res == 0x01)){
+//		select();
+		res = TM_SPI_Send(FATFS_SPI, 0xFF);
+//		deselect();
+	}
+	deselect();
+
+
+//	return 0;
+
+
+
 	ty = 0;
-	if (send_cmd(CMD0, 0) == 1) {				/* Put the card SPI/Idle state */
+//	if (send_cmd(CMD0, 0) == 1) {				/* Put the card SPI/Idle state */
 		FATFS_DEBUG_SEND_USART("disk_initialize: CMD0 = 1");
 		//Timer1 = 1000;						/* Initialization timeout = 1 sec */
-		TM_DELAY_SetTime2(1000);
-		if (send_cmd(CMD8, 0x1AA) == 1) {	/* SDv2? */
+		TM_DELAY_SetTime2(1000000);
+		if (send_cmd(CMD8, 0x1AA) == 0x3f  /*1*/) {	/* SDv2? */
 			for (n = 0; n < 4; n++) ocr[n] = xchg_spi(0xFF);	/* Get 32 bit return value of R7 resp */
 			if (ocr[2] == 0x01 && ocr[3] == 0xAA) {				/* Is the card supports vcc of 2.7-3.6V? */
 				while (TM_DELAY_Time2() && send_cmd(ACMD41, 1UL << 30)) ;	/* Wait for end of initialization with ACMD41(HCS) */
@@ -349,11 +505,12 @@ DSTATUS TM_FATFS_SD_disk_initialize (void) {
 				ty = CT_MMC; cmd = CMD1;	/* MMCv3 (CMD1(0)) */
 			}
 			while (TM_DELAY_Time2() && send_cmd(cmd, 0));			/* Wait for end of initialization */
-			if (TM_DELAY_Time2() || send_cmd(CMD16, 512) != 0) {	/* Set block length: 512 */
+			if ((TM_DELAY_Time2() == 0) || (send_cmd(CMD16, 512) != 0)) {	/* Set block length: 512 */
+			//if (send_cmd(CMD16, 512) != 0) {	/* Set block length: 512 */
 				ty = 0;
 			}
 		}
-	}
+//	}
 	TM_FATFS_SD_CardType = ty;	/* Card type */
 	FATFS_DEBUG_SEND_USART("disk_initialize: deselecting");
 	deselect();

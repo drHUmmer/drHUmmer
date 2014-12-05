@@ -37,6 +37,13 @@ void TM_SPI_Init(SPI_TypeDef* SPIx, TM_SPI_PinsPack_t pinspack) {
 }
 
 uint8_t TM_SPI_Send(SPI_TypeDef* SPIx, uint8_t data) {
+	/* Wait for transmission to complete */
+	while (!SPI_I2S_GetFlagStatus(SPIx, SPI_I2S_FLAG_TXE));
+	/* Wait for received data to complete */
+//	while (!SPI_I2S_GetFlagStatus(SPIx, SPI_I2S_FLAG_RXNE));
+	/* Wait for SPI to be ready */
+	while (SPI_I2S_GetFlagStatus(SPIx, SPI_I2S_FLAG_BSY));
+
 	/* Fill output buffer with data */
 	SPIx->DR = data;
 	/* Wait for transmission to complete */
@@ -139,7 +146,7 @@ void TM_SPI1_Init(TM_SPI_PinsPack_t pinspack) {
 	RCC_APB2PeriphClockCmd(RCC_APB2Periph_SPI1, ENABLE);
 
 	SPI_StructInit(&SPI_InitStruct);
-	SPI_InitStruct.SPI_BaudRatePrescaler = TM_SPI1_PRESCALER;
+	SPI_InitStruct.SPI_BaudRatePrescaler = SPI_BaudRatePrescaler_256;// TM_SPI1_PRESCALER;//
 	SPI_InitStruct.SPI_DataSize = TM_SPI1_DATASIZE;
 	SPI_InitStruct.SPI_Direction = SPI_Direction_2Lines_FullDuplex;
 	SPI_InitStruct.SPI_FirstBit = TM_SPI1_FIRSTBIT;
@@ -151,6 +158,7 @@ void TM_SPI1_Init(TM_SPI_PinsPack_t pinspack) {
 		SPI_InitStruct.SPI_CPOL = SPI_CPOL_Low;
 		SPI_InitStruct.SPI_CPHA = SPI_CPHA_2Edge;
 	} else if (TM_SPI1_MODE == TM_SPI_Mode_2) {
+
 		SPI_InitStruct.SPI_CPOL = SPI_CPOL_High;
 		SPI_InitStruct.SPI_CPHA = SPI_CPHA_1Edge;
 	} else if (TM_SPI1_MODE == TM_SPI_Mode_3) {

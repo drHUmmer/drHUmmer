@@ -115,9 +115,9 @@
     <File name="CoOS/portable/OsArch.h" path="CoOS/portable/OsArch.h" type="1"/>
     <File name="CoOS/kernel/OsCore.h" path="CoOS/kernel/OsCore.h" type="1"/>
     <File name="CoOS/kernel/sem.c" path="CoOS/kernel/sem.c" type="1"/>
+    <File name="LIB21/integer.h" path="LIB21/fatfs/integer.h" type="1"/>
     <File name="CoOS/kernel/CoOS.h" path="CoOS/kernel/CoOS.h" type="1"/>
     <File name="CoOS/kernel/OsQueue.h" path="CoOS/kernel/OsQueue.h" type="1"/>
-    <File name="LIB21/integer.h" path="LIB21/fatfs/integer.h" type="1"/>
     <File name="includes/sequencer.h" path="sequencer.h" type="1"/>
     <File name="cmsis_boot/startup/startup_stm32f4xx.c" path="cmsis_boot/startup/startup_stm32f4xx.c" type="1"/>
     <File name="cmsis_lib/source/stm32f4xx_rcc.c" path="cmsis_lib/source/stm32f4xx_rcc.c" type="1"/>

@@ -54,7 +54,7 @@ int main(void)
 {
 	PLLInit();
 	sequencerInit();
-	//SPI3_Init();
+	SPI3_Init();
 
 /*****************
  * 	LED IO init
@@ -75,6 +75,11 @@ int main(void)
 	GPIO_InitStruct.GPIO_OType = GPIO_OType_PP;
 	GPIO_InitStruct.GPIO_PuPd = GPIO_PuPd_NOPULL;
 	GPIO_Init(GPIOD, &GPIO_InitStruct);
+
+	GPIO_InitStruct.GPIO_Pin = GPIO_Pin_3;
+	GPIO_InitStruct.GPIO_Mode = GPIO_Mode_IN;
+	GPIO_InitStruct.GPIO_PuPd = GPIO_PuPd_UP;
+	GPIO_Init(GPIOE, &GPIO_InitStruct);
 /* End LED IO init */
 
 //	UIInit();
@@ -90,7 +95,15 @@ int main(void)
 
 //	RingBufferInit();
 
-	SysTick_Init();
+
+
+
+
+
+
+
+
+//	SysTick_Init();
 
 	//Fatfs object
 	    FATFS FatFs;

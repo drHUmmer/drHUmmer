@@ -50,6 +50,7 @@ void SPI3_Init(void)
 	SPI_Cmd(SPI3, ENABLE);												//Enable SPI3
 }
 
+
 void SPI_PIC_Send(uint8_t command,uint8_t setting,uint8_t address)
 {
 	uint16_t dummy;
