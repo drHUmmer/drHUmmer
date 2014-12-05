@@ -5,15 +5,15 @@
 #include "stm32f4xx_rcc.h"
 
 // Defines
-#define UI_GPIO_PORT		GPIOA
-#define UI_GPIO_PORT_PERIPH	RCC_AHB1Periph_GPIOA
-#define UI_LED_CLOCK		GPIO_Pin_9
-#define UI_LED_DATA			GPIO_Pin_10
-#define UI_LED_LATCH		GPIO_Pin_11
-#define UI_BUTT_PLAY		GPIO_Pin_12
-#define UI_BUTT_DATA		GPIO_Pin_13
-#define UI_BUTT_CLOCK		GPIO_Pin_14
-#define UI_BUTT_LOAD		GPIO_Pin_15
+#define UI_GPIO_PORT		GPIOE
+#define UI_GPIO_PORT_PERIPH	RCC_AHB1Periph_GPIOE
+#define UI_LED_CLOCK		GPIO_Pin_0
+#define UI_LED_DATA			GPIO_Pin_1
+#define UI_LED_LATCH		GPIO_Pin_2
+#define UI_BUTT_PLAY		GPIO_Pin_3
+#define UI_BUTT_DATA		GPIO_Pin_4
+#define UI_BUTT_CLOCK		GPIO_Pin_5
+#define UI_BUTT_LOAD		GPIO_Pin_6
 
 // Function prototypes
 // Initialization functions

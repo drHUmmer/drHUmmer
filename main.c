@@ -124,17 +124,33 @@ int main(void)
 
 	while (1) {
 		uint16_t buttonvalue = UIButtonRead();
-		buttonz.buttonOK 	= !!(buttonvalue & 0x01);
-		buttonz.buttonBack 	= !!(buttonvalue & 0x02);
+		if (buttonvalue & 0x10) {
+			buttonz.buttonOK = 1;
+			GPIO_SetBits(GPIOD, GPIO_Pin_12);
+		}
 
-		if (buttonvalue & 0x04)
+		if (buttonvalue & 0x20) {
+			buttonz.buttonBack = 1;
+			GPIO_SetBits(GPIOD, GPIO_Pin_13);
+		}
+
+		if (buttonvalue & 0x40) {
+			GPIO_SetBits(GPIOD, GPIO_Pin_14);
 			buttonz.rotaryValue = 1;
+		}
 
-		if (buttonvalue & 0x08)
+		if (buttonvalue & 0x80) {
+			GPIO_SetBits(GPIOD, GPIO_Pin_15);
 			buttonz.rotaryValue = -1;
+		}
 
-		MenuUpdateHandler();
-		delay_nms(20);
+
+		Menu_UpdateHandler();
+		delay_nms(100);
+		GPIO_ResetBits(GPIOD, GPIO_Pin_12);
+		GPIO_ResetBits(GPIOD, GPIO_Pin_13);
+		GPIO_ResetBits(GPIOD, GPIO_Pin_14);
+		GPIO_ResetBits(GPIOD, GPIO_Pin_15);
 	}
 
 	while(1)

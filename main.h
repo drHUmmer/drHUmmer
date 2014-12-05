@@ -19,7 +19,9 @@
 
 #include "ILI9325.h"
 #include "LCDitems.h"
-#include "userMenu.h"
+#include "menu.h"
+#include "menuHandlers.h"
+#include "menuScreens.h"
 
 #ifdef USE_OS
 #include "CoOS/OsConfig.h"  /*!< CoOS configure header file*/
