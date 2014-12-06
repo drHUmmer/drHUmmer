@@ -1,6 +1,9 @@
 #ifndef MENU_H
 #define MENU_H
 
+//////////////
+// Includes //
+//////////////
 #include <string.h>
 #include "menuScreens.h"
 #include "menuHandlers.h"
@@ -8,16 +11,24 @@
 #include "ILI9325.h"
 #include "stm32f4xx.h"
 
-
-#define MAXSTRINGLENGTH			16
-#define MAXOPTIONS				12
-#define CURRENTLYSELECTEDCHAR	'>'
-#define OPTIONSPERMENU			6
-
+/////////////////
+// Menu titles //
+/////////////////
 #define TITLE_MAINSCREEN		"Main"
 #define TITLE_SETTINGSMENU		"Settings"
 #define TITLE_BACKCOLOURMENU	"Back colour"
 #define TITLE_TEXTCOLOURMENU	"Text colour"
+
+/////////////////////
+// Dispay settings //
+/////////////////////
+#define BACKSTRING				"Back"
+#define MAXSTRINGLENGTH			16
+#define MAXOPTIONS				(2 * OPTIONSPERMENU)
+#define CURRENTLYSELECTEDCHAR	'>'
+#define OPTIONSPERMENU			6
+
+
 
 ///////////////////////////////
 // Main menu settings struct //
@@ -28,7 +39,6 @@ typedef struct {
 	int8_t			currentOption;							// Currently selected option
 	uint8_t			nrOfOptions;							// Total number of options
 	uint8_t			showCursor					: 1;		// 1 = true, 0 = false
-	uint8_t			hasParent					: 1;
 	void			(*handler)(void);						// Handler function pointer
 	void			(*parent)(void);
 } Menu_Typedef;
@@ -47,21 +57,22 @@ typedef struct {
 /////////////////////////
 // Function prototypes //
 /////////////////////////
-void MenuClearStringMemory 		(Menu_Typedef* menu);
-void MenuDrawCurrentlySelected 	(void);
-void MenuRedrawScreen 			(void);
-void MenuSetup					(void);
-void MenuUpdateSelectedItem		(void);
+void 	MenuClearStringMemory 		(Menu_Typedef* menu);
+uint8_t MenuCompareTitle			(char* toCompare);
+uint8_t MenuCompareSelected			(char* toCompare);
+void 	MenuDrawCurrentlySelected 	(void);
+void 	MenuRedrawScreen 			(void);
+void 	MenuSetup					(void);
+void 	MenuUpdateSelectedItem		(void);
 
-uint8_t MenuBackpressed			(uint8_t reset);
-uint8_t MenuOKpressed			(uint8_t reset);
-int8_t  MenuRotaryRead			(uint8_t reset);
+uint8_t MenuBackpressed				(uint8_t reset);
+uint8_t MenuOKpressed				(uint8_t reset);
+int8_t  MenuRotaryRead				(uint8_t reset);
 
 /////////////////////////
 // Structure prototype //
 /////////////////////////
 MenuSettings_TypeDef mainmenu;
-
 
 //////////////////////////
 // !!!! SIMULATION !!!! //

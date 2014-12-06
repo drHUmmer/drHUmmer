@@ -2,10 +2,12 @@
 
 void MenuSetup() {
 	LCD_Clear(ColourConverterDec(Black));
+	// Set default values
 	mainmenu.backgroundcolour 	= Black;
 	mainmenu.foregroundcolour 	= Green;
 	mainmenu.menuCurrent		= &mainmenu.menuMain;
 
+	// Clear menu options
 	MenuClearStringMemory(&mainmenu.menuMain);
 	MenuClearStringMemory(&mainmenu.menuSettings);
 	MenuClearStringMemory(&mainmenu.menuBackcolour);
@@ -15,22 +17,19 @@ void MenuSetup() {
 	mainmenu.menuMain.currentOption							= 0;
 	mainmenu.menuMain.nrOfOptions							= 0;
 	mainmenu.menuMain.showCursor							= 0;
-	mainmenu.menuMain.handler								= Menu_MainHandler;		// Function
-	mainmenu.menuMain.hasParent								= 0;
+	mainmenu.menuMain.handler								= Menu_MainHandler;
 	mainmenu.menuMain.parent								= 0;
 	strcpy(mainmenu.menuMain.menuTitle						, TITLE_MAINSCREEN);
-	strcpy(mainmenu.menuMain.menuOptions [0]				, "-");
 	
 
 	// Settings Menu //
 	mainmenu.menuSettings.currentOption						= 0;
 	mainmenu.menuSettings.nrOfOptions						= 5;
 	mainmenu.menuSettings.showCursor						= 1;
-	mainmenu.menuSettings.handler							= Menu_SettingsHandler;	// Function
-	mainmenu.menuSettings.hasParent							= 1;
+	mainmenu.menuSettings.handler							= Menu_SettingsHandler;
 	mainmenu.menuSettings.parent							= Menu_Main;
 	strcpy(mainmenu.menuSettings.menuTitle					, TITLE_SETTINGSMENU);
-	strcpy(mainmenu.menuSettings.menuOptions [0]			, "Back");
+	strcpy(mainmenu.menuSettings.menuOptions [0]			, BACKSTRING);
 	strcpy(mainmenu.menuSettings.menuOptions [1]			, "Set back colour");
 	strcpy(mainmenu.menuSettings.menuOptions [2]			, "Set text colour");
 	strcpy(mainmenu.menuSettings.menuOptions [3]			, "Set FX");
@@ -42,9 +41,8 @@ void MenuSetup() {
 	mainmenu.menuBackcolour.showCursor						= 1;
 	mainmenu.menuBackcolour.handler							= Menu_BackcolourHandler;
 	mainmenu.menuBackcolour.parent							= Menu_Settings;
-	mainmenu.menuBackcolour.hasParent						= 1;
 	strcpy(mainmenu.menuBackcolour.menuTitle				, TITLE_BACKCOLOURMENU);
-	strcpy(mainmenu.menuBackcolour.menuOptions	[0]			, "Back");
+	strcpy(mainmenu.menuBackcolour.menuOptions	[0]			, BACKSTRING);
 	strcpy(mainmenu.menuBackcolour.menuOptions	[1]			, "White");
 	strcpy(mainmenu.menuBackcolour.menuOptions	[2]			, "Black");
 	strcpy(mainmenu.menuBackcolour.menuOptions	[3]			, "Red");
@@ -62,9 +60,8 @@ void MenuSetup() {
 	mainmenu.menuTextcolour.showCursor						= 1;
 	mainmenu.menuTextcolour.handler							= Menu_TextcolourHandler;
 	mainmenu.menuTextcolour.parent							= Menu_Settings;
-	mainmenu.menuTextcolour.hasParent						= 1;
 	strcpy(mainmenu.menuTextcolour.menuTitle	  			, TITLE_TEXTCOLOURMENU);
-	strcpy(mainmenu.menuTextcolour.menuOptions [0]			, "Back");
+	strcpy(mainmenu.menuTextcolour.menuOptions [0]			, BACKSTRING);
 	strcpy(mainmenu.menuTextcolour.menuOptions [1]			, "White");
 	strcpy(mainmenu.menuTextcolour.menuOptions [2]			, "Black");
 	strcpy(mainmenu.menuTextcolour.menuOptions [3]			, "Red");
@@ -88,16 +85,18 @@ void MenuRedrawScreen () {
 	// Title
 	LCD_StringLine(210, 30, mainmenu.menuCurrent->menuTitle);
 
-	// Line
+	// Horizontal line, separating menu and title
 	LCD_DrawFullRect(198,10,5,300);
 
 	// Options
-	uint8_t optionCounter 	= 0;
-	uint8_t optionOffset 	= OPTIONSPERMENU * (mainmenu.menuCurrent->currentOption / OPTIONSPERMENU);
-	for (optionCounter = optionOffset; optionCounter < (optionOffset + OPTIONSPERMENU); optionCounter ++) {
-		if (optionCounter < MAXOPTIONS && optionCounter < mainmenu.menuCurrent->nrOfOptions) {
-			if (mainmenu.menuCurrent->menuOptions[optionCounter][0] != '\0') {
-				LCD_StringLine(160 - ((optionCounter - optionOffset) * 30), 30, mainmenu.menuCurrent->menuOptions[optionCounter]);
+	if (mainmenu.menuCurrent->nrOfOptions) {
+		uint8_t optionCounter 	= 0;
+		uint8_t optionOffset 	= OPTIONSPERMENU * (mainmenu.menuCurrent->currentOption / OPTIONSPERMENU);
+		for (optionCounter = optionOffset; optionCounter < (optionOffset + OPTIONSPERMENU); optionCounter ++) {
+			if (optionCounter < MAXOPTIONS && optionCounter < mainmenu.menuCurrent->nrOfOptions) {
+				if (mainmenu.menuCurrent->menuOptions[optionCounter][0] != '\0') {
+					LCD_StringLine(160 - ((optionCounter - optionOffset) * 30), 30, mainmenu.menuCurrent->menuOptions[optionCounter]);
+				}
 			}
 		}
 	}
@@ -108,9 +107,7 @@ void MenuRedrawScreen () {
 
 void MenuDrawCurrentlySelected () {
 	if (mainmenu.menuCurrent->showCursor) {
-		LCD_SetTextColor(255,0,0);
 		LCD_DrawFullRect(10, 3, 176, 19);
-		LCD_SetTextColor(0,255,0);
 		LCD_PutChar(160 - ((mainmenu.menuCurrent->currentOption % 6) * 30), 5, CURRENTLYSELECTEDCHAR);
 	}
 }
@@ -136,14 +133,14 @@ void MenuUpdateSelectedItem() {
 	}
 
 	newValue += rotaryValue;
-	if (newValue < 0) {
-		newValue += nrOfOptions;
+	if (newValue < 0) {							// If negative
+		newValue += nrOfOptions;				// Turn around
 	}
-	newValue %= nrOfOptions;
+	newValue %= nrOfOptions;					// If too high, turnaround aswell
 
 	mainmenu.menuCurrent->currentOption = newValue;
 
-	if (newValue / OPTIONSPERMENU == oldValue / OPTIONSPERMENU) {
+	if (newValue / OPTIONSPERMENU == oldValue / OPTIONSPERMENU) {	// Only redraw everything when necessary
 		MenuDrawCurrentlySelected();
 	} else {
 		MenuRedrawScreen();
@@ -181,7 +178,20 @@ int8_t MenuRotaryRead(uint8_t reset) {
 	returnValue = buttonz.rotaryValue;
 
 	if (reset)
-		buttonz.rotaryValue = 0;
+		buttonz.rotaryValue = 0;					// BUTTONZ //
 
 	return returnValue;
+}
+
+uint8_t MenuCompareTitle(char* toCompare) {
+	// Return 1 if equals
+	// Return 0 if not equal
+	return !(!!(strcmp(mainmenu.menuCurrent->menuTitle, toCompare)));
+}
+
+uint8_t MenuCompareSelected(char* toCompare) {
+	// Return 1 if equals
+	// Return 0 if not equal
+	uint8_t currentSelectedOption = mainmenu.menuCurrent->currentOption;
+	return !(!!(strcmp(mainmenu.menuCurrent->menuOptions[currentSelectedOption], toCompare)));
 }

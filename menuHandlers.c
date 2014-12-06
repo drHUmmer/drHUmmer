@@ -1,32 +1,31 @@
 #include "menuHandlers.h"
 
 static void Menu_GotoParent() {
-	if (mainmenu.menuCurrent->hasParent) {
+	if (!MenuCompareTitle(TITLE_MAINSCREEN)) {
 		mainmenu.menuCurrent->parent();
 	}
 }
 
 void Menu_UpdateHandler() {
 	if (MenuOKpressed(0)) {
-		uint8_t currentSelectedOption = mainmenu.menuCurrent->currentOption;
-		if (!(strcmp(mainmenu.menuCurrent->menuOptions[currentSelectedOption], "Back"))) {
+		if (MenuCompareSelected(BACKSTRING)) {
 			Menu_GotoParent();
 			MenuOKpressed(1);		// Reset OK button
 			GPIO_SetBits(GPIOD, GPIO_Pin_14);
-			return;
+			return;												// RETURN //
 		}
 	}
 
 	if (MenuBackpressed(1)) {
 		Menu_GotoParent();
 		GPIO_SetBits(GPIOD, GPIO_Pin_15);
-		return;
+		return;													// RETURN //
 	}
 
 	// Run current menu handler
 	mainmenu.menuCurrent->handler();
 
-	// Otherwise the buttons would be "pressed" even when it isn't
+	// Always reset the buttons, to prevent weird things to happen
 	MenuOKpressed(1);
 	MenuBackpressed(1);
 }
@@ -35,65 +34,62 @@ void Menu_MainHandler() {
 	 if (MenuOKpressed(1)) {
 	 	Menu_Settings();
 	 }
+
+	 // ToDo: Progress bars
 }
 
 void Menu_SettingsHandler() {
 	MenuUpdateSelectedItem();
 
-	if (mainmenu.menuCurrent->currentOption == 1 && MenuOKpressed(1)) {
-		mainmenu.menuCurrent = &mainmenu.menuBackcolour;
-		MenuRedrawScreen();
-	}
-
-	if (mainmenu.menuCurrent->currentOption == 2 && MenuOKpressed(1)) {
-		mainmenu.menuCurrent = &mainmenu.menuTextcolour;
-		MenuRedrawScreen();
+	if (MenuOKpressed(1)) {
+		switch(mainmenu.menuCurrent->currentOption) {
+			case 1:	Menu_SetBackcolour();		break;
+			case 2: Menu_SetTextcolour();		break;
+		}
 	}
 }
 
 void Menu_BackcolourHandler() {
 	MenuUpdateSelectedItem();
 
-	uint8_t currentOption = mainmenu.menuCurrent->currentOption;
-
 	if (MenuOKpressed(1)) {
-		if(!(strcmp(mainmenu.menuCurrent->menuOptions[currentOption], "White"))) {
+		if(MenuCompareSelected("White")) {
 			mainmenu.backgroundcolour = White;
 			MenuRedrawScreen();
 		}
-		if(!(strcmp(mainmenu.menuCurrent->menuOptions[currentOption], "Black"))) {
+		if(MenuCompareSelected("Black")) {
 			mainmenu.backgroundcolour = Black;
 			MenuRedrawScreen();
 		}
-		if(!(strcmp(mainmenu.menuCurrent->menuOptions[currentOption], "Red"))) {
+		if(MenuCompareSelected("Red")) {
 			mainmenu.backgroundcolour = Red;
 			MenuRedrawScreen();
 		}
-		if(!(strcmp(mainmenu.menuCurrent->menuOptions[currentOption], "Green"))) {
+		if(MenuCompareSelected("Green")) {
 			mainmenu.backgroundcolour = Green;
 			MenuRedrawScreen();
 		}
-		if(!(strcmp(mainmenu.menuCurrent->menuOptions[currentOption], "Blue"))) {
+		if(MenuCompareSelected("Blue")) {
 			mainmenu.backgroundcolour = Blue;
 			MenuRedrawScreen();
 		}
-		if(!(strcmp(mainmenu.menuCurrent->menuOptions[currentOption], "Yellow"))) {
+		if(MenuCompareSelected("Yellow")) {
 			mainmenu.backgroundcolour = Yellow;
 			MenuRedrawScreen();
 		}
-		if(!(strcmp(mainmenu.menuCurrent->menuOptions[currentOption], "Cyan"))) {
+		if(MenuCompareSelected("Cyan")) {
 			mainmenu.backgroundcolour = Cyan;
 			MenuRedrawScreen();
 		}
-		if(!(strcmp(mainmenu.menuCurrent->menuOptions[currentOption], "Magenta"))) {
+		if(MenuCompareSelected("Magenta")) {
 			mainmenu.backgroundcolour = Magenta;
 			MenuRedrawScreen();
 		}
-		if(!(strcmp(mainmenu.menuCurrent->menuOptions[currentOption], "Grey"))) {
+		if(MenuCompareSelected("Grey")) {
 			mainmenu.backgroundcolour = Grey;
 			MenuRedrawScreen();
 		}
-		if(!(strcmp(mainmenu.menuCurrent->menuOptions[currentOption], "Blue - 2"))) {
+		if(MenuCompareSelected("Blue - 2")) {
 			mainmenu.backgroundcolour = Blue2;
 			MenuRedrawScreen();
 		}
@@ -103,46 +99,44 @@ void Menu_BackcolourHandler() {
 void Menu_TextcolourHandler() {
 	MenuUpdateSelectedItem();
 
-	uint8_t currentOption = mainmenu.menuCurrent->currentOption;
-
 	if (MenuOKpressed(1)) {
-		if(!(strcmp(mainmenu.menuCurrent->menuOptions[currentOption], "White"))) {
+		if(MenuCompareSelected("White")) {
 			mainmenu.foregroundcolour = White;
 			MenuRedrawScreen();
 		}
-		if(!(strcmp(mainmenu.menuCurrent->menuOptions[currentOption], "Black"))) {
+		if(MenuCompareSelected("Black")) {
 			mainmenu.foregroundcolour = Black;
 			MenuRedrawScreen();
 		}
-		if(!(strcmp(mainmenu.menuCurrent->menuOptions[currentOption], "Red"))) {
+		if(MenuCompareSelected("Red")) {
 			mainmenu.foregroundcolour = Red;
 			MenuRedrawScreen();
 		}
-		if(!(strcmp(mainmenu.menuCurrent->menuOptions[currentOption], "Green"))) {
+		if(MenuCompareSelected("Green")) {
 			mainmenu.foregroundcolour = Green;
 			MenuRedrawScreen();
 		}
-		if(!(strcmp(mainmenu.menuCurrent->menuOptions[currentOption], "Blue"))) {
+		if(MenuCompareSelected("Blue")) {
 			mainmenu.foregroundcolour = Blue;
 			MenuRedrawScreen();
 		}
-		if(!(strcmp(mainmenu.menuCurrent->menuOptions[currentOption], "Yellow"))) {
+		if(MenuCompareSelected("Yellow")) {
 			mainmenu.foregroundcolour = Yellow;
 			MenuRedrawScreen();
 		}
-		if(!(strcmp(mainmenu.menuCurrent->menuOptions[currentOption], "Cyan"))) {
+		if(MenuCompareSelected("Cyan")) {
 			mainmenu.foregroundcolour = Cyan;
 			MenuRedrawScreen();
 		}
-		if(!(strcmp(mainmenu.menuCurrent->menuOptions[currentOption], "Magenta"))) {
+		if(MenuCompareSelected("Magenta")) {
 			mainmenu.foregroundcolour = Magenta;
 			MenuRedrawScreen();
 		}
-		if(!(strcmp(mainmenu.menuCurrent->menuOptions[currentOption], "Grey"))) {
+		if(MenuCompareSelected("Grey")) {
 			mainmenu.foregroundcolour = Grey;
 			MenuRedrawScreen();
 		}
-		if(!(strcmp(mainmenu.menuCurrent->menuOptions[currentOption], "Blue - 2"))) {
+		if(MenuCompareSelected("Blue - 2")) {
 			mainmenu.foregroundcolour = Blue2;
 			MenuRedrawScreen();
 		}
