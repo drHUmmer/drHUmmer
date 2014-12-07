@@ -116,8 +116,10 @@ int main(void)
 	    DIR		p_dir;
 	    FRESULT result = FR_OK;
 
+	    #define _MAX_FILES 20
 
-
+	    TCHAR	fnames[_MAX_FILES][13] = {{0},{0}};
+	    uint8_t  i;
 
 	    //Initialize delays
 	    TM_DELAY_Init();
@@ -132,21 +134,16 @@ int main(void)
 
 	        //read file names
 	        result = f_opendir(&p_dir, "/");
-	        for(;;){
-	        	//fno.fname = fname;
-	        	//fno.lfsize = _MAX_LFN - 1;
+	        for(i=0; i<_MAX_FILES; i++){
 
 	        	result = f_readdir(&p_dir, &fno);
-	        	//if (result || !fno.fname[0]) break; // End of dir
 
-	    		/*if (fno.fattrib & AM_DIR) {
-	    			sprintf("   [dir]  %s\r\n", fno.lfname[0] ? fno.lfname : fno.fname);
-	    		}
-	    		else {
-	    			sprintf("   %8lu  %s\r\n", fno.fsize, fno.lfname[0] ? fno.lfname : fno.fname);
-	    		}
-	    		printf("debug...");
-	    		*/
+	        	if (result || !fno.fname[0]) break; // End of dir
+
+	        	uint8_t j;
+	        	for(j=0; j<13; j++)fnames[i][j] = fno.fname[j];
+
+
 	    	}
 
 	    //result = f_readdir (&p_dir, &fno);
