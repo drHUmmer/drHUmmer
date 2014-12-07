@@ -16,13 +16,14 @@
 /////////////////
 #define TITLE_MAINSCREEN		"Main"
 #define TITLE_SETTINGSMENU		"Settings"
+#define TITLE_COLOURMENU		"Colours"
 #define TITLE_BACKCOLOURMENU	"Back colour"
 #define TITLE_TEXTCOLOURMENU	"Text colour"
 
 /////////////////////
 // Dispay settings //
 /////////////////////
-#define BACKSTRING				"Back"
+#define BACKSTRING				"../"
 #define MAXSTRINGLENGTH			16
 #define MAXOPTIONS				(2 * OPTIONSPERMENU)
 #define CURRENTLYSELECTEDCHAR	'>'
@@ -38,9 +39,8 @@ typedef struct {
 	char			menuOptions[MAXOPTIONS][MAXSTRINGLENGTH];	// Names of options
 	int8_t			currentOption;							// Currently selected option
 	uint8_t			nrOfOptions;							// Total number of options
-	uint8_t			showCursor					: 1;		// 1 = true, 0 = false
 	void			(*handler)(void);						// Handler function pointer
-	void			(*parent)(void);
+	void			(*parent)(void);						// Parent screen
 } Menu_Typedef;
 
 typedef struct {
@@ -49,6 +49,7 @@ typedef struct {
 	Menu_Typedef*	menuCurrent;
 	Menu_Typedef	menuMain;
 	Menu_Typedef	menuSettings;
+	Menu_Typedef	menuColours;
 	Menu_Typedef	menuBackcolour;
 	Menu_Typedef	menuTextcolour;
 
@@ -61,10 +62,12 @@ void 	MenuClearStringMemory 		(Menu_Typedef* menu);
 uint8_t MenuCompareTitle			(char* toCompare);
 uint8_t MenuCompareSelected			(char* toCompare);
 void 	MenuDrawCurrentlySelected 	(void);
+void 	MenuDrawOptions				(void);
 void 	MenuRedrawScreen 			(void);
 void 	MenuSetup					(void);
 void 	MenuUpdateSelectedItem		(void);
 
+// User interface
 uint8_t MenuBackpressed				(uint8_t reset);
 uint8_t MenuOKpressed				(uint8_t reset);
 int8_t  MenuRotaryRead				(uint8_t reset);

@@ -5,6 +5,7 @@
 #include "menu.h"
 
 void Menu_BackcolourHandler();
+void Menu_ColourHandler();
 void Menu_MainHandler();
 void Menu_SettingsHandler();
 void Menu_TextcolourHandler();

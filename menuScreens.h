@@ -6,6 +6,7 @@
 
 // Function prototypes
 void Menu_Main();
+void Menu_Colours();
 void Menu_Settings();
 void Menu_SetBackcolour();
 void Menu_SetTextcolour();

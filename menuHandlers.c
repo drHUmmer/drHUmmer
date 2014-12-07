@@ -42,11 +42,25 @@ void Menu_SettingsHandler() {
 	MenuUpdateSelectedItem();
 
 	if (MenuOKpressed(1)) {
-		switch(mainmenu.menuCurrent->currentOption) {
-			case 1:	Menu_SetBackcolour();		break;
-			case 2: Menu_SetTextcolour();		break;
-		}
+		if (MenuCompareSelected(TITLE_COLOURMENU))
+			Menu_Colours();
 	}
+}
+
+void Menu_ColourHandler() {
+	MenuUpdateSelectedItem();
+
+	if (MenuCompareSelected("Invert")) {
+		uint16_t temp = mainmenu.backgroundcolour;
+		mainmenu.backgroundcolour = mainmenu.foregroundcolour;
+		mainmenu.foregroundcolour = temp;
+	}
+
+	if (MenuCompareSelected("Set back colour"))
+		Menu_SetBackcolour();
+
+	if (MenuCompareSelected("Set text colour"))
+		Menu_SetTextcolour();
 }
 
 void Menu_BackcolourHandler() {

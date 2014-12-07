@@ -382,29 +382,19 @@ void LCD_PutChar(int16_t PosX, int16_t PosY, char c) {
 	}
 	//----------------------------------------------------------------------------
 }
+
+// note: Only asciisize 24 works //
 void LCD_StringLine(uint16_t PosX, uint16_t PosY, char *str) {
 	char TempChar;
 
 	do {
 		TempChar = *str++;
 		LCD_PutChar(PosX, PosY, TempChar);
-//		if (PosY < 304) {
-			PosY += 8;
-			if (asciisize == 24) {
-				PosY += 10;					// 8
-			} else if (asciisize == 14) {
-				PosY += 4;
-			}
-//		}
 
-//		else if (PosX < 304) {
-//
-//			PosY = 0;
-//			PosX += 16;
-//		} else {
-//			PosY = 0;
-//			PosX = 0;
-//		}
+		PosY += 8;
+		if (asciisize == 24) {
+			PosY += 10;					// 8
+		}
 	} while (*str != 0);
 }
 
