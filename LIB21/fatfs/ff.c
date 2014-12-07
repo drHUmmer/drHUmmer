@@ -2237,8 +2237,8 @@ FRESULT find_volume (	/* FR_OK(0): successful, !=0: any error occurred */
 	if (LD_WORD(fs->win+BPB_BytsPerSec) != SS(fs))		/* (BPB_BytsPerSec must be equal to the physical sector size) */
 		return FR_NO_FILESYSTEM;
 
-	fasize = LD_WORD(fs->win+BPB_FATSz16);				/* Number of sectors per FAT */
-	if (!fasize) fasize = LD_DWORD(fs->win+BPB_FATSz32);
+	fasize = LD_WORD(fs->win+BPB_FATSz16);				/* Number of sectors per FAT16 */
+	if (!fasize) fasize = LD_DWORD(fs->win+BPB_FATSz32);/* Number of sectors per FAT32 */
 	fs->fsize = fasize;
 
 	fs->n_fats = fs->win[BPB_NumFATs];					/* Number of FAT copies */
@@ -4583,6 +4583,31 @@ int f_printf (
 		&& f_write(pb.fp, pb.buf, (UINT)pb.idx, &nw) == FR_OK
 		&& (UINT)pb.idx == nw) return pb.nchr;
 	return EOF;
+}
+
+WCHAR ff_convert (WCHAR wch, UINT dir)
+{
+	if (wch < 0x80) {
+		/* ASCII Char */
+		return wch;
+	}
+
+	/* I don't support unicode it is too big! */
+	return 0;
+}
+
+WCHAR ff_wtoupper (WCHAR wch)
+{
+	if (wch < 0x80) {
+		/* ASCII Char */
+		if (wch >= 'a' && wch <= 'z') {
+			wch &= ~0x20;
+		}
+		return wch;
+	}
+
+	/* I don't support unicode it is too big! */
+	return 0;
 }
 
 #endif /* !_FS_READONLY */

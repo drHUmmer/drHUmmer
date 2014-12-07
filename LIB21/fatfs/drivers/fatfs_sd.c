@@ -111,7 +111,7 @@ static int wait_ready (	/* 1:Ready, 0:Timeout */
 static void deselect (void)
 {
 	FATFS_CS_HIGH;			/* CS = H */
-//	xchg_spi(0xFF);			/* Dummy clock (force DO hi-z for multiple slave SPI) */
+	xchg_spi(0xFF);			/* Dummy clock (force DO hi-z for multiple slave SPI) */
 	FATFS_DEBUG_SEND_USART("deselect: ok");
 }
 
@@ -124,14 +124,14 @@ static void deselect (void)
 static int select (void)	/* 1:OK, 0:Timeout */
 {
 	FATFS_CS_LOW;
-//	xchg_spi(0xFF);	/* Dummy clock (force DO enabled) */
+	xchg_spi(0xFF);	/* Dummy clock (force DO enabled) */
 
-//	if (wait_ready(500)) {
-//		FATFS_DEBUG_SEND_USART("select: OK");
-//		return 1;	/* OK */
-//	}
-//	FATFS_DEBUG_SEND_USART("select: no");
-//	deselect();
+	if (wait_ready(500)) {
+		FATFS_DEBUG_SEND_USART("select: OK");
+		return 1;	/* OK */
+	}
+	FATFS_DEBUG_SEND_USART("select: no");
+	deselect();
 
 	return 1;	/* Timeout */
 }
@@ -221,7 +221,13 @@ static BYTE send_cmd (		/* Return value: R1 resp (bit7==1:Failed to send) */
 	if (cmd & 0x80) {	/* Send a CMD55 prior to ACMD<n> */
 		FATFS_DEBUG_SEND_USART("send_cmd: 0x80 bit set");
 		cmd &= 0x7F;
-		res = send_cmd(CMD55, 0);
+//		res = send_cmd(CMD58, 0);
+//		res = 255;
+//		while(res > 1){
+			res = send_cmd(CMD55, 0);
+//			res = send_cmd(41, 0);
+//		}
+//		return res;
 		if (res > 1) return res;
 	}
 

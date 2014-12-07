@@ -83,7 +83,7 @@ void TM_DELAY_SetTime(uint32_t time) {
 }
 
 void TM_DELAY_SetTime2(uint32_t time) {
-	TM_Time2 = time;
+	TM_Time2 = (1000*time);
 }
 
 void TM_DELAY_EnableSystick(void) {

@@ -112,6 +112,13 @@ int main(void)
 	    //Free and total space
 	    uint32_t total, free;
 
+	    FILINFO fno;
+	    DIR		p_dir;
+	    FRESULT result = FR_OK;
+
+
+
+
 	    //Initialize delays
 	    TM_DELAY_Init();
 	    //Initialize LEDs
@@ -122,8 +129,33 @@ int main(void)
 	        //Mounted OK, turn on RED LED
 	        TM_DISCO_LedOn(LED_RED);
 
+
+	        //read file names
+	        result = f_opendir(&p_dir, "/");
+	        for(;;){
+	        	//fno.fname = fname;
+	        	//fno.lfsize = _MAX_LFN - 1;
+
+	        	result = f_readdir(&p_dir, &fno);
+	        	//if (result || !fno.fname[0]) break; // End of dir
+
+	    		/*if (fno.fattrib & AM_DIR) {
+	    			sprintf("   [dir]  %s\r\n", fno.lfname[0] ? fno.lfname : fno.fname);
+	    		}
+	    		else {
+	    			sprintf("   %8lu  %s\r\n", fno.fsize, fno.lfname[0] ? fno.lfname : fno.fname);
+	    		}
+	    		printf("debug...");
+	    		*/
+	    	}
+
+	    //result = f_readdir (&p_dir, &fno);
+
+
+
+
 	        //Try to open file
-	        if (f_open(&fil, "1stfile.txt", FA_OPEN_ALWAYS | FA_READ | FA_WRITE) == FR_OK) {
+	        if (f_open(&fil, "2ndfile.txt", FA_OPEN_ALWAYS | FA_READ | FA_WRITE) == FR_OK) {
 	            //File opened, turn off RED and turn on GREEN led
 	            TM_DISCO_LedOn(LED_GREEN);
 	            TM_DISCO_LedOff(LED_RED);
