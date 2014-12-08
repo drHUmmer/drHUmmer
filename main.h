@@ -28,14 +28,7 @@
 #include "sequencer.h"
 #include "UI.h"
 #include "ringbuff.h"
-
-#include "defines.h"
-#include "stm32f4xx.h"
-#include "tm_stm32f4_delay.h"
-#include "tm_stm32f4_disco.h"
-#include "tm_stm32f4_fatfs.h"
-#include <stdio.h>
-#include <string.h>
+#include "SD.h"
 
 int main(void);
 
