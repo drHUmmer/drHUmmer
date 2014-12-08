@@ -42,7 +42,7 @@ void Menu_SettingsHandler() {
 	MenuUpdateSelectedItem();
 
 	if (MenuOKpressed(1)) {
-		if (MenuCompareSelected(TITLE_COLOURMENU))
+		if (MenuCompareSelected("Set colours"))
 			Menu_Colours();
 	}
 }
@@ -50,17 +50,20 @@ void Menu_SettingsHandler() {
 void Menu_ColourHandler() {
 	MenuUpdateSelectedItem();
 
-	if (MenuCompareSelected("Invert")) {
-		uint16_t temp = mainmenu.backgroundcolour;
-		mainmenu.backgroundcolour = mainmenu.foregroundcolour;
-		mainmenu.foregroundcolour = temp;
+	if (MenuOKpressed(1)) {
+		if (MenuCompareSelected("Invert")) {
+			uint16_t temp = mainmenu.backgroundcolour;
+			mainmenu.backgroundcolour = mainmenu.foregroundcolour;
+			mainmenu.foregroundcolour = temp;
+			MenuRedrawScreen();
+		}
+
+		if (MenuCompareSelected("Set back colour"))
+			Menu_SetBackcolour();
+
+		if (MenuCompareSelected("Set text colour"))
+			Menu_SetTextcolour();
 	}
-
-	if (MenuCompareSelected("Set back colour"))
-		Menu_SetBackcolour();
-
-	if (MenuCompareSelected("Set text colour"))
-		Menu_SetTextcolour();
 }
 
 void Menu_BackcolourHandler() {

@@ -110,15 +110,17 @@ uint8_t MenuCompareSelected(char* toCompare) {
 
 void MenuDrawCurrentlySelected () {
 	if (!MenuCompareTitle(TITLE_MAINSCREEN)) {
+		LCD_SetTextColor(ColourConverterDec(mainmenu.backgroundcolour));
 		LCD_DrawFullRect(10, 3, 176, 19);
+		LCD_SetTextColor(ColourConverterDec(mainmenu.foregroundcolour));
 		LCD_PutChar(160 - ((mainmenu.menuCurrent->currentOption % OPTIONSPERMENU) * 30), 5, CURRENTLYSELECTEDCHAR);
 	}
 }
 
 void MenuDrawOptions() {
-	LCD_SetTextColor(ColourConverterDec(Yellow));		// DEBUG //
-	LCD_DrawFullRect(0,0,200,200);						// Redraw options //
-	LCD_SetTextColor(ColourConverterDec(Black));		// DEBUG //
+	LCD_SetTextColor(ColourConverterDec(mainmenu.backgroundcolour));
+	LCD_DrawFullRect(10, 30, 176, 280);						// Redraw options //
+	LCD_SetTextColor(ColourConverterDec(mainmenu.foregroundcolour));
 
 	if (mainmenu.menuCurrent->nrOfOptions) {
 		uint8_t optionCounter 	= 0;
