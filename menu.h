@@ -19,12 +19,15 @@
 #define TITLE_COLOURMENU		"Colours"
 #define TITLE_BACKCOLOURMENU	"Back colour"
 #define TITLE_TEXTCOLOURMENU	"Text colour"
+#define TITLE_SETFX				"Set FX"
+#define TITLE_SETFX1			"Set Fx (1)"
+#define TITLE_SETFX2			"Set Fx (2)"
 
 /////////////////////
 // Dispay settings //
 /////////////////////
 #define BACKSTRING				"../"
-#define MAXSTRINGLENGTH			16
+#define MAXSTRINGLENGTH			17
 #define MAXOPTIONS				(2 * OPTIONSPERMENU)
 #define CURRENTLYSELECTEDCHAR	'>'
 #define OPTIONSPERMENU			6
@@ -49,9 +52,16 @@ typedef struct {
 	Menu_Typedef*	menuCurrent;
 	Menu_Typedef	menuMain;
 	Menu_Typedef	menuSettings;
+
+	// Colours
 	Menu_Typedef	menuColours;
 	Menu_Typedef	menuBackcolour;
 	Menu_Typedef	menuTextcolour;
+
+	// FX
+	Menu_Typedef	menuFx;
+	Menu_Typedef	menuFx1;
+	Menu_Typedef	menuFx2;
 
 } MenuSettings_TypeDef;
 
@@ -59,10 +69,12 @@ typedef struct {
 // Function prototypes //
 /////////////////////////
 void 	MenuClearStringMemory 		(Menu_Typedef* menu);
+void 	MenuClearTitle 				(Menu_Typedef* menu);
 uint8_t MenuCompareTitle			(char* toCompare);
 uint8_t MenuCompareSelected			(char* toCompare);
 void 	MenuDrawCurrentlySelected 	(void);
-void 	MenuDrawOptions				(void);
+void 	MenuDrawOptions				(uint8_t clearBack);
+void 	MenuDrawTitle				(uint8_t clearBack);
 void 	MenuRedrawScreen 			(void);
 void 	MenuSetup					(void);
 void 	MenuUpdateSelectedItem		(void);

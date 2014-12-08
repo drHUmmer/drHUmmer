@@ -35,6 +35,7 @@
 #include "sequencer.h"
 #include "UI.h"
 #include "ringbuff.h"
+#include "filter.h"
 #include "SPI.h"
 
 int main(void);

@@ -1,18 +1,15 @@
 #include "main.h"
 
+/*VARIABLES*/
 void task_a(void);
 void task_b(void);
-void leds(void);
+extern IIRfilter_t testFilter;
+extern uint16_t filterStatus;
 
-#ifdef USE_OS
-OS_STK taskA_stk[128];  /*!< define "taskA" task stack */
-OS_STK taskB_stk[128];  /*!< define "taskB" task stack */
-OS_STK led_stk [128];  /*!< define "led" task stack */
-
-OS_FlagID a_flag,b_flag;
-
-OS_EventID mbox0;
+#ifdef FILTER_DEMO
+extern uint8_t filterDemo;
 #endif
+void leds(void);
 
 #ifndef DEBUG	/* DEBUG not defined; regular operation (define located in main.h) */
 int main(void)
@@ -35,6 +32,14 @@ int main(void)
 	GPIO_Init(GPIOD, &GPIO_InitStruct);
 
 //	UIInit();
+#ifdef FILTER_DEMO
+	GPIO_InitStruct.GPIO_Pin = GPIO_Pin_0;
+	GPIO_InitStruct.GPIO_Mode = GPIO_Mode_IN;
+	GPIO_InitStruct.GPIO_Speed = GPIO_Speed_100MHz;
+	GPIO_InitStruct.GPIO_PuPd = GPIO_PuPd_NOPULL;
+	GPIO_Init(GPIOA, &GPIO_InitStruct);
+#endif
+
 
 //	dacInit();
 //	adcInit();
@@ -53,7 +58,7 @@ int main(void)
 int main(void)
 {
 	PLLInit();
-//	sequencerInit();
+	sequencerInit();
 //	SPI3_Init();
 
 /*****************
@@ -77,30 +82,18 @@ int main(void)
 	GPIO_Init(GPIOD, &GPIO_InitStruct);
 /* End LED IO init */
 
-//	UIInit();
+	UIInit();
 
-//	dacInit();
-//	adcInit();
-//	NVICTimer2Init();
-//	NVICTimer5Init();
-//	Timer2Init();
-//	Timer5Init();
+	dacInit();
+	adcInit();
+	NVICTimer2Init();
+	NVICTimer5Init();
+	Timer2Init();
+	Timer5Init();
 
-//	BPMUpdate(sequencer.BPM);
+	BPMUpdate(sequencer.BPM);
 
-//	RingBufferInit();
-
-
-#ifdef USE_OS
-	CoInitOS();
-	CoCreateTask ((FUNCPtr)task_a,(void *)0,0,&taskA_stk[128-1],128);
-	CoCreateTask ((FUNCPtr)task_b,(void *)0,1,&taskB_stk[128-1],128);
-	CoCreateTask ((FUNCPtr)leds ,(void *)0,2,&led_stk[128-1] ,128);
-
-	CoStartOS();
-
-	for(;;);
-#endif
+	RingBufferInit();
 
 #ifndef USE_OS
 	uint16_t i=0x00FF;
@@ -120,26 +113,32 @@ int main(void)
 
 	LCD_CharSize(24);
 	MenuSetup();
-	UIInit();
+
+	FXsettings.fx1	= NONE;
+	FXsettings.fx2	= NONE;
+	FXsettings.bcBits = 3;
+	FXsettings.dsFreq = 800;
+	FXsettings.lpfFreq = 3000;
+	FXsettings.hpfFreq = 150;
 
 	while (1) {
 		uint16_t buttonvalue = UIButtonRead();
-		if (buttonvalue & 0x10) {
+		if (buttonvalue & 0x1000) {
 			buttonz.buttonOK = 1;
 			GPIO_SetBits(GPIOD, GPIO_Pin_12);
 		}
 
-		if (buttonvalue & 0x20) {
+		if (buttonvalue & 0x2000) {
 			buttonz.buttonBack = 1;
 			GPIO_SetBits(GPIOD, GPIO_Pin_13);
 		}
 
-		if (buttonvalue & 0x40) {
+		if (buttonvalue & 0x4000) {
 			GPIO_SetBits(GPIOD, GPIO_Pin_14);
 			buttonz.rotaryValue = 1;
 		}
 
-		if (buttonvalue & 0x80) {
+		if (buttonvalue & 0x8000) {
 			GPIO_SetBits(GPIOD, GPIO_Pin_15);
 			buttonz.rotaryValue = -1;
 		}
@@ -157,69 +156,20 @@ int main(void)
 	{
 		delay_nms(50);
 	}
+
+	#ifdef FILTER_DEMO	//quick 'n dirty user button read, no debouncing
+			uint8_t userButt=0;
+
+			userButt = GPIO_ReadInputDataBit(GPIOA, GPIO_Pin_0);
+			if(userButt)
+			{
+				filterDemo++;
+			}
+	#endif
+
+	delay_nms(100);
 }
 
-#else		/*	USE_OS	*/
-
-void task_a(void)
-{
-	a_flag = CoCreateFlag (Co_TRUE,0);
-	uint8_t msg = 'A';
-
-	for(;;)
-	{
-		GPIO_SetBits(GPIOD, GPIO_Pin_15);
-		CoWaitForSingleFlag (a_flag,0);
-		CoTickDelay(20);
-		CoPostMail(mbox0,&msg);
-		GPIO_ResetBits(GPIOD, GPIO_Pin_13);
-	}
-}
-
-void task_b(void)
-{
-	b_flag = CoCreateFlag (Co_TRUE,0);
-	uint8_t msg = 'B';
-
-	for(;;)
-	{
-		GPIO_SetBits(GPIOD, GPIO_Pin_13);
-		CoWaitForSingleFlag (b_flag,0);
-		CoTickDelay(20);
-		CoPostMail(mbox0,&msg);
-		GPIO_ResetBits(GPIOD, GPIO_Pin_15);
-	}
-}
-
-void leds(void)
-{
-	void* pmail;
-	StatusType err;
-	uint8_t* data;
-
-	mbox0 = CoCreateMbox(EVENT_SORT_TYPE_PRIO); //Sort by preemptive priority
-
-	for(;;)
-	{
-		GPIO_SetBits(GPIOD, GPIO_Pin_12);
-		pmail = CoPendMail(mbox0,2,&err);
-		data = pmail;
-
-		if (*data == 'A')
-		{
-			//debug = SPI_PIC_Receive();
-			SPI_LED_Send(0xC0);
-			CoSetFlag(b_flag);
-		}
-		else
-		{
-			//debug = SPI_PIC_Receive();
-			SPI_LED_Send(0xA3);
-			CoSetFlag(a_flag);
-		}
-		GPIO_ResetBits(GPIOD, GPIO_Pin_12);
-	}
-}
 #endif	/*	USE_OS	*/
 
 void EXTI1_IRQHandler(void)

@@ -11,14 +11,14 @@ void Menu_UpdateHandler() {
 		if (MenuCompareSelected(BACKSTRING)) {
 			Menu_GotoParent();
 			MenuOKpressed(1);		// Reset OK button
-			GPIO_SetBits(GPIOD, GPIO_Pin_14);
+			GPIO_SetBits(GPIOD, GPIO_Pin_14);					// GPIO //
 			return;												// RETURN //
 		}
 	}
 
 	if (MenuBackpressed(1)) {
 		Menu_GotoParent();
-		GPIO_SetBits(GPIOD, GPIO_Pin_15);
+		GPIO_SetBits(GPIOD, GPIO_Pin_15);						// GPIO //
 		return;													// RETURN //
 	}
 
@@ -44,6 +44,9 @@ void Menu_SettingsHandler() {
 	if (MenuOKpressed(1)) {
 		if (MenuCompareSelected("Set colours"))
 			Menu_Colours();
+
+		if (MenuCompareSelected("Set fx"))
+			Menu_SetFx();
 	}
 }
 
@@ -157,6 +160,87 @@ void Menu_TextcolourHandler() {
 			mainmenu.foregroundcolour = Blue2;
 			MenuRedrawScreen();
 		}
+	}
+}
+
+void Menu_SetFxHandler() {
+	MenuUpdateSelectedItem();
+
+	if (MenuOKpressed(1)) {
+		uint8_t currentSelectedOption = mainmenu.menuCurrent->currentOption;
+
+		if (strstr(mainmenu.menuCurrent->menuOptions[currentSelectedOption], "Fx 1") != NULL) {
+			Menu_SetFx1();
+		}
+		if (strstr(mainmenu.menuCurrent->menuOptions[currentSelectedOption], "Fx 2") != NULL) {
+			Menu_SetFx2();
+		}
+	}
+}
+
+void Menu_SetFx1Handler() {
+	MenuUpdateSelectedItem();
+
+	if (MenuOKpressed(1)) {
+		if (MenuCompareSelected("None"))
+			FXsettings.fx1 = NONE;
+
+		if (MenuCompareSelected("Low-pass"))
+			FXsettings.fx1 = LPF;
+
+		if (MenuCompareSelected("High-pass"))
+			FXsettings.fx1 = HPF;
+
+		if (MenuCompareSelected("Bitcrusher"))
+			FXsettings.fx1 = BC;
+
+		if (MenuCompareSelected("Down-sampler"))
+			FXsettings.fx1 = DS;
+
+		MenuClearTitle(mainmenu.menuCurrent);
+
+		switch(FXsettings.fx1) {
+		case LPF: 	strcpy(mainmenu.menuCurrent->menuTitle, "Set fx 1 - LPF "); 	break;
+		case HPF: 	strcpy(mainmenu.menuCurrent->menuTitle,	"Set fx 1 - HPF "); 	break;
+		case BC: 	strcpy(mainmenu.menuCurrent->menuTitle,	"Set fx 1 - BC  "); 	break;
+		case DS: 	strcpy(mainmenu.menuCurrent->menuTitle,	"Set fx 1 - DS  "); 	break;
+		default: 	strcpy(mainmenu.menuCurrent->menuTitle,	"Set fx 1 - NONE"); 	break;
+		}
+
+		MenuDrawTitle(1);
+	}
+}
+
+void Menu_SetFx2Handler() {
+	MenuUpdateSelectedItem();
+
+	if (MenuOKpressed(1)) {
+		if (MenuCompareSelected("None"))
+			FXsettings.fx2 = NONE;
+
+		if (MenuCompareSelected("Low-pass"))
+			FXsettings.fx2 = LPF;
+
+		if (MenuCompareSelected("High-pass"))
+			FXsettings.fx2 = HPF;
+
+		if (MenuCompareSelected("Bitcrusher"))
+			FXsettings.fx2 = BC;
+
+		if (MenuCompareSelected("Down-sampler"))
+			FXsettings.fx2 = DS;
+
+		MenuClearTitle(mainmenu.menuCurrent);
+
+		switch(FXsettings.fx2) {
+		case LPF: 	strcpy(mainmenu.menuCurrent->menuTitle, "Set fx 2 - LPF "); 	break;
+		case HPF: 	strcpy(mainmenu.menuCurrent->menuTitle,	"Set fx 2 - HPF "); 	break;
+		case BC: 	strcpy(mainmenu.menuCurrent->menuTitle,	"Set fx 2 - BC  "); 	break;
+		case DS: 	strcpy(mainmenu.menuCurrent->menuTitle,	"Set fx 2 - DS  "); 	break;
+		default: 	strcpy(mainmenu.menuCurrent->menuTitle,	"Set fx 2 - NONE"); 	break;
+		}
+
+		MenuDrawTitle(1);
 	}
 }
 
