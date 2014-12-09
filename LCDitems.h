@@ -1,8 +1,8 @@
 #ifndef LCDITEMS_H
 #define LCDITEMS_H
 
-#include "ILI9325.h"
 #include "menu.h"
+#include "ILI9325.h"
 
 ///////////////////////
 // Colour converters //

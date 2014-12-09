@@ -1,15 +1,24 @@
 #ifndef MENU_H
 #define MENU_H
 
+#include "stm32f4xx.h"
+
+typedef struct {
+	uint16_t		xPos;
+	uint16_t		yPos;
+	uint16_t		xSize;
+	uint16_t		ySize;
+	int8_t			value;
+} Progressbar_Typedef;
+
 //////////////
 // Includes //
 //////////////
 #include <string.h>
 #include "menuScreens.h"
 #include "menuHandlers.h"
-#include "LCDitems.h"
 #include "ILI9325.h"
-#include "stm32f4xx.h"
+#include "LCDitems.h"
 
 /////////////////
 // Menu titles //
@@ -73,14 +82,6 @@ typedef struct {
 	uint16_t		tonePosBar;
 	uint16_t		toneNegBar;
 } Colours_Typedef;
-
-typedef struct {
-	uint16_t		xPos;
-	uint16_t		yPos;
-	uint16_t		xSize;
-	uint16_t		ySize;
-	int8_t			value;
-} Progressbar_Typedef;
 
 typedef struct {
 	Progressbar_Typedef		analogDrum1Level;

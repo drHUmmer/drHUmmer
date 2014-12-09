@@ -18,8 +18,8 @@
 
 
 #include "ILI9325.h"
-#include "LCDitems.h"
 #include "menu.h"
+#include "LCDitems.h"
 #include "menuHandlers.h"
 #include "menuScreens.h"
 
