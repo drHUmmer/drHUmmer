@@ -13,6 +13,9 @@ void Menu_SettingsHandler();
 void Menu_ColourHandler();
 void Menu_BackcolourHandler();
 void Menu_TextcolourHandler();
+void Menu_LevelBarHandler();
+void Menu_TonePosBarHandler();
+void Menu_ToneNegBarHandler();
 
 // FX
 void Menu_SetFxHandler();

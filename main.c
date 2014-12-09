@@ -112,14 +112,25 @@ int main(void)
 	LCD_Clear(ColourConverterDec(Black));
 
 	LCD_CharSize(24);
-	MenuSetup();
 
-	FXsettings.fx1	= NONE;
-	FXsettings.fx2	= NONE;
+	FXsettings.fx1	= LPF;
+	FXsettings.fx2	= HPF;
 	FXsettings.bcBits = 3;
 	FXsettings.dsFreq = 800;
-	FXsettings.lpfFreq = 3000;
-	FXsettings.hpfFreq = 150;
+	FXsettings.lpfFreq = 3000;		// 3000
+	FXsettings.hpfFreq = 1500;		// 15000
+
+	sequencer.instr0.level 	= 25;
+	sequencer.instr1.level 	= 50;
+	sequencer.instr2.level 	= 75;
+	sequencer.instr3.level 	= 100;
+
+	sequencer.instr0.tone 	= 75;
+	sequencer.instr1.tone 	= 0;
+	sequencer.instr2.tone 	= -25;
+	sequencer.instr3.tone 	= -75;
+
+	MenuSetup();
 
 	while (1) {
 		uint16_t buttonvalue = UIButtonRead();
@@ -146,7 +157,9 @@ int main(void)
 
 		Menu_UpdateHandler();
 		delay_nms(100);
-		GPIO_ResetBits(GPIOD, GPIO_Pin_12);
+		sequencer.instr0.level ++;
+		sequencer.instr0.level %= 100;
+//		GPIO_ResetBits(GPIOD, GPIO_Pin_12);
 		GPIO_ResetBits(GPIOD, GPIO_Pin_13);
 		GPIO_ResetBits(GPIOD, GPIO_Pin_14);
 		GPIO_ResetBits(GPIOD, GPIO_Pin_15);

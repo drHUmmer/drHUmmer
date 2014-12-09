@@ -22,6 +22,9 @@
 #define TITLE_SETFX				"Set FX"
 #define TITLE_SETFX1			"Set Fx (1)"
 #define TITLE_SETFX2			"Set Fx (2)"
+#define TITLE_LEVELBAR			"Set level bar"
+#define TITLE_TONEPOSBAR		"Set tone + bar"
+#define TITLE_TONENEGBAR		"Set tone - bar"
 
 /////////////////////
 // Dispay settings //
@@ -47,8 +50,13 @@ typedef struct {
 } Menu_Typedef;
 
 typedef struct {
+	// Colours
 	uint16_t 		backgroundcolour;
 	uint16_t 		foregroundcolour;
+	uint16_t		levelbarcolour;
+	uint16_t		toneposbarcolour;
+	uint16_t		tonenegbarcolour;
+
 	Menu_Typedef*	menuCurrent;
 	Menu_Typedef	menuMain;
 	Menu_Typedef	menuSettings;
@@ -57,6 +65,9 @@ typedef struct {
 	Menu_Typedef	menuColours;
 	Menu_Typedef	menuBackcolour;
 	Menu_Typedef	menuTextcolour;
+	Menu_Typedef	menuLevelBarcolour;
+	Menu_Typedef	menuTonePosBarcolour;
+	Menu_Typedef	menuToneNegBarcolour;
 
 	// FX
 	Menu_Typedef	menuFx;

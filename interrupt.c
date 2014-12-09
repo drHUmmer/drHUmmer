@@ -1,8 +1,8 @@
 #include "interrupt.h"
-#include "hihat.h"
-#include "snaredrum.h"
-#include "basskick.h"
-#include "cymbal.h"
+//#include "hihat.h"
+//#include "snaredrum.h"
+//#include "basskick.h"
+//#include "cymbal.h"
 #include "filter.h"
 #include "DAC.h"
 
@@ -115,10 +115,11 @@ void TIM5_IRQHandler(void)
 			sequencer.instr3.triggerflag = 0;
 		}
 
-		 audioOut = (hihatWav[sequencer.instr0.buffer_loc] + \
-					 snaredrumWav[sequencer.instr1.buffer_loc] + \
-					 basskickmWav[sequencer.instr2.buffer_loc] + \
-					 cymbalWav[sequencer.instr3.buffer_loc]) / 4;
+//		 audioOut = (hihatWav[sequencer.instr0.buffer_loc] + \
+//					 snaredrumWav[sequencer.instr1.buffer_loc] + \
+//					 basskickmWav[sequencer.instr2.buffer_loc] + \
+//					 cymbalWav[sequencer.instr3.buffer_loc]) / 4;
+		audioOut = 0;
 
 		//this is where the filter party starts.........
 

@@ -383,6 +383,35 @@ void LCD_PutChar(int16_t PosX, int16_t PosY, char c) {
 	//----------------------------------------------------------------------------
 }
 
+void LCD_StringInt(uint16_t PosX, uint16_t PosY, uint16_t value, uint8_t alignRight) {
+	if (value > 99999)
+		return;
+
+	uint16_t temp = 0;
+	uint8_t count = 5;
+	uint8_t first = 0;	// Not 0 passed?
+
+	while (count) {
+		temp = value / (pow(10, count - 1));
+
+		if (temp)
+			first = 1;
+
+		if (first)
+			LCD_PutChar(PosX, PosY, temp + 0x30);
+		else {
+			if (alignRight) {
+				LCD_PutChar(PosX, PosY, ' ');
+			}
+		}
+
+		PosY += 18;
+
+		value -= temp * (pow(10, count - 1));
+		count --;
+	}
+}
+
 // note: Only asciisize 24 works //
 void LCD_StringLine(uint16_t PosX, uint16_t PosY, char *str) {
 	char TempChar;

@@ -5,6 +5,9 @@ void MenuSetup() {
 	// Set default values
 	mainmenu.backgroundcolour 	= Black;
 	mainmenu.foregroundcolour 	= Green;
+	mainmenu.levelbarcolour		= Red;
+	mainmenu.toneposbarcolour	= Blue2;
+	mainmenu.tonenegbarcolour	= Blue;
 	mainmenu.menuCurrent		= &mainmenu.menuMain;
 
 	// Clear menu options
@@ -15,6 +18,9 @@ void MenuSetup() {
 	MenuClearStringMemory(&mainmenu.menuFx);
 	MenuClearStringMemory(&mainmenu.menuFx1);
 	MenuClearStringMemory(&mainmenu.menuFx2);
+	MenuClearStringMemory(&mainmenu.menuLevelBarcolour);
+	MenuClearStringMemory(&mainmenu.menuTonePosBarcolour);
+	MenuClearStringMemory(&mainmenu.menuToneNegBarcolour);
 
 	// Main screen //
 	mainmenu.menuMain.currentOption							= 0;
@@ -34,14 +40,17 @@ void MenuSetup() {
 
 	// Colours //
 	mainmenu.menuColours.currentOption						= 1;
-	mainmenu.menuColours.nrOfOptions						= 4;
+	mainmenu.menuColours.nrOfOptions						= 7;
 	mainmenu.menuColours.handler							= Menu_ColourHandler;
 	mainmenu.menuColours.parent								= Menu_Settings;
 	strcpy(mainmenu.menuColours.menuTitle					, TITLE_COLOURMENU);
 	strcpy(mainmenu.menuColours.menuOptions	[0]				, BACKSTRING);
 	strcpy(mainmenu.menuColours.menuOptions	[1]				, "Invert");
-	strcpy(mainmenu.menuColours.menuOptions	[2]				, "Set back colour");
-	strcpy(mainmenu.menuColours.menuOptions	[3]				, "Set text colour");
+	strcpy(mainmenu.menuColours.menuOptions	[2]				, "Back colour");
+	strcpy(mainmenu.menuColours.menuOptions	[3]				, "Text colour");
+	strcpy(mainmenu.menuColours.menuOptions	[4]				, "Level colour");
+	strcpy(mainmenu.menuColours.menuOptions	[5]				, "Tone + colour");
+	strcpy(mainmenu.menuColours.menuOptions	[6]				, "Tone - colour");
 
 	// Background colour //
 	mainmenu.menuBackcolour.currentOption					= 1;
@@ -78,6 +87,60 @@ void MenuSetup() {
 	strcpy(mainmenu.menuTextcolour.menuOptions [8]			, "Magenta");
 	strcpy(mainmenu.menuTextcolour.menuOptions [9]			, "Grey");
 	strcpy(mainmenu.menuTextcolour.menuOptions [10]			, "Blue - 2");
+
+	// Level colour //
+	mainmenu.menuLevelBarcolour.currentOption				= 1;
+	mainmenu.menuLevelBarcolour.nrOfOptions					= 11;
+	mainmenu.menuLevelBarcolour.handler						= Menu_LevelBarHandler;
+	mainmenu.menuLevelBarcolour.parent						= Menu_Colours;
+	strcpy(mainmenu.menuLevelBarcolour.menuTitle	  		, TITLE_LEVELBAR);
+	strcpy(mainmenu.menuLevelBarcolour.menuOptions [0]		, BACKSTRING);
+	strcpy(mainmenu.menuLevelBarcolour.menuOptions [1]		, "White");
+	strcpy(mainmenu.menuLevelBarcolour.menuOptions [2]		, "Black");
+	strcpy(mainmenu.menuLevelBarcolour.menuOptions [3]		, "Red");
+	strcpy(mainmenu.menuLevelBarcolour.menuOptions [4]		, "Green");
+	strcpy(mainmenu.menuLevelBarcolour.menuOptions [5]		, "Blue");
+	strcpy(mainmenu.menuLevelBarcolour.menuOptions [6]		, "Yellow");
+	strcpy(mainmenu.menuLevelBarcolour.menuOptions [7]		, "Cyan");
+	strcpy(mainmenu.menuLevelBarcolour.menuOptions [8]		, "Magenta");
+	strcpy(mainmenu.menuLevelBarcolour.menuOptions [9]		, "Grey");
+	strcpy(mainmenu.menuLevelBarcolour.menuOptions [10]		, "Blue - 2");
+
+	// Tone + colour //
+	mainmenu.menuTonePosBarcolour.currentOption				= 1;
+	mainmenu.menuTonePosBarcolour.nrOfOptions				= 11;
+	mainmenu.menuTonePosBarcolour.handler					= Menu_TonePosBarHandler;
+	mainmenu.menuTonePosBarcolour.parent					= Menu_Colours;
+	strcpy(mainmenu.menuTonePosBarcolour.menuTitle	  		, TITLE_TONEPOSBAR);
+	strcpy(mainmenu.menuTonePosBarcolour.menuOptions [0]	, BACKSTRING);
+	strcpy(mainmenu.menuTonePosBarcolour.menuOptions [1]	, "White");
+	strcpy(mainmenu.menuTonePosBarcolour.menuOptions [2]	, "Black");
+	strcpy(mainmenu.menuTonePosBarcolour.menuOptions [3]	, "Red");
+	strcpy(mainmenu.menuTonePosBarcolour.menuOptions [4]	, "Green");
+	strcpy(mainmenu.menuTonePosBarcolour.menuOptions [5]	, "Blue");
+	strcpy(mainmenu.menuTonePosBarcolour.menuOptions [6]	, "Yellow");
+	strcpy(mainmenu.menuTonePosBarcolour.menuOptions [7]	, "Cyan");
+	strcpy(mainmenu.menuTonePosBarcolour.menuOptions [8]	, "Magenta");
+	strcpy(mainmenu.menuTonePosBarcolour.menuOptions [9]	, "Grey");
+	strcpy(mainmenu.menuTonePosBarcolour.menuOptions [10]	, "Blue - 2");
+
+	// Tone - colour //
+	mainmenu.menuToneNegBarcolour.currentOption				= 1;
+	mainmenu.menuToneNegBarcolour.nrOfOptions				= 11;
+	mainmenu.menuToneNegBarcolour.handler					= Menu_ToneNegBarHandler;
+	mainmenu.menuToneNegBarcolour.parent					= Menu_Colours;
+	strcpy(mainmenu.menuToneNegBarcolour.menuTitle	  		, TITLE_TONENEGBAR);
+	strcpy(mainmenu.menuToneNegBarcolour.menuOptions [0]	, BACKSTRING);
+	strcpy(mainmenu.menuToneNegBarcolour.menuOptions [1]	, "White");
+	strcpy(mainmenu.menuToneNegBarcolour.menuOptions [2]	, "Black");
+	strcpy(mainmenu.menuToneNegBarcolour.menuOptions [3]	, "Red");
+	strcpy(mainmenu.menuToneNegBarcolour.menuOptions [4]	, "Green");
+	strcpy(mainmenu.menuToneNegBarcolour.menuOptions [5]	, "Blue");
+	strcpy(mainmenu.menuToneNegBarcolour.menuOptions [6]	, "Yellow");
+	strcpy(mainmenu.menuToneNegBarcolour.menuOptions [7]	, "Cyan");
+	strcpy(mainmenu.menuToneNegBarcolour.menuOptions [8]	, "Magenta");
+	strcpy(mainmenu.menuToneNegBarcolour.menuOptions [9]	, "Grey");
+	strcpy(mainmenu.menuToneNegBarcolour.menuOptions [10]	, "Blue - 2");
 
 	// Set FX //
 	mainmenu.menuFx.currentOption							= 1;
@@ -189,7 +252,6 @@ void MenuDrawOptions(uint8_t clearBack) {
 void MenuDrawTitle(uint8_t clearBack) {
 	if (clearBack) {
 		LCD_SetTextColor(ColourConverterDec(mainmenu.backgroundcolour));
-//		LCD_SetTextColor(ColourConverterDec(Red));
 		LCD_DrawFullRect(210, 20, 27, 290);
 		LCD_SetTextColor(ColourConverterDec(mainmenu.foregroundcolour));
 	}
@@ -203,7 +265,6 @@ void MenuRedrawScreen () {
 	LCD_SetTextColor(ColourConverterDec(mainmenu.foregroundcolour));
 
 	// Title
-//	LCD_StringLine(210, 30, mainmenu.menuCurrent->menuTitle);
 	MenuDrawTitle(0);
 
 	// Horizontal line, separating menu and title
@@ -235,7 +296,8 @@ void MenuUpdateSelectedItem() {
 	mainmenu.menuCurrent->currentOption = newValue;
 
 	if (newValue / OPTIONSPERMENU != oldValue / OPTIONSPERMENU) {	// Only redraw everything when necessary
-		MenuDrawOptions(1);						// Redraw the options
+		MenuRedrawScreen();//					// More efficient than MenuDrawOptions
+//		MenuDrawOptions(1);						// Redraw the options
 	}
 
 	MenuDrawCurrentlySelected();				// Redraw cursor

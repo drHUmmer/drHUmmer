@@ -184,6 +184,7 @@ void PutPixel(int16_t x, int16_t y);
 void Pixel(int16_t x, int16_t y, u8 r, u8 g, u8 b);
 void LCD_PutChar(int16_t PosX, int16_t PosY, char c);
 void LCD_StringLine(uint16_t PosX, uint16_t PosY, char *str);
+void LCD_StringInt(uint16_t PosX, uint16_t PosY, uint16_t value, uint8_t alignRight);
 void LCD_DrawLine(uint16_t Xpos, uint16_t Ypos, uint16_t Length,
 		uint8_t Direction);
 void LCD_DrawRect(uint16_t Xpos, uint16_t Ypos, uint8_t Height, uint16_t Width);
