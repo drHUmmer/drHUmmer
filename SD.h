@@ -17,15 +17,22 @@
 #include <stdio.h>
 #include <string.h>
 
-
 // Defines
 #define _MAX_FILES 20
+
+// Globals
+TCHAR	fnames[_MAX_FILES][13];
+uint8_t	nfiles;
+
+
 
 
 // Functions
 FRESULT SDInit(void);
 FRESULT SDGetNames(const TCHAR* path);
-uint16_t SDGet16(TCHAR* fname);
+uint16_t SDGet16(TCHAR* fname, uint16_t clusterIdx);
+void SDGet512(uint8_t* buf, TCHAR* fname, uint16_t clusterIdx);
 void SDPut16(TCHAR* fname, uint16_t data);
+
 
 #endif /* SD_HEADER */

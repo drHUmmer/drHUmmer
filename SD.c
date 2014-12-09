@@ -39,21 +39,65 @@ FRESULT SDGetNames(const TCHAR* path){
 
 
 
-uint16_t SDGet16(TCHAR* fname){
+uint16_t SDGet16(TCHAR* fname, uint16_t clusterIdx){
 
-	BYTE* buff;
-	UINT* br;
+	uint8_t buff[2] = {0};
+	uint32_t br;
 	FRESULT result;
+	uint8_t offset = 1;
+
 
 	uint16_t data;
-
-	if (f_open(&fil, fname, FA_OPEN_ALWAYS | FA_READ) == FR_OK) {
-		result = f_read(&fil, &buff, 4, br);
-		if (result) return result;
+	result = f_open(&fil, &*(fname),FA_READ);
+	if (result == FR_OK) {
+		f_lseek(&fil,clusterIdx*2);
+		result = f_read(&fil, &buff, 2, &br);
+		if (result)
+		{
+			f_close(&fil);
+			return result;
+		}
 		f_close(&fil);
 	}
+	data = buff[0];
+	data = buff[1];
+
+	data = (buff[0] | (buff[1] << 4));
+
+
+	return 0;
+}
+
+void SDGet512(uint8_t* buf, TCHAR* fname, uint16_t clusterIdx){
+
+	uint8_t buff[512] = {0};
+	uint32_t br;
+	FRESULT result;
+	uint8_t offset = 1;
+
+
+	uint16_t data;
+	result = f_open(&fil, &*(fname),FA_READ);
+	if (result == FR_OK) {
+		//result = f_read(&fil, &buff, 512, &br);
+		f_lseek(&fil,1024);
+		result = f_read(&fil, &buff, 512, &br);
+		if (result)
+		{
+			f_close(&fil);
+			return result;
+		}
+		f_close(&fil);
+	}
+	data = buff[0];
+	data = buff[1];
+	data = buff[2];
+	data = buff[3];
+	data = buff[4];
 
 	data = (buff[0] & (buff[1] << 4) & (buff[2] << 8) & (buff[3] << 12));
+
+
 	return 0;
 }
 

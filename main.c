@@ -110,8 +110,9 @@ int main(void)
 		SDGetNames("/"); 		// root directory
 	}
 
-	for(;;){
-		SDGet16("OneBeat.txt");
+	uint32_t i;
+	for(i=0;i<200;i++){
+		SDGet16(&(fnames[3]),i);
 	}
 
 
