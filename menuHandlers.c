@@ -1,27 +1,8 @@
 #include "menuHandlers.h"
 
-static uint8_t 	volumeAnalogDrum1	= 0;
-static uint8_t 	volumeAnalogDrum2	= 0;
-static uint8_t 	volumeDigitalDrum1	= 0;
-static uint8_t 	volumeDigitalDrum2	= 0;
-static uint8_t 	volumeDigitalDrum3	= 0;
-static uint8_t 	volumeDigitalDrum4	= 0;
-
-static int8_t	toneDigitalDrum1	= 0;
-static int8_t	toneDigitalDrum2	= 0;
-static int8_t	toneDigitalDrum3	= 0;
-static int8_t	toneDigitalDrum4	= 0;
-
-static uint8_t	mh_effect1			= 0;
-static uint8_t	mh_effect2			= 0;
-static uint16_t	mh_bcBits			= 0;
-static uint16_t mh_dsFreq			= 0;
-static uint16_t	mh_lpfFreq			= 0;
-static uint16_t	mh_hpfFreq			= 0;
-
 static void Menu_GotoParent() {
-	if (!MenuCompareTitle(TITLE_MAINSCREEN)) {
-		mainmenu.menuCurrent->parent();
+	if (!MenuCompareTitle(TITLE_INFOSCREEN)) {
+		gui.menus.current->parent();
 	}
 }
 
@@ -42,57 +23,26 @@ void Menu_UpdateHandler() {
 	}
 
 	// Run current menu handler
-	mainmenu.menuCurrent->handler();
+	gui.menus.current->handler();
 
 	// Always reset the buttons, to prevent weird things to happen
 	MenuOKpressed(1);
 	MenuBackpressed(1);
 }
 
-void Menu_MainHandler() {
+void Menu_InfoHandler() {
 	 if (MenuOKpressed(1)) {
-	 	Menu_Settings();
+	 	Menu_Main();
 	 	return;
 	 }
 
-	uint16_t colourLevel 		= mainmenu.levelbarcolour;
-	uint16_t colourTonePos		= mainmenu.toneposbarcolour;
-	uint16_t colourToneNeg		= mainmenu.tonenegbarcolour;
-	uint16_t backgroundColour	= mainmenu.backgroundcolour;
-
-	 if (volumeDigitalDrum1 != sequencer.instr0.level) {
-		 volumeDigitalDrum1 = sequencer.instr0.level;
-
-		 LCD_CreateVertProgressbar(0, 108, BARHEIGHT, 25, backgroundColour, colourLevel, volumeDigitalDrum1);
+	 if (gui.bars.digitalDrum1Level.value != sequencer.instr0.level) {
+		 gui.bars.digitalDrum1Level.value = sequencer.instr0.level;
+		 LCD_Levelbar(&gui.bars.digitalDrum1Level, gui.bars.digitalDrum1Level.value);
 	 }
-
-	 if (volumeDigitalDrum2 != sequencer.instr1.level) {
-
-	 }
-
-	 if (volumeDigitalDrum3 != sequencer.instr2.level) {
-
-	 }
-
-	 if (volumeDigitalDrum4 != sequencer.instr3.level) {
-
-	 }
-
-//	 volumeAnalogDrum1	= sequencer.bassdrum.level;
-//	 volumeAnalogDrum2	= sequencer.snaredrum.level;
-//	 volumeDigitalDrum1	= sequencer.instr0.level;
-//	 volumeDigitalDrum2	= sequencer.instr1.level;
-//	 volumeDigitalDrum3	= sequencer.instr2.level;
-//	 volumeDigitalDrum4	= sequencer.instr3.level;
-//
-//	 toneDigitalDrum1	= sequencer.instr0.tone;
-//	 toneDigitalDrum2	= sequencer.instr1.tone;
-//	 toneDigitalDrum3	= sequencer.instr2.tone;
-//	 toneDigitalDrum4	= sequencer.instr3.tone;
-
 }
 
-void Menu_SettingsHandler() {
+void Menu_MainHandler() {
 	MenuUpdateSelectedItem();
 
 	if (MenuOKpressed(1)) {
@@ -109,9 +59,9 @@ void Menu_ColourHandler() {
 
 	if (MenuOKpressed(1)) {
 		if (MenuCompareSelected("Invert")) {
-			uint16_t temp = mainmenu.backgroundcolour;
-			mainmenu.backgroundcolour = mainmenu.foregroundcolour;
-			mainmenu.foregroundcolour = temp;
+			uint16_t temp 				= gui.colours.background;
+			gui.colours.background 		= gui.colours.text;
+			gui.colours.text 			= temp;
 			MenuRedrawScreen();
 		}
 
@@ -137,43 +87,43 @@ void Menu_BackcolourHandler() {
 
 	if (MenuOKpressed(1)) {
 		if(MenuCompareSelected("White")) {
-			mainmenu.backgroundcolour = White;
+			gui.colours.background = White;
 			MenuRedrawScreen();
 		}
 		if(MenuCompareSelected("Black")) {
-			mainmenu.backgroundcolour = Black;
+			gui.colours.background = Black;
 			MenuRedrawScreen();
 		}
 		if(MenuCompareSelected("Red")) {
-			mainmenu.backgroundcolour = Red;
+			gui.colours.background = Red;
 			MenuRedrawScreen();
 		}
 		if(MenuCompareSelected("Green")) {
-			mainmenu.backgroundcolour = Green;
+			gui.colours.background = Green;
 			MenuRedrawScreen();
 		}
 		if(MenuCompareSelected("Blue")) {
-			mainmenu.backgroundcolour = Blue;
+			gui.colours.background = Blue;
 			MenuRedrawScreen();
 		}
 		if(MenuCompareSelected("Yellow")) {
-			mainmenu.backgroundcolour = Yellow;
+			gui.colours.background = Yellow;
 			MenuRedrawScreen();
 		}
 		if(MenuCompareSelected("Cyan")) {
-			mainmenu.backgroundcolour = Cyan;
+			gui.colours.background = Cyan;
 			MenuRedrawScreen();
 		}
 		if(MenuCompareSelected("Magenta")) {
-			mainmenu.backgroundcolour = Magenta;
+			gui.colours.background = Magenta;
 			MenuRedrawScreen();
 		}
 		if(MenuCompareSelected("Grey")) {
-			mainmenu.backgroundcolour = Grey;
+			gui.colours.background = Grey;
 			MenuRedrawScreen();
 		}
 		if(MenuCompareSelected("Blue - 2")) {
-			mainmenu.backgroundcolour = Blue2;
+			gui.colours.background = Blue2;
 			MenuRedrawScreen();
 		}
 	}
@@ -184,43 +134,43 @@ void Menu_TextcolourHandler() {
 
 	if (MenuOKpressed(1)) {
 		if(MenuCompareSelected("White")) {
-			mainmenu.foregroundcolour = White;
+			gui.colours.text = White;
 			MenuRedrawScreen();
 		}
 		if(MenuCompareSelected("Black")) {
-			mainmenu.foregroundcolour = Black;
+			gui.colours.text = Black;
 			MenuRedrawScreen();
 		}
 		if(MenuCompareSelected("Red")) {
-			mainmenu.foregroundcolour = Red;
+			gui.colours.text = Red;
 			MenuRedrawScreen();
 		}
 		if(MenuCompareSelected("Green")) {
-			mainmenu.foregroundcolour = Green;
+			gui.colours.text = Green;
 			MenuRedrawScreen();
 		}
 		if(MenuCompareSelected("Blue")) {
-			mainmenu.foregroundcolour = Blue;
+			gui.colours.text = Blue;
 			MenuRedrawScreen();
 		}
 		if(MenuCompareSelected("Yellow")) {
-			mainmenu.foregroundcolour = Yellow;
+			gui.colours.text = Yellow;
 			MenuRedrawScreen();
 		}
 		if(MenuCompareSelected("Cyan")) {
-			mainmenu.foregroundcolour = Cyan;
+			gui.colours.text = Cyan;
 			MenuRedrawScreen();
 		}
 		if(MenuCompareSelected("Magenta")) {
-			mainmenu.foregroundcolour = Magenta;
+			gui.colours.text = Magenta;
 			MenuRedrawScreen();
 		}
 		if(MenuCompareSelected("Grey")) {
-			mainmenu.foregroundcolour = Grey;
+			gui.colours.text = Grey;
 			MenuRedrawScreen();
 		}
 		if(MenuCompareSelected("Blue - 2")) {
-			mainmenu.foregroundcolour = Blue2;
+			gui.colours.text = Blue2;
 			MenuRedrawScreen();
 		}
 	}
@@ -231,43 +181,43 @@ void Menu_LevelBarHandler() {
 
 	if (MenuOKpressed(1)) {
 		if(MenuCompareSelected("White")) {
-			mainmenu.levelbarcolour = White;
+			gui.colours.levelBar = White;
 			MenuRedrawScreen();
 		}
 		if(MenuCompareSelected("Black")) {
-			mainmenu.levelbarcolour = Black;
+			gui.colours.levelBar = Black;
 			MenuRedrawScreen();
 		}
 		if(MenuCompareSelected("Red")) {
-			mainmenu.levelbarcolour = Red;
+			gui.colours.levelBar = Red;
 			MenuRedrawScreen();
 		}
 		if(MenuCompareSelected("Green")) {
-			mainmenu.levelbarcolour = Green;
+			gui.colours.levelBar = Green;
 			MenuRedrawScreen();
 		}
 		if(MenuCompareSelected("Blue")) {
-			mainmenu.levelbarcolour = Blue;
+			gui.colours.levelBar = Blue;
 			MenuRedrawScreen();
 		}
 		if(MenuCompareSelected("Yellow")) {
-			mainmenu.levelbarcolour = Yellow;
+			gui.colours.levelBar = Yellow;
 			MenuRedrawScreen();
 		}
 		if(MenuCompareSelected("Cyan")) {
-			mainmenu.levelbarcolour = Cyan;
+			gui.colours.levelBar = Cyan;
 			MenuRedrawScreen();
 		}
 		if(MenuCompareSelected("Magenta")) {
-			mainmenu.levelbarcolour = Magenta;
+			gui.colours.levelBar = Magenta;
 			MenuRedrawScreen();
 		}
 		if(MenuCompareSelected("Grey")) {
-			mainmenu.levelbarcolour = Grey;
+			gui.colours.levelBar = Grey;
 			MenuRedrawScreen();
 		}
 		if(MenuCompareSelected("Blue - 2")) {
-			mainmenu.levelbarcolour = Blue2;
+			gui.colours.levelBar = Blue2;
 			MenuRedrawScreen();
 		}
 	}
@@ -278,43 +228,43 @@ void Menu_TonePosBarHandler() {
 
 	if (MenuOKpressed(1)) {
 		if(MenuCompareSelected("White")) {
-			mainmenu.toneposbarcolour = White;
+			gui.colours.tonePosBar = White;
 			MenuRedrawScreen();
 		}
 		if(MenuCompareSelected("Black")) {
-			mainmenu.toneposbarcolour = Black;
+			gui.colours.tonePosBar = Black;
 			MenuRedrawScreen();
 		}
 		if(MenuCompareSelected("Red")) {
-			mainmenu.toneposbarcolour = Red;
+			gui.colours.tonePosBar = Red;
 			MenuRedrawScreen();
 		}
 		if(MenuCompareSelected("Green")) {
-			mainmenu.toneposbarcolour = Green;
+			gui.colours.tonePosBar = Green;
 			MenuRedrawScreen();
 		}
 		if(MenuCompareSelected("Blue")) {
-			mainmenu.toneposbarcolour = Blue;
+			gui.colours.tonePosBar = Blue;
 			MenuRedrawScreen();
 		}
 		if(MenuCompareSelected("Yellow")) {
-			mainmenu.toneposbarcolour = Yellow;
+			gui.colours.tonePosBar = Yellow;
 			MenuRedrawScreen();
 		}
 		if(MenuCompareSelected("Cyan")) {
-			mainmenu.toneposbarcolour = Cyan;
+			gui.colours.tonePosBar = Cyan;
 			MenuRedrawScreen();
 		}
 		if(MenuCompareSelected("Magenta")) {
-			mainmenu.toneposbarcolour = Magenta;
+			gui.colours.tonePosBar = Magenta;
 			MenuRedrawScreen();
 		}
 		if(MenuCompareSelected("Grey")) {
-			mainmenu.toneposbarcolour = Grey;
+			gui.colours.tonePosBar = Grey;
 			MenuRedrawScreen();
 		}
 		if(MenuCompareSelected("Blue - 2")) {
-			mainmenu.toneposbarcolour = Blue2;
+			gui.colours.tonePosBar = Blue2;
 			MenuRedrawScreen();
 		}
 	}
@@ -325,43 +275,43 @@ void Menu_ToneNegBarHandler() {
 
 	if (MenuOKpressed(1)) {
 		if(MenuCompareSelected("White")) {
-			mainmenu.tonenegbarcolour = White;
+			gui.colours.toneNegBar = White;
 			MenuRedrawScreen();
 		}
 		if(MenuCompareSelected("Black")) {
-			mainmenu.tonenegbarcolour = Black;
+			gui.colours.toneNegBar = Black;
 			MenuRedrawScreen();
 		}
 		if(MenuCompareSelected("Red")) {
-			mainmenu.tonenegbarcolour = Red;
+			gui.colours.toneNegBar = Red;
 			MenuRedrawScreen();
 		}
 		if(MenuCompareSelected("Green")) {
-			mainmenu.tonenegbarcolour = Green;
+			gui.colours.toneNegBar = Green;
 			MenuRedrawScreen();
 		}
 		if(MenuCompareSelected("Blue")) {
-			mainmenu.tonenegbarcolour = Blue;
+			gui.colours.toneNegBar = Blue;
 			MenuRedrawScreen();
 		}
 		if(MenuCompareSelected("Yellow")) {
-			mainmenu.tonenegbarcolour = Yellow;
+			gui.colours.toneNegBar = Yellow;
 			MenuRedrawScreen();
 		}
 		if(MenuCompareSelected("Cyan")) {
-			mainmenu.tonenegbarcolour = Cyan;
+			gui.colours.toneNegBar = Cyan;
 			MenuRedrawScreen();
 		}
 		if(MenuCompareSelected("Magenta")) {
-			mainmenu.tonenegbarcolour = Magenta;
+			gui.colours.toneNegBar = Magenta;
 			MenuRedrawScreen();
 		}
 		if(MenuCompareSelected("Grey")) {
-			mainmenu.tonenegbarcolour = Grey;
+			gui.colours.toneNegBar = Grey;
 			MenuRedrawScreen();
 		}
 		if(MenuCompareSelected("Blue - 2")) {
-			mainmenu.tonenegbarcolour = Blue2;
+			gui.colours.toneNegBar = Blue2;
 			MenuRedrawScreen();
 		}
 	}
@@ -371,12 +321,12 @@ void Menu_SetFxHandler() {
 	MenuUpdateSelectedItem();
 
 	if (MenuOKpressed(1)) {
-		uint8_t currentSelectedOption = mainmenu.menuCurrent->currentOption;
+		uint8_t currentSelectedOption = gui.menus.current->selectedOption;
 
-		if (strstr(mainmenu.menuCurrent->menuOptions[currentSelectedOption], "Fx 1") != NULL) {
+		if (strstr(gui.menus.current->menuOptions[currentSelectedOption], "Fx 1") != NULL) {
 			Menu_SetFx1();
 		}
-		if (strstr(mainmenu.menuCurrent->menuOptions[currentSelectedOption], "Fx 2") != NULL) {
+		if (strstr(gui.menus.current->menuOptions[currentSelectedOption], "Fx 2") != NULL) {
 			Menu_SetFx2();
 		}
 	}
@@ -401,14 +351,14 @@ void Menu_SetFx1Handler() {
 		if (MenuCompareSelected("Down-sampler"))
 			FXsettings.fx1 = DS;
 
-		MenuClearTitle(mainmenu.menuCurrent);
+		MenuClearTitle(gui.menus.current);
 
 		switch(FXsettings.fx1) {
-		case LPF: 	strcpy(mainmenu.menuCurrent->menuTitle, "Set fx 1 - LPF "); 	break;
-		case HPF: 	strcpy(mainmenu.menuCurrent->menuTitle,	"Set fx 1 - HPF "); 	break;
-		case BC: 	strcpy(mainmenu.menuCurrent->menuTitle,	"Set fx 1 - BC  "); 	break;
-		case DS: 	strcpy(mainmenu.menuCurrent->menuTitle,	"Set fx 1 - DS  "); 	break;
-		default: 	strcpy(mainmenu.menuCurrent->menuTitle,	"Set fx 1 - NONE"); 	break;
+		case LPF: 	strcpy(gui.menus.current->menuTitle,	"Set fx 1 - LPF "); 	break;
+		case HPF: 	strcpy(gui.menus.current->menuTitle,	"Set fx 1 - HPF "); 	break;
+		case BC: 	strcpy(gui.menus.current->menuTitle,	"Set fx 1 - BC  "); 	break;
+		case DS: 	strcpy(gui.menus.current->menuTitle, 	"Set fx 1 - DS  "); 	break;
+		default: 	strcpy(gui.menus.current->menuTitle,	"Set fx 1 - NONE"); 	break;
 		}
 
 		MenuDrawTitle(1);
@@ -434,14 +384,14 @@ void Menu_SetFx2Handler() {
 		if (MenuCompareSelected("Down-sampler"))
 			FXsettings.fx2 = DS;
 
-		MenuClearTitle(mainmenu.menuCurrent);
+		MenuClearTitle(gui.menus.current);
 
 		switch(FXsettings.fx2) {
-		case LPF: 	strcpy(mainmenu.menuCurrent->menuTitle, "Set fx 2 - LPF "); 	break;
-		case HPF: 	strcpy(mainmenu.menuCurrent->menuTitle,	"Set fx 2 - HPF "); 	break;
-		case BC: 	strcpy(mainmenu.menuCurrent->menuTitle,	"Set fx 2 - BC  "); 	break;
-		case DS: 	strcpy(mainmenu.menuCurrent->menuTitle,	"Set fx 2 - DS  "); 	break;
-		default: 	strcpy(mainmenu.menuCurrent->menuTitle,	"Set fx 2 - NONE"); 	break;
+		case LPF: 	strcpy(gui.menus.current->menuTitle, 	"Set fx 2 - LPF "); 	break;
+		case HPF: 	strcpy(gui.menus.current->menuTitle,	"Set fx 2 - HPF "); 	break;
+		case BC: 	strcpy(gui.menus.current->menuTitle,	"Set fx 2 - BC  "); 	break;
+		case DS: 	strcpy(gui.menus.current->menuTitle,	"Set fx 2 - DS  "); 	break;
+		default: 	strcpy(gui.menus.current->menuTitle,	"Set fx 2 - NONE"); 	break;
 		}
 
 		MenuDrawTitle(1);

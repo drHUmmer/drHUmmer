@@ -3,11 +3,12 @@
 
 #include "menuScreens.h"
 #include "menu.h"
+#include "LCDitems.h"
 
 // Main
 void Menu_UpdateHandler();
+void Menu_InfoHandler();
 void Menu_MainHandler();
-void Menu_SettingsHandler();
 
 // Colours
 void Menu_ColourHandler();

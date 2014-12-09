@@ -3,14 +3,15 @@
 
 #include "menuHandlers.h"
 #include "menu.h"
+#include "LCDitems.h"
 #include "filter.h"
 #include "sequencer.h"
 
 #define BARHEIGHT	180
 
 // Function prototypes
+void Menu_Info();
 void Menu_Main();
-void Menu_Settings();
 
 // Colours
 void Menu_Colours();

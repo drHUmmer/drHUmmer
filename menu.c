@@ -1,182 +1,279 @@
 #include "menu.h"
 
+/*
+ * Menu hierarchy
+ *
+ * Info
+ * 	\ Main
+ * 	 	\ Colours
+ * 	 	|	\ Background colour
+ * 	 	|	\ Text colour
+ * 	 	|	\ Level bar
+ * 	 	|	\ Tone positive bar
+ * 	 	|	\ Tone negative bar
+ * 	 	\ Fx
+ * 	 		\ Fx 1
+ * 	 		\ Fx 2
+ *
+ */
+
 void MenuSetup() {
 	LCD_Clear(ColourConverterDec(Black));
+
 	// Set default values
-	mainmenu.backgroundcolour 	= Black;
-	mainmenu.foregroundcolour 	= Green;
-	mainmenu.levelbarcolour		= Red;
-	mainmenu.toneposbarcolour	= Blue2;
-	mainmenu.tonenegbarcolour	= Blue;
-	mainmenu.menuCurrent		= &mainmenu.menuMain;
+	gui.colours.background 	= Black;
+	gui.colours.text 		= Green;
+	gui.colours.levelBar	= Red;
+	gui.colours.tonePosBar	= Blue2;
+	gui.colours.toneNegBar	= Blue;
+	gui.menus.current		= &gui.menus.info;
 
 	// Clear menu options
-	MenuClearStringMemory(&mainmenu.menuMain);
-	MenuClearStringMemory(&mainmenu.menuSettings);
-	MenuClearStringMemory(&mainmenu.menuBackcolour);
-	MenuClearStringMemory(&mainmenu.menuTextcolour);
-	MenuClearStringMemory(&mainmenu.menuFx);
-	MenuClearStringMemory(&mainmenu.menuFx1);
-	MenuClearStringMemory(&mainmenu.menuFx2);
-	MenuClearStringMemory(&mainmenu.menuLevelBarcolour);
-	MenuClearStringMemory(&mainmenu.menuTonePosBarcolour);
-	MenuClearStringMemory(&mainmenu.menuToneNegBarcolour);
+	MenuClearStringMemory(&gui.menus.info);
+	MenuClearStringMemory(&gui.menus.main);
+	MenuClearStringMemory(&gui.menus.backcolour);
+	MenuClearStringMemory(&gui.menus.textcolour);
+	MenuClearStringMemory(&gui.menus.fx);
+	MenuClearStringMemory(&gui.menus.fx1);
+	MenuClearStringMemory(&gui.menus.fx2);
+	MenuClearStringMemory(&gui.menus.levelBarcolour);
+	MenuClearStringMemory(&gui.menus.tonePosBarcolour);
+	MenuClearStringMemory(&gui.menus.toneNegBarcolour);
 
 	// Main screen //
-	mainmenu.menuMain.currentOption							= 0;
-	mainmenu.menuMain.nrOfOptions							= 0;
-	mainmenu.menuMain.handler								= Menu_MainHandler;
-	strcpy(mainmenu.menuMain.menuTitle						, TITLE_MAINSCREEN);
+	gui.menus.info.selectedOption							= 0;
+	gui.menus.info.nrOfOptions								= 0;
+	gui.menus.info.handler									= Menu_InfoHandler;
+	strcpy(gui.menus.info.menuTitle							, TITLE_INFOSCREEN);
 	
 	// Settings Menu //
-	mainmenu.menuSettings.currentOption						= 1;
-	mainmenu.menuSettings.nrOfOptions						= 3;
-	mainmenu.menuSettings.handler							= Menu_SettingsHandler;
-	mainmenu.menuSettings.parent							= Menu_Main;
-	strcpy(mainmenu.menuSettings.menuTitle					, TITLE_SETTINGSMENU);
-	strcpy(mainmenu.menuSettings.menuOptions [0]			, BACKSTRING);
-	strcpy(mainmenu.menuSettings.menuOptions [1]			, "Set fx");
-	strcpy(mainmenu.menuSettings.menuOptions [2]			, "Set colours");
+	gui.menus.main.selectedOption							= 1;
+	gui.menus.main.nrOfOptions								= 3;
+	gui.menus.main.handler									= Menu_InfoHandler;
+	gui.menus.main.parent									= Menu_Info;
+	strcpy(gui.menus.main.menuTitle							, TITLE_MAINSMENU);
+	strcpy(gui.menus.main.menuOptions [0]					, BACKSTRING);
+	strcpy(gui.menus.main.menuOptions [1]					, "Set fx");
+	strcpy(gui.menus.main.menuOptions [2]					, "Set colours");
 
 	// Colours //
-	mainmenu.menuColours.currentOption						= 1;
-	mainmenu.menuColours.nrOfOptions						= 7;
-	mainmenu.menuColours.handler							= Menu_ColourHandler;
-	mainmenu.menuColours.parent								= Menu_Settings;
-	strcpy(mainmenu.menuColours.menuTitle					, TITLE_COLOURMENU);
-	strcpy(mainmenu.menuColours.menuOptions	[0]				, BACKSTRING);
-	strcpy(mainmenu.menuColours.menuOptions	[1]				, "Invert");
-	strcpy(mainmenu.menuColours.menuOptions	[2]				, "Back colour");
-	strcpy(mainmenu.menuColours.menuOptions	[3]				, "Text colour");
-	strcpy(mainmenu.menuColours.menuOptions	[4]				, "Level colour");
-	strcpy(mainmenu.menuColours.menuOptions	[5]				, "Tone + colour");
-	strcpy(mainmenu.menuColours.menuOptions	[6]				, "Tone - colour");
+	gui.menus.colours.selectedOption						= 1;
+	gui.menus.colours.nrOfOptions							= 7;
+	gui.menus.colours.handler								= Menu_ColourHandler;
+	gui.menus.colours.parent								= Menu_Main;
+	strcpy(gui.menus.colours.menuTitle						, TITLE_COLOURMENU);
+	strcpy(gui.menus.colours.menuOptions	[0]				, BACKSTRING);
+	strcpy(gui.menus.colours.menuOptions	[1]				, "Invert");
+	strcpy(gui.menus.colours.menuOptions	[2]				, "Back colour");
+	strcpy(gui.menus.colours.menuOptions	[3]				, "Text colour");
+	strcpy(gui.menus.colours.menuOptions	[4]				, "Level colour");
+	strcpy(gui.menus.colours.menuOptions	[5]				, "Tone + colour");
+	strcpy(gui.menus.colours.menuOptions	[6]				, "Tone - colour");
 
 	// Background colour //
-	mainmenu.menuBackcolour.currentOption					= 1;
-	mainmenu.menuBackcolour.nrOfOptions						= 11;
-	mainmenu.menuBackcolour.handler							= Menu_BackcolourHandler;
-	mainmenu.menuBackcolour.parent							= Menu_Colours;
-	strcpy(mainmenu.menuBackcolour.menuTitle				, TITLE_BACKCOLOURMENU);
-	strcpy(mainmenu.menuBackcolour.menuOptions	[0]			, BACKSTRING);
-	strcpy(mainmenu.menuBackcolour.menuOptions	[1]			, "White");
-	strcpy(mainmenu.menuBackcolour.menuOptions	[2]			, "Black");
-	strcpy(mainmenu.menuBackcolour.menuOptions	[3]			, "Red");
-	strcpy(mainmenu.menuBackcolour.menuOptions	[4]			, "Green");
-	strcpy(mainmenu.menuBackcolour.menuOptions	[5]			, "Blue");
-	strcpy(mainmenu.menuBackcolour.menuOptions	[6]			, "Yellow");
-	strcpy(mainmenu.menuBackcolour.menuOptions	[7]			, "Cyan");
-	strcpy(mainmenu.menuBackcolour.menuOptions	[8]			, "Magenta");
-	strcpy(mainmenu.menuBackcolour.menuOptions	[9]			, "Grey");
-	strcpy(mainmenu.menuBackcolour.menuOptions	[10]		, "Blue - 2");
+	gui.menus.backcolour.selectedOption						= 1;
+	gui.menus.backcolour.nrOfOptions						= 11;
+	gui.menus.backcolour.handler							= Menu_BackcolourHandler;
+	gui.menus.backcolour.parent								= Menu_Colours;
+	strcpy(gui.menus.backcolour.menuTitle					, TITLE_BACKCOLOURMENU);
+	strcpy(gui.menus.backcolour.menuOptions	[0]				, BACKSTRING);
+	strcpy(gui.menus.backcolour.menuOptions	[1]				, "White");
+	strcpy(gui.menus.backcolour.menuOptions	[2]				, "Black");
+	strcpy(gui.menus.backcolour.menuOptions	[3]				, "Red");
+	strcpy(gui.menus.backcolour.menuOptions	[4]				, "Green");
+	strcpy(gui.menus.backcolour.menuOptions	[5]				, "Blue");
+	strcpy(gui.menus.backcolour.menuOptions	[6]				, "Yellow");
+	strcpy(gui.menus.backcolour.menuOptions	[7]				, "Cyan");
+	strcpy(gui.menus.backcolour.menuOptions	[8]				, "Magenta");
+	strcpy(gui.menus.backcolour.menuOptions	[9]				, "Grey");
+	strcpy(gui.menus.backcolour.menuOptions	[10]			, "Blue - 2");
 
-	// Foreground colour //
-	mainmenu.menuTextcolour.currentOption					= 1;
-	mainmenu.menuTextcolour.nrOfOptions						= 11;
-	mainmenu.menuTextcolour.handler							= Menu_TextcolourHandler;
-	mainmenu.menuTextcolour.parent							= Menu_Colours;
-	strcpy(mainmenu.menuTextcolour.menuTitle	  			, TITLE_TEXTCOLOURMENU);
-	strcpy(mainmenu.menuTextcolour.menuOptions [0]			, BACKSTRING);
-	strcpy(mainmenu.menuTextcolour.menuOptions [1]			, "White");
-	strcpy(mainmenu.menuTextcolour.menuOptions [2]			, "Black");
-	strcpy(mainmenu.menuTextcolour.menuOptions [3]			, "Red");
-	strcpy(mainmenu.menuTextcolour.menuOptions [4]			, "Green");
-	strcpy(mainmenu.menuTextcolour.menuOptions [5]			, "Blue");
-	strcpy(mainmenu.menuTextcolour.menuOptions [6]			, "Yellow");
-	strcpy(mainmenu.menuTextcolour.menuOptions [7]			, "Cyan");
-	strcpy(mainmenu.menuTextcolour.menuOptions [8]			, "Magenta");
-	strcpy(mainmenu.menuTextcolour.menuOptions [9]			, "Grey");
-	strcpy(mainmenu.menuTextcolour.menuOptions [10]			, "Blue - 2");
+	// Text colour //
+	gui.menus.textcolour.selectedOption						= 1;
+	gui.menus.textcolour.nrOfOptions						= 11;
+	gui.menus.textcolour.handler							= Menu_TextcolourHandler;
+	gui.menus.textcolour.parent								= Menu_Colours;
+	strcpy(gui.menus.textcolour.menuTitle	  				, TITLE_TEXTCOLOURMENU);
+	strcpy(gui.menus.textcolour.menuOptions [0]				, BACKSTRING);
+	strcpy(gui.menus.textcolour.menuOptions [1]				, "White");
+	strcpy(gui.menus.textcolour.menuOptions [2]				, "Black");
+	strcpy(gui.menus.textcolour.menuOptions [3]				, "Red");
+	strcpy(gui.menus.textcolour.menuOptions [4]				, "Green");
+	strcpy(gui.menus.textcolour.menuOptions [5]				, "Blue");
+	strcpy(gui.menus.textcolour.menuOptions [6]				, "Yellow");
+	strcpy(gui.menus.textcolour.menuOptions [7]				, "Cyan");
+	strcpy(gui.menus.textcolour.menuOptions [8]				, "Magenta");
+	strcpy(gui.menus.textcolour.menuOptions [9]				, "Grey");
+	strcpy(gui.menus.textcolour.menuOptions [10]			, "Blue - 2");
 
 	// Level colour //
-	mainmenu.menuLevelBarcolour.currentOption				= 1;
-	mainmenu.menuLevelBarcolour.nrOfOptions					= 11;
-	mainmenu.menuLevelBarcolour.handler						= Menu_LevelBarHandler;
-	mainmenu.menuLevelBarcolour.parent						= Menu_Colours;
-	strcpy(mainmenu.menuLevelBarcolour.menuTitle	  		, TITLE_LEVELBAR);
-	strcpy(mainmenu.menuLevelBarcolour.menuOptions [0]		, BACKSTRING);
-	strcpy(mainmenu.menuLevelBarcolour.menuOptions [1]		, "White");
-	strcpy(mainmenu.menuLevelBarcolour.menuOptions [2]		, "Black");
-	strcpy(mainmenu.menuLevelBarcolour.menuOptions [3]		, "Red");
-	strcpy(mainmenu.menuLevelBarcolour.menuOptions [4]		, "Green");
-	strcpy(mainmenu.menuLevelBarcolour.menuOptions [5]		, "Blue");
-	strcpy(mainmenu.menuLevelBarcolour.menuOptions [6]		, "Yellow");
-	strcpy(mainmenu.menuLevelBarcolour.menuOptions [7]		, "Cyan");
-	strcpy(mainmenu.menuLevelBarcolour.menuOptions [8]		, "Magenta");
-	strcpy(mainmenu.menuLevelBarcolour.menuOptions [9]		, "Grey");
-	strcpy(mainmenu.menuLevelBarcolour.menuOptions [10]		, "Blue - 2");
+	gui.menus.levelBarcolour.selectedOption					= 1;
+	gui.menus.levelBarcolour.nrOfOptions					= 11;
+	gui.menus.levelBarcolour.handler						= Menu_LevelBarHandler;
+	gui.menus.levelBarcolour.parent							= Menu_Colours;
+	strcpy(gui.menus.levelBarcolour.menuTitle	  			, TITLE_LEVELBAR);
+	strcpy(gui.menus.levelBarcolour.menuOptions [0]			, BACKSTRING);
+	strcpy(gui.menus.levelBarcolour.menuOptions [1]			, "White");
+	strcpy(gui.menus.levelBarcolour.menuOptions [2]			, "Black");
+	strcpy(gui.menus.levelBarcolour.menuOptions [3]			, "Red");
+	strcpy(gui.menus.levelBarcolour.menuOptions [4]			, "Green");
+	strcpy(gui.menus.levelBarcolour.menuOptions [5]			, "Blue");
+	strcpy(gui.menus.levelBarcolour.menuOptions [6]			, "Yellow");
+	strcpy(gui.menus.levelBarcolour.menuOptions [7]			, "Cyan");
+	strcpy(gui.menus.levelBarcolour.menuOptions [8]			, "Magenta");
+	strcpy(gui.menus.levelBarcolour.menuOptions [9]			, "Grey");
+	strcpy(gui.menus.levelBarcolour.menuOptions [10]		, "Blue - 2");
 
 	// Tone + colour //
-	mainmenu.menuTonePosBarcolour.currentOption				= 1;
-	mainmenu.menuTonePosBarcolour.nrOfOptions				= 11;
-	mainmenu.menuTonePosBarcolour.handler					= Menu_TonePosBarHandler;
-	mainmenu.menuTonePosBarcolour.parent					= Menu_Colours;
-	strcpy(mainmenu.menuTonePosBarcolour.menuTitle	  		, TITLE_TONEPOSBAR);
-	strcpy(mainmenu.menuTonePosBarcolour.menuOptions [0]	, BACKSTRING);
-	strcpy(mainmenu.menuTonePosBarcolour.menuOptions [1]	, "White");
-	strcpy(mainmenu.menuTonePosBarcolour.menuOptions [2]	, "Black");
-	strcpy(mainmenu.menuTonePosBarcolour.menuOptions [3]	, "Red");
-	strcpy(mainmenu.menuTonePosBarcolour.menuOptions [4]	, "Green");
-	strcpy(mainmenu.menuTonePosBarcolour.menuOptions [5]	, "Blue");
-	strcpy(mainmenu.menuTonePosBarcolour.menuOptions [6]	, "Yellow");
-	strcpy(mainmenu.menuTonePosBarcolour.menuOptions [7]	, "Cyan");
-	strcpy(mainmenu.menuTonePosBarcolour.menuOptions [8]	, "Magenta");
-	strcpy(mainmenu.menuTonePosBarcolour.menuOptions [9]	, "Grey");
-	strcpy(mainmenu.menuTonePosBarcolour.menuOptions [10]	, "Blue - 2");
+	gui.menus.tonePosBarcolour.selectedOption				= 1;
+	gui.menus.tonePosBarcolour.nrOfOptions					= 11;
+	gui.menus.tonePosBarcolour.handler						= Menu_TonePosBarHandler;
+	gui.menus.tonePosBarcolour.parent						= Menu_Colours;
+	strcpy(gui.menus.tonePosBarcolour.menuTitle	  			, TITLE_TONEPOSBAR);
+	strcpy(gui.menus.tonePosBarcolour.menuOptions [0]		, BACKSTRING);
+	strcpy(gui.menus.tonePosBarcolour.menuOptions [1]		, "White");
+	strcpy(gui.menus.tonePosBarcolour.menuOptions [2]		, "Black");
+	strcpy(gui.menus.tonePosBarcolour.menuOptions [3]		, "Red");
+	strcpy(gui.menus.tonePosBarcolour.menuOptions [4]		, "Green");
+	strcpy(gui.menus.tonePosBarcolour.menuOptions [5]		, "Blue");
+	strcpy(gui.menus.tonePosBarcolour.menuOptions [6]		, "Yellow");
+	strcpy(gui.menus.tonePosBarcolour.menuOptions [7]		, "Cyan");
+	strcpy(gui.menus.tonePosBarcolour.menuOptions [8]		, "Magenta");
+	strcpy(gui.menus.tonePosBarcolour.menuOptions [9]		, "Grey");
+	strcpy(gui.menus.tonePosBarcolour.menuOptions [10]		, "Blue - 2");
 
 	// Tone - colour //
-	mainmenu.menuToneNegBarcolour.currentOption				= 1;
-	mainmenu.menuToneNegBarcolour.nrOfOptions				= 11;
-	mainmenu.menuToneNegBarcolour.handler					= Menu_ToneNegBarHandler;
-	mainmenu.menuToneNegBarcolour.parent					= Menu_Colours;
-	strcpy(mainmenu.menuToneNegBarcolour.menuTitle	  		, TITLE_TONENEGBAR);
-	strcpy(mainmenu.menuToneNegBarcolour.menuOptions [0]	, BACKSTRING);
-	strcpy(mainmenu.menuToneNegBarcolour.menuOptions [1]	, "White");
-	strcpy(mainmenu.menuToneNegBarcolour.menuOptions [2]	, "Black");
-	strcpy(mainmenu.menuToneNegBarcolour.menuOptions [3]	, "Red");
-	strcpy(mainmenu.menuToneNegBarcolour.menuOptions [4]	, "Green");
-	strcpy(mainmenu.menuToneNegBarcolour.menuOptions [5]	, "Blue");
-	strcpy(mainmenu.menuToneNegBarcolour.menuOptions [6]	, "Yellow");
-	strcpy(mainmenu.menuToneNegBarcolour.menuOptions [7]	, "Cyan");
-	strcpy(mainmenu.menuToneNegBarcolour.menuOptions [8]	, "Magenta");
-	strcpy(mainmenu.menuToneNegBarcolour.menuOptions [9]	, "Grey");
-	strcpy(mainmenu.menuToneNegBarcolour.menuOptions [10]	, "Blue - 2");
+	gui.menus.toneNegBarcolour.selectedOption				= 1;
+	gui.menus.toneNegBarcolour.nrOfOptions					= 11;
+	gui.menus.toneNegBarcolour.handler						= Menu_ToneNegBarHandler;
+	gui.menus.toneNegBarcolour.parent						= Menu_Colours;
+	strcpy(gui.menus.toneNegBarcolour.menuTitle	  			, TITLE_TONENEGBAR);
+	strcpy(gui.menus.toneNegBarcolour.menuOptions [0]		, BACKSTRING);
+	strcpy(gui.menus.toneNegBarcolour.menuOptions [1]		, "White");
+	strcpy(gui.menus.toneNegBarcolour.menuOptions [2]		, "Black");
+	strcpy(gui.menus.toneNegBarcolour.menuOptions [3]		, "Red");
+	strcpy(gui.menus.toneNegBarcolour.menuOptions [4]		, "Green");
+	strcpy(gui.menus.toneNegBarcolour.menuOptions [5]		, "Blue");
+	strcpy(gui.menus.toneNegBarcolour.menuOptions [6]		, "Yellow");
+	strcpy(gui.menus.toneNegBarcolour.menuOptions [7]		, "Cyan");
+	strcpy(gui.menus.toneNegBarcolour.menuOptions [8]		, "Magenta");
+	strcpy(gui.menus.toneNegBarcolour.menuOptions [9]		, "Grey");
+	strcpy(gui.menus.toneNegBarcolour.menuOptions [10]		, "Blue - 2");
 
 	// Set FX //
-	mainmenu.menuFx.currentOption							= 1;
-	mainmenu.menuFx.nrOfOptions								= 3;
-	mainmenu.menuFx.handler									= Menu_SetFxHandler;
-	mainmenu.menuFx.parent									= Menu_Settings;
-	strcpy(mainmenu.menuFx.menuTitle						, TITLE_SETFX);
-	strcpy(mainmenu.menuFx.menuOptions	[0]					, BACKSTRING);
-	strcpy(mainmenu.menuFx.menuOptions	[1]					, "Fx 1");
-	strcpy(mainmenu.menuFx.menuOptions	[2]					, "Fx 2");
+	gui.menus.fx.selectedOption								= 1;
+	gui.menus.fx.nrOfOptions								= 3;
+	gui.menus.fx.handler									= Menu_SetFxHandler;
+	gui.menus.fx.parent										= Menu_Main;
+	strcpy(gui.menus.fx.menuTitle							, TITLE_SETFX);
+	strcpy(gui.menus.fx.menuOptions	[0]						, BACKSTRING);
+	strcpy(gui.menus.fx.menuOptions	[1]						, "Fx 1");
+	strcpy(gui.menus.fx.menuOptions	[2]						, "Fx 2");
 
 	// Set FX 1 //
-	mainmenu.menuFx1.currentOption							= 1;
-	mainmenu.menuFx1.nrOfOptions							= 6;
-	mainmenu.menuFx1.handler								= Menu_SetFx1Handler;
-	mainmenu.menuFx1.parent									= Menu_SetFx;
-	strcpy(mainmenu.menuFx1.menuTitle						, TITLE_SETFX1);
-	strcpy(mainmenu.menuFx1.menuOptions	[0]					, BACKSTRING);
-	strcpy(mainmenu.menuFx1.menuOptions	[1]					, "None");
-	strcpy(mainmenu.menuFx1.menuOptions	[2]					, "Low-pass");
-	strcpy(mainmenu.menuFx1.menuOptions	[3]					, "High-pass");
-	strcpy(mainmenu.menuFx1.menuOptions	[4]					, "Bitcrusher");
-	strcpy(mainmenu.menuFx1.menuOptions	[5]					, "Down-sampler");
+	gui.menus.fx1.selectedOption								= 1;
+	gui.menus.fx1.nrOfOptions								= 6;
+	gui.menus.fx1.handler									= Menu_SetFx1Handler;
+	gui.menus.fx1.parent									= Menu_SetFx;
+	strcpy(gui.menus.fx1.menuTitle							, TITLE_SETFX1);
+	strcpy(gui.menus.fx1.menuOptions	[0]					, BACKSTRING);
+	strcpy(gui.menus.fx1.menuOptions	[1]					, "None");
+	strcpy(gui.menus.fx1.menuOptions	[2]					, "Low-pass");
+	strcpy(gui.menus.fx1.menuOptions	[3]					, "High-pass");
+	strcpy(gui.menus.fx1.menuOptions	[4]					, "Bitcrusher");
+	strcpy(gui.menus.fx1.menuOptions	[5]					, "Down-sampler");
 
 	// Set FX 2 //
-	mainmenu.menuFx2.currentOption							= 1;
-	mainmenu.menuFx2.nrOfOptions							= 6;
-	mainmenu.menuFx2.handler								= Menu_SetFx2Handler;
-	mainmenu.menuFx2.parent									= Menu_SetFx;
-	strcpy(mainmenu.menuFx2.menuTitle						, TITLE_SETFX2);
-	strcpy(mainmenu.menuFx2.menuOptions	[0]					, BACKSTRING);
-	strcpy(mainmenu.menuFx2.menuOptions	[1]					, "None");
-	strcpy(mainmenu.menuFx2.menuOptions	[2]					, "Low-pass");
-	strcpy(mainmenu.menuFx2.menuOptions	[3]					, "High-pass");
-	strcpy(mainmenu.menuFx2.menuOptions	[4]					, "Bitcrusher");
-	strcpy(mainmenu.menuFx2.menuOptions	[5]					, "Down-sampler");
+	gui.menus.fx2.selectedOption								= 1;
+	gui.menus.fx2.nrOfOptions								= 6;
+	gui.menus.fx2.handler									= Menu_SetFx2Handler;
+	gui.menus.fx2.parent									= Menu_SetFx;
+	strcpy(gui.menus.fx2.menuTitle							, TITLE_SETFX2);
+	strcpy(gui.menus.fx2.menuOptions	[0]					, BACKSTRING);
+	strcpy(gui.menus.fx2.menuOptions	[1]					, "None");
+	strcpy(gui.menus.fx2.menuOptions	[2]					, "Low-pass");
+	strcpy(gui.menus.fx2.menuOptions	[3]					, "High-pass");
+	strcpy(gui.menus.fx2.menuOptions	[4]					, "Bitcrusher");
+	strcpy(gui.menus.fx2.menuOptions	[5]					, "Down-sampler");
+
+// Progressbars
+	// Analog drum 1
+	gui.bars.analogDrum1Level.value							= 0;
+	gui.bars.analogDrum1Level.xPos							= 0;
+	gui.bars.analogDrum1Level.yPos							= 0;
+	gui.bars.analogDrum1Level.xSize							= 180;
+	gui.bars.analogDrum1Level.ySize							= 25;
+
+	gui.bars.analogDrum1Tone.value							= 0;
+	gui.bars.analogDrum1Tone.xPos							= 0;
+	gui.bars.analogDrum1Tone.yPos							= 25;
+	gui.bars.analogDrum1Tone.xSize							= 180;
+	gui.bars.analogDrum1Tone.ySize							= 25;
+
+	// Analog drum 2
+	gui.bars.analogDrum2Level.value							= 0;
+	gui.bars.analogDrum2Level.xPos							= 0;
+	gui.bars.analogDrum2Level.yPos							= 54;
+	gui.bars.analogDrum2Level.xSize							= 180;
+	gui.bars.analogDrum2Level.ySize							= 25;
+
+	gui.bars.analogDrum2Tone.value							= 0;
+	gui.bars.analogDrum2Tone.xPos							= 0;
+	gui.bars.analogDrum2Tone.yPos							= 79;
+	gui.bars.analogDrum2Tone.xSize							= 180;
+	gui.bars.analogDrum2Tone.ySize							= 25;
+
+	// Digital drum 1
+	gui.bars.digitalDrum1Level.value						= 0;
+	gui.bars.digitalDrum1Level.xPos							= 0;
+	gui.bars.digitalDrum1Level.yPos							= 108;
+	gui.bars.digitalDrum1Level.xSize						= 180;
+	gui.bars.digitalDrum1Level.ySize						= 25;
+
+	gui.bars.digitalDrum1Tone.value							= 0;
+	gui.bars.digitalDrum1Tone.xPos							= 0;
+	gui.bars.digitalDrum1Tone.yPos							= 133;
+	gui.bars.digitalDrum1Tone.xSize							= 180;
+	gui.bars.digitalDrum1Tone.ySize							= 25;
+
+	// Digital drum 2
+	gui.bars.digitalDrum2Level.value						= 0;
+	gui.bars.digitalDrum2Level.xPos							= 0;
+	gui.bars.digitalDrum2Level.yPos							= 162;
+	gui.bars.digitalDrum2Level.xSize						= 180;
+	gui.bars.digitalDrum2Level.ySize						= 25;
+
+	gui.bars.digitalDrum2Tone.value							= 0;
+	gui.bars.digitalDrum2Tone.xPos							= 0;
+	gui.bars.digitalDrum2Tone.yPos							= 187;
+	gui.bars.digitalDrum2Tone.xSize							= 180;
+	gui.bars.digitalDrum2Tone.ySize							= 25;
+
+	// Digital drum 3
+	gui.bars.digitalDrum3Level.value						= 0;
+	gui.bars.digitalDrum3Level.xPos							= 0;
+	gui.bars.digitalDrum3Level.yPos							= 216;
+	gui.bars.digitalDrum3Level.xSize						= 180;
+	gui.bars.digitalDrum3Level.ySize						= 25;
+
+	gui.bars.digitalDrum3Tone.value							= 0;
+	gui.bars.digitalDrum3Tone.xPos							= 0;
+	gui.bars.digitalDrum3Tone.yPos							= 241;
+	gui.bars.digitalDrum3Tone.xSize							= 180;
+	gui.bars.digitalDrum3Tone.ySize							= 25;
+
+	// Digital drum 4
+	gui.bars.digitalDrum4Level.value						= 0;
+	gui.bars.digitalDrum4Level.xPos							= 0;
+	gui.bars.digitalDrum4Level.yPos							= 270;
+	gui.bars.digitalDrum4Level.xSize						= 180;
+	gui.bars.digitalDrum4Level.ySize						= 25;
+
+	gui.bars.digitalDrum4Tone.value							= 0;
+	gui.bars.digitalDrum4Tone.xPos							= 0;
+	gui.bars.digitalDrum4Tone.yPos							= 295;
+	gui.bars.digitalDrum4Tone.xSize							= 180;
+	gui.bars.digitalDrum4Tone.ySize							= 25;
 
 	// Start mainscreen
 	Menu_Main();
@@ -209,40 +306,40 @@ void MenuClearTitle (Menu_Typedef* menu) {
 uint8_t MenuCompareTitle(char* toCompare) {
 	// Return 1 if equals
 	// Return 0 if not equal
-	return !(!!(strcmp(mainmenu.menuCurrent->menuTitle, toCompare)));
+	return !(!!(strcmp(gui.menus.current->menuTitle, toCompare)));
 }
 
 uint8_t MenuCompareSelected(char* toCompare) {
 	// Return 1 if equals
 	// Return 0 if not equal
-	uint8_t currentSelectedOption = mainmenu.menuCurrent->currentOption;
-	return !(!!(strcmp(mainmenu.menuCurrent->menuOptions[currentSelectedOption], toCompare)));
+	uint8_t currentSelectedOption = gui.menus.current->selectedOption;
+	return !(!!(strcmp(gui.menus.current->menuOptions[currentSelectedOption], toCompare)));
 }
 
 void MenuDrawCurrentlySelected () {
-	if (!MenuCompareTitle(TITLE_MAINSCREEN)) {
-		LCD_SetTextColor(ColourConverterDec(mainmenu.backgroundcolour));
+	if (!MenuCompareTitle(TITLE_INFOSCREEN)) {
+		LCD_SetTextColor(ColourConverterDec(gui.colours.background));
 		LCD_DrawFullRect(10, 3, 176, 19);
-		LCD_SetTextColor(ColourConverterDec(mainmenu.foregroundcolour));
-		LCD_PutChar(160 - ((mainmenu.menuCurrent->currentOption % OPTIONSPERMENU) * 30), 5, CURRENTLYSELECTEDCHAR);
+		LCD_SetTextColor(ColourConverterDec(gui.colours.text));
+		LCD_PutChar(160 - ((gui.menus.current->selectedOption % OPTIONSPERMENU) * 30), 5, CURRENTLYSELECTEDCHAR);
 	}
 }
 
 void MenuDrawOptions(uint8_t clearBack) {
 	if (clearBack) {
-		LCD_SetTextColor(ColourConverterDec(mainmenu.backgroundcolour));
+		LCD_SetTextColor(ColourConverterDec(gui.colours.background));
 		LCD_DrawFullRect(10, 30, 176, 280);						// Redraw options //
-		LCD_SetTextColor(ColourConverterDec(mainmenu.foregroundcolour));
+		LCD_SetTextColor(ColourConverterDec(gui.colours.text));
 	}
 
-	if (mainmenu.menuCurrent->nrOfOptions) {
+	if (gui.menus.current->nrOfOptions) {
 		uint8_t optionCounter 	= 0;
-		uint8_t optionOffset 	= OPTIONSPERMENU * (mainmenu.menuCurrent->currentOption / OPTIONSPERMENU);
+		uint8_t optionOffset 	= OPTIONSPERMENU * (gui.menus.current->selectedOption / OPTIONSPERMENU);
 
 		for (optionCounter = optionOffset; optionCounter < (optionOffset + OPTIONSPERMENU); optionCounter ++) {
-			if (optionCounter < MAXOPTIONS && optionCounter < mainmenu.menuCurrent->nrOfOptions) {
-				if (mainmenu.menuCurrent->menuOptions[optionCounter][0] != '\0') {
-					LCD_StringLine(160 - ((optionCounter - optionOffset) * 30), 30, mainmenu.menuCurrent->menuOptions[optionCounter]);
+			if (optionCounter < MAXOPTIONS && optionCounter < gui.menus.current->nrOfOptions) {
+				if (gui.menus.current->menuOptions[optionCounter][0] != '\0') {
+					LCD_StringLine(160 - ((optionCounter - optionOffset) * 30), 30, gui.menus.current->menuOptions[optionCounter]);
 				}
 			}
 		}
@@ -251,18 +348,18 @@ void MenuDrawOptions(uint8_t clearBack) {
 
 void MenuDrawTitle(uint8_t clearBack) {
 	if (clearBack) {
-		LCD_SetTextColor(ColourConverterDec(mainmenu.backgroundcolour));
+		LCD_SetTextColor(ColourConverterDec(gui.colours.background));
 		LCD_DrawFullRect(210, 20, 27, 290);
-		LCD_SetTextColor(ColourConverterDec(mainmenu.foregroundcolour));
+		LCD_SetTextColor(ColourConverterDec(gui.colours.text));
 	}
 
-	LCD_StringLine(210, 30, mainmenu.menuCurrent->menuTitle);
+	LCD_StringLine(210, 30, gui.menus.current->menuTitle);
 }
 
 void MenuRedrawScreen () {
-	LCD_Clear(ColourConverterDec(mainmenu.backgroundcolour));
-	LCD_SetBackColor(ColourConverterDec(mainmenu.backgroundcolour));
-	LCD_SetTextColor(ColourConverterDec(mainmenu.foregroundcolour));
+	LCD_Clear(ColourConverterDec(gui.colours.background));
+	LCD_SetBackColor(ColourConverterDec(gui.colours.background));
+	LCD_SetTextColor(ColourConverterDec(gui.colours.text));
 
 	// Title
 	MenuDrawTitle(0);
@@ -278,8 +375,8 @@ void MenuRedrawScreen () {
 }
 
 void MenuUpdateSelectedItem() {
-	uint8_t oldValue 		= mainmenu.menuCurrent->currentOption;
-	uint8_t nrOfOptions		= mainmenu.menuCurrent->nrOfOptions;
+	uint8_t oldValue 		= gui.menus.current->selectedOption;
+	uint8_t nrOfOptions		= gui.menus.current->nrOfOptions;
 	int8_t newValue 		= oldValue;
 	int8_t rotaryValue		= MenuRotaryRead(1);
 
@@ -293,7 +390,7 @@ void MenuUpdateSelectedItem() {
 	}
 	newValue %= nrOfOptions;					// If too high, turn around as well
 
-	mainmenu.menuCurrent->currentOption = newValue;
+	gui.menus.current->selectedOption = newValue;
 
 	if (newValue / OPTIONSPERMENU != oldValue / OPTIONSPERMENU) {	// Only redraw everything when necessary
 		MenuRedrawScreen();//					// More efficient than MenuDrawOptions

@@ -14,14 +14,14 @@
 /////////////////
 // Menu titles //
 /////////////////
-#define TITLE_MAINSCREEN		"Main"
-#define TITLE_SETTINGSMENU		"Settings"
+#define TITLE_INFOSCREEN		"Info"
+#define TITLE_MAINSMENU			"Settings"
 #define TITLE_COLOURMENU		"Colours"
 #define TITLE_BACKCOLOURMENU	"Back colour"
 #define TITLE_TEXTCOLOURMENU	"Text colour"
-#define TITLE_SETFX				"Set FX"
-#define TITLE_SETFX1			"Set Fx (1)"
-#define TITLE_SETFX2			"Set Fx (2)"
+#define TITLE_SETFX				"Set fx"
+#define TITLE_SETFX1			"Set fx 1"
+#define TITLE_SETFX2			"Set fx 2"
 #define TITLE_LEVELBAR			"Set level bar"
 #define TITLE_TONEPOSBAR		"Set tone + bar"
 #define TITLE_TONENEGBAR		"Set tone - bar"
@@ -35,45 +35,72 @@
 #define CURRENTLYSELECTEDCHAR	'>'
 #define OPTIONSPERMENU			6
 
-
-
-///////////////////////////////
-// Main menu settings struct //
-///////////////////////////////
+/////////////
+// Structs //
+/////////////
 typedef struct {
 	char			menuTitle[MAXSTRINGLENGTH];				// Menutitle
 	char			menuOptions[MAXOPTIONS][MAXSTRINGLENGTH];	// Names of options
-	int8_t			currentOption;							// Currently selected option
+	int8_t			selectedOption;							// Currently selected option
 	uint8_t			nrOfOptions;							// Total number of options
 	void			(*handler)(void);						// Handler function pointer
 	void			(*parent)(void);						// Parent screen
 } Menu_Typedef;
 
 typedef struct {
-	// Colours
-	uint16_t 		backgroundcolour;
-	uint16_t 		foregroundcolour;
-	uint16_t		levelbarcolour;
-	uint16_t		toneposbarcolour;
-	uint16_t		tonenegbarcolour;
-
-	Menu_Typedef*	menuCurrent;
-	Menu_Typedef	menuMain;
-	Menu_Typedef	menuSettings;
+	Menu_Typedef*	current;
+	Menu_Typedef	info;
+	Menu_Typedef	main;
 
 	// Colours
-	Menu_Typedef	menuColours;
-	Menu_Typedef	menuBackcolour;
-	Menu_Typedef	menuTextcolour;
-	Menu_Typedef	menuLevelBarcolour;
-	Menu_Typedef	menuTonePosBarcolour;
-	Menu_Typedef	menuToneNegBarcolour;
+	Menu_Typedef	colours;
+	Menu_Typedef	backcolour;
+	Menu_Typedef	textcolour;
+	Menu_Typedef	levelBarcolour;
+	Menu_Typedef	tonePosBarcolour;
+	Menu_Typedef	toneNegBarcolour;
 
 	// FX
-	Menu_Typedef	menuFx;
-	Menu_Typedef	menuFx1;
-	Menu_Typedef	menuFx2;
+	Menu_Typedef	fx;
+	Menu_Typedef	fx1;
+	Menu_Typedef	fx2;
+} Menus_Typedef;
 
+typedef struct {
+	uint16_t		background;
+	uint16_t		text;
+	uint16_t		levelBar;
+	uint16_t		tonePosBar;
+	uint16_t		toneNegBar;
+} Colours_Typedef;
+
+typedef struct {
+	uint16_t		xPos;
+	uint16_t		yPos;
+	uint16_t		xSize;
+	uint16_t		ySize;
+	int8_t			value;
+} Progressbar_Typedef;
+
+typedef struct {
+	Progressbar_Typedef		analogDrum1Level;
+	Progressbar_Typedef		analogDrum1Tone;
+	Progressbar_Typedef		analogDrum2Level;
+	Progressbar_Typedef		analogDrum2Tone;
+	Progressbar_Typedef		digitalDrum1Level;
+	Progressbar_Typedef		digitalDrum1Tone;
+	Progressbar_Typedef		digitalDrum2Level;
+	Progressbar_Typedef		digitalDrum2Tone;
+	Progressbar_Typedef		digitalDrum3Level;
+	Progressbar_Typedef		digitalDrum3Tone;
+	Progressbar_Typedef		digitalDrum4Level;
+	Progressbar_Typedef		digitalDrum4Tone;
+} Progressbars_Typedef;
+
+typedef struct {
+	Colours_Typedef			colours;
+	Menus_Typedef			menus;
+	Progressbars_Typedef	bars;
 } MenuSettings_TypeDef;
 
 /////////////////////////
@@ -98,7 +125,7 @@ int8_t  MenuRotaryRead				(uint8_t reset);
 /////////////////////////
 // Structure prototype //
 /////////////////////////
-MenuSettings_TypeDef mainmenu;
+MenuSettings_TypeDef gui;
 
 //////////////////////////
 // !!!! SIMULATION !!!! //
