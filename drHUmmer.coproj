@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<Project version="2G - 1.7.7" name="drHUmmer">
+<Project version="2G - 2.0.0" name="drHUmmer">
   <Target name="drHUmmer" isCurrent="1">
-    <Device manufacturerId="9" manufacturerName="ST" chipId="344" chipName="STM32F407VG" boardId="" boardName=""/>
+    <Device manufacturerId="9" manufacturerName="ST" chipId="261" chipName="STM32F407VG" boardId="" boardName="" coreId="4" coreName="Cortex M4"/>
     <BuildOption>
       <Compile>
         <Option name="OptimizationLevel" value="0"/>
@@ -15,8 +15,8 @@
         <DefinedSymbols>
           <Define name="STM32F407VG"/>
           <Define name="STM32F4XX"/>
-          <Define name="USE_STDPERIPH_DRIVER"/>
           <Define name="__ASSEMBLY__"/>
+          <Define name="USE_STDPERIPH_DRIVER"/>
           <Define name="__FPU_USED"/>
         </DefinedSymbols>
       </Compile>
@@ -28,7 +28,7 @@
         <Option name="LTO" value="0"/>
         <Option name="IsNewStartupCode" value="1"/>
         <Option name="Library" value="Not use C Library"/>
-        <Option name="UserEditLinker" value="-lm"/>
+        <Option name="UserEditLinker" value="-lm;"/>
         <LinkedLibraries/>
         <MemoryAreas debugInFlashNotRAM="1">
           <Memory name="IROM1" type="ReadOnly" size="0x00100000" startValue="0x08000000"/>
@@ -36,7 +36,7 @@
           <Memory name="IROM2" type="ReadOnly" size="" startValue=""/>
           <Memory name="IRAM2" type="ReadWrite" size="0x00010000" startValue="0x10000000"/>
         </MemoryAreas>
-        <LocateLinkFile path="../../coocox/coide/configuration/programdata/drhummer/arm-gcc-link.ld" type="0"/>
+        <LocateLinkFile path="c:/users/jan/appdata/roaming/coocox/coide/configuration/programdata/drhummer/arm-gcc-link.ld" type="0"/>
       </Link>
       <Output>
         <Option name="OutputFileType" value="0"/>
@@ -67,59 +67,52 @@
       <Option name="org.coocox.codebugger.gdbjtag.core.autoDownload" value="1"/>
       <Option name="org.coocox.codebugger.gdbjtag.core.verify" value="1"/>
       <Option name="org.coocox.codebugger.gdbjtag.core.downloadFuction" value="Erase Effected"/>
-      <Option name="org.coocox.codebugger.gdbjtag.core.defaultAlgorithm" value="STM32F4xx_1024.elf"/>
+      <Option name="org.coocox.codebugger.gdbjtag.core.defaultAlgorithm" value="C:\Users\Jan\AppData\Roaming\CooCox\CoIDE\config\flash\CooCox-Flash\CoIDE_STM32F4xx_1024K\STM32F4xx_1024.elf"/>
     </DebugOption>
     <ExcludeFile/>
   </Target>
-  <Components path="./">
-    <Component id="54" name="M4 CMSIS Core" path="" type="2"/>
-    <Component id="500" name="CMSIS BOOT" path="" type="2"/>
-    <Component id="501" name="RCC" path="" type="2"/>
-    <Component id="504" name="GPIO" path="" type="2"/>
-    <Component id="513" name="TIM" path="" type="2"/>
-    <Component id="514" name="ADC" path="" type="2"/>
-    <Component id="515" name="DAC" path="" type="2"/>
-    <Component id="517" name="USART" path="" type="2"/>
-    <Component id="524" name="MISC" path="" type="2"/>
-  </Components>
+  <Components path="./"/>
+  <LocalComponents/>
   <Files>
+    <File name="includes/drum_sounds" path="" type="2"/>
     <File name="includes/ADC.h" path="ADC.h" type="1"/>
     <File name="cmsis_lib/source/stm32f4xx_gpio.c" path="cmsis_lib/source/stm32f4xx_gpio.c" type="1"/>
+    <File name="includes/drum_sounds/snaredrum.h" path="snaredrum.h" type="1"/>
     <File name="cmsis_lib/source/stm32f4xx_usart.c" path="cmsis_lib/source/stm32f4xx_usart.c" type="1"/>
     <File name="source/sequencer.c" path="sequencer.c" type="1"/>
     <File name="source/filter.c" path="filter.c" type="1"/>
-    <File name="cmsis_boot" path="" type="2"/>
+    <File name="includes/drum_sounds/basskick.h" path="basskick.h" type="1"/>
     <File name="cmsis_lib/include/stm32f4xx_dac.h" path="cmsis_lib/include/stm32f4xx_dac.h" type="1"/>
+    <File name="cmsis_boot" path="" type="2"/>
     <File name="includes/UART.h" path="UART.h" type="1"/>
     <File name="cmsis_lib/include/stm32f4xx_usart.h" path="cmsis_lib/include/stm32f4xx_usart.h" type="1"/>
     <File name="includes/DAC.h" path="DAC.h" type="1"/>
     <File name="includes/main.h" path="main.h" type="1"/>
     <File name="cmsis_boot/startup" path="" type="2"/>
-    <File name="cmsis/core_cm4_simd.h" path="cmsis/core_cm4_simd.h" type="1"/>
     <File name="cmsis_boot/stm32f4xx.h" path="cmsis_boot/stm32f4xx.h" type="1"/>
+    <File name="cmsis/core_cm4_simd.h" path="cmsis/core_cm4_simd.h" type="1"/>
     <File name="cmsis/core_cmFunc.h" path="cmsis/core_cmFunc.h" type="1"/>
     <File name="cmsis/core_cm4.h" path="cmsis/core_cm4.h" type="1"/>
     <File name="cmsis_lib/source/misc.c" path="cmsis_lib/source/misc.c" type="1"/>
-    <File name="cmsis_lib/include/stm32f4xx_tim.h" path="cmsis_lib/include/stm32f4xx_tim.h" type="1"/>
     <File name="cmsis_lib/source/stm32f4xx_adc.c" path="cmsis_lib/source/stm32f4xx_adc.c" type="1"/>
+    <File name="cmsis_lib/include/stm32f4xx_tim.h" path="cmsis_lib/include/stm32f4xx_tim.h" type="1"/>
     <File name="includes/interrupt.h" path="interrupt.h" type="1"/>
     <File name="source/ADC.c" path="ADC.c" type="1"/>
     <File name="cmsis_lib/source" path="" type="2"/>
-    <File name="includes/basskick.h" path="basskick.h" type="1"/>
     <File name="includes/timer.h" path="timer.h" type="1"/>
-    <File name="includes/UI.h" path="UI.h" type="1"/>
     <File name="cmsis_boot/stm32f4xx_conf.h" path="cmsis_boot/stm32f4xx_conf.h" type="1"/>
-    <File name="cmsis_boot/system_stm32f4xx.h" path="cmsis_boot/system_stm32f4xx.h" type="1"/>
+    <File name="includes/UI.h" path="UI.h" type="1"/>
     <File name="cmsis_lib/source/stm32f4xx_dac.c" path="cmsis_lib/source/stm32f4xx_dac.c" type="1"/>
-    <File name="includes/hihat.h" path="hihat.h" type="1"/>
+    <File name="cmsis_boot/system_stm32f4xx.h" path="cmsis_boot/system_stm32f4xx.h" type="1"/>
     <File name="source/delay.c" path="delay.c" type="1"/>
     <File name="cmsis_lib/include/stm32f4xx_rcc.h" path="cmsis_lib/include/stm32f4xx_rcc.h" type="1"/>
     <File name="source/interrupt.c" path="interrupt.c" type="1"/>
     <File name="includes" path="" type="2"/>
+    <File name="source/midi.c" path="midi.c" type="1"/>
     <File name="cmsis_boot/startup/startup_stm32f4xx.c" path="cmsis_boot/startup/startup_stm32f4xx.c" type="1"/>
     <File name="includes/sequencer.h" path="sequencer.h" type="1"/>
-    <File name="includes/filter.h" path="filter.h" type="1"/>
     <File name="cmsis_lib/source/stm32f4xx_rcc.c" path="cmsis_lib/source/stm32f4xx_rcc.c" type="1"/>
+    <File name="includes/filter.h" path="filter.h" type="1"/>
     <File name="includes/delay.h" path="delay.h" type="1"/>
     <File name="cmsis/core_cmInstr.h" path="cmsis/core_cmInstr.h" type="1"/>
     <File name="source/main.c" path="main.c" type="1"/>
@@ -128,17 +121,19 @@
     <File name="cmsis_lib/include/stm32f4xx_adc.h" path="cmsis_lib/include/stm32f4xx_adc.h" type="1"/>
     <File name="source/UART.c" path="UART.c" type="1"/>
     <File name="cmsis_boot/system_stm32f4xx.c" path="cmsis_boot/system_stm32f4xx.c" type="1"/>
+    <File name="includes/drum_sounds/cymbal.h" path="cymbal.h" type="1"/>
+    <File name="includes/midi.h" path="midi.h" type="1"/>
     <File name="source/PLL.c" path="PLL.c" type="1"/>
     <File name="cmsis" path="" type="2"/>
-    <File name="source/DAC.c" path="DAC.c" type="1"/>
     <File name="source/timer.c" path="timer.c" type="1"/>
+    <File name="source/DAC.c" path="DAC.c" type="1"/>
     <File name="cmsis_lib" path="" type="2"/>
     <File name="cmsis_lib/source/stm32f4xx_tim.c" path="cmsis_lib/source/stm32f4xx_tim.c" type="1"/>
     <File name="cmsis_lib/include/stm32f4xx_gpio.h" path="cmsis_lib/include/stm32f4xx_gpio.h" type="1"/>
     <File name="cmsis_lib/include/misc.h" path="cmsis_lib/include/misc.h" type="1"/>
-    <File name="includes/cymbal.h" path="cymbal.h" type="1"/>
-    <File name="includes/snaredrum.h" path="snaredrum.h" type="1"/>
     <File name="cmsis_lib/include" path="" type="2"/>
     <File name="includes/PLL.h" path="PLL.h" type="1"/>
+    <File name="includes/drum_sounds/hihat.h" path="hihat.h" type="1"/>
   </Files>
+  <Bookmarks/>
 </Project>
