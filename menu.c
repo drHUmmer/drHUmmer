@@ -12,8 +12,14 @@
  * 	 	|	\ Tone positive bar
  * 	 	|	\ Tone negative bar
  * 	 	\ Fx
- * 	 		\ Fx 1
- * 	 		\ Fx 2
+ * 	 	|	\ Fx 1
+ * 	 	|	\ Fx 2
+ *		\ Settings Fx
+ *		|	\ lp freq
+ *		|	\ hp freq
+ *		|	\ ds freq
+ *		|	\ bc bits
+ *		\ Set BPM
  *
  */
 
@@ -48,13 +54,18 @@ void MenuSetup() {
 	
 	// Settings Menu //
 	gui.menus.main.selectedOption							= 1;
-	gui.menus.main.nrOfOptions								= 3;
+	gui.menus.main.nrOfOptions								= 8;
 	gui.menus.main.handler									= Menu_MainHandler;
 	gui.menus.main.parent									= Menu_Info;
 	strcpy(gui.menus.main.menuTitle							, TITLE_MAINSMENU);
 	strcpy(gui.menus.main.menuOptions [0]					, BACKSTRING);
 	strcpy(gui.menus.main.menuOptions [1]					, "Set fx");
 	strcpy(gui.menus.main.menuOptions [2]					, "Set colours");
+	strcpy(gui.menus.main.menuOptions [3]					, "Set BPM");
+	strcpy(gui.menus.main.menuOptions [4]					, "Set lpf freq");
+	strcpy(gui.menus.main.menuOptions [5]					, "Set hpf freq");
+	strcpy(gui.menus.main.menuOptions [6]					, "Set ds freq");
+	strcpy(gui.menus.main.menuOptions [7]					, "Set bc bits");
 
 	// Colours //
 	gui.menus.colours.selectedOption						= 1;
@@ -195,6 +206,46 @@ void MenuSetup() {
 	strcpy(gui.menus.fx2.menuOptions	[3]					, "High-pass");
 	strcpy(gui.menus.fx2.menuOptions	[4]					, "Bitcrusher");
 	strcpy(gui.menus.fx2.menuOptions	[5]					, "Down-sampler");
+
+	// Set BPM //
+	gui.menus.bpm.selectedOption							= 1;
+	gui.menus.bpm.nrOfOptions								= 1;
+	gui.menus.bpm.handler									= Menu_SetBPMHandler;
+	gui.menus.bpm.parent									= Menu_Main;
+	strcpy(gui.menus.bpm.menuTitle							, TITLE_SETBPM);
+	strcpy(gui.menus.bpm.menuOptions	[0]					, "");
+
+	// Set LPF freq //
+	gui.menus.lpFreq.selectedOption							= 1;
+	gui.menus.lpFreq.nrOfOptions							= 1;
+	gui.menus.lpFreq.handler								= Menu_SetLPFfreqHandler;
+	gui.menus.lpFreq.parent									= Menu_Main;
+	strcpy(gui.menus.lpFreq.menuTitle						, TITLE_SETLPFFREQ);
+	strcpy(gui.menus.lpFreq.menuOptions	[0]					, "");
+
+	// Set HPF freq //
+	gui.menus.hpFreq.selectedOption							= 1;
+	gui.menus.hpFreq.nrOfOptions							= 1;
+	gui.menus.hpFreq.handler								= Menu_SetHPFfreqHandler;
+	gui.menus.hpFreq.parent									= Menu_Main;
+	strcpy(gui.menus.hpFreq.menuTitle						, TITLE_SETHPFFREQ);
+	strcpy(gui.menus.hpFreq.menuOptions	[0]					, "");
+
+	// Set DS freq //
+	gui.menus.dsFreq.selectedOption							= 1;
+	gui.menus.dsFreq.nrOfOptions							= 1;
+	gui.menus.dsFreq.handler								= Menu_SetDSfreqHandler;
+	gui.menus.dsFreq.parent									= Menu_Main;
+	strcpy(gui.menus.dsFreq.menuTitle						, TITLE_SETDSFREQ);
+	strcpy(gui.menus.dsFreq.menuOptions	[0]					, "");
+
+	// Set BC bits //
+	gui.menus.bcBits.selectedOption							= 1;
+	gui.menus.bcBits.nrOfOptions							= 1;
+	gui.menus.bcBits.handler								= Menu_SetBCbitsHandler;
+	gui.menus.bcBits.parent									= Menu_Main;
+	strcpy(gui.menus.bcBits.menuTitle						, TITLE_SETBCBITS);
+	strcpy(gui.menus.bcBits.menuOptions	[0]					, "");
 
 // Progressbars
 	// Analog drum 1

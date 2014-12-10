@@ -26,4 +26,10 @@ void Menu_SetFx();
 void Menu_SetFx1();
 void Menu_SetFx2();
 
+void Menu_SetBPM();
+void Menu_SetlpfFreq();
+void Menu_SethpfFreq();
+void Menu_SetDSFreq();
+void Menu_SetBCbits();
+
 #endif // MENUSCREENS_H

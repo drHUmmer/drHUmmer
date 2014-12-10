@@ -163,3 +163,43 @@ void Menu_SetFx2() {
 
 	MenuRedrawScreen();
 }
+
+void Menu_SetBPM() {
+	gui.menus.current = &gui.menus.bpm;
+	MenuRedrawScreen();
+
+	LCD_StringLine(150, 50, "BPM:");
+	LCD_StringInt(120, 50, sequencer.BPM, 1);
+}
+
+void Menu_SetlpfFreq() {
+	gui.menus.current = &gui.menus.lpFreq;
+	MenuRedrawScreen();
+
+	LCD_StringLine(150, 50, "LPF freq:");
+	LCD_StringInt(120, 50, FXsettings.lpfFreq, 1);
+}
+
+void Menu_SethpfFreq() {
+	gui.menus.current = &gui.menus.hpFreq;
+	MenuRedrawScreen();
+
+	LCD_StringLine(150, 50, "HPF freq:");
+	LCD_StringInt(120, 50, FXsettings.hpfFreq, 1);
+}
+
+void Menu_SetDSFreq() {
+	gui.menus.current = &gui.menus.dsFreq;
+	MenuRedrawScreen();
+
+	LCD_StringLine(150, 50, "DS freq:");
+	LCD_StringInt(120, 50, FXsettings.dsFreq, 1);
+}
+
+void Menu_SetBCbits() {
+	gui.menus.current = &gui.menus.bcBits;
+	MenuRedrawScreen();
+
+	LCD_StringLine(150, 50, "BC bits:");
+	LCD_StringInt(120, 50, FXsettings.bcBits, 1);
+}

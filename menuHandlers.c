@@ -69,6 +69,22 @@ void Menu_MainHandler() {
 
 		if (MenuCompareSelected("Set fx"))
 			Menu_SetFx();
+
+		if (MenuCompareSelected("Set BPM"))
+			Menu_SetBPM();
+
+		if (MenuCompareSelected("Set hpf freq"))
+			Menu_SethpfFreq();
+
+		if (MenuCompareSelected("Set lpf freq"))
+			Menu_SetlpfFreq();
+
+		if (MenuCompareSelected("Set ds freq"))
+			Menu_SetDSFreq();
+
+		if (MenuCompareSelected("Set bc bits"))
+			Menu_SetBCbits();
+
 	}
 }
 
@@ -416,3 +432,108 @@ void Menu_SetFx2Handler() {
 	}
 }
 
+void Menu_SetBPMHandler() {
+	if (MenuOKpressed(1))
+		Menu_GotoParent();
+
+	int8_t rotary 	= MenuRotaryRead(1);
+	uint16_t BPM	= sequencer.BPM;
+
+	if (rotary) {
+		BPM += (rotary * 10);
+		if (BPM < 50)
+			BPM = 50;
+
+		if (BPM > 400)
+			BPM = 400;
+
+		sequencer.BPM = BPM;
+		BPMUpdate(BPM);
+
+		LCD_StringInt(120, 50, sequencer.BPM, 1);
+	}
+}
+
+void Menu_SetLPFfreqHandler() {
+	if (MenuOKpressed(1))
+		Menu_GotoParent();
+
+	int8_t rotary 		= MenuRotaryRead(1);
+	uint16_t lpffreq	= FXsettings.lpfFreq;
+
+	if (rotary) {
+		lpffreq += (rotary * 50);
+		if (lpffreq < 50)
+			lpffreq = 50;
+
+		if (lpffreq > 10000)
+			lpffreq = 10000;
+
+		FXsettings.lpfFreq = lpffreq;
+
+		LCD_StringInt(120, 50, lpffreq, 1);
+	}
+}
+
+void Menu_SetHPFfreqHandler() {
+	if (MenuOKpressed(1))
+		Menu_GotoParent();
+
+	int8_t rotary 		= MenuRotaryRead(1);
+	uint16_t hpffreq	= FXsettings.hpfFreq;
+
+	if (rotary) {
+		hpffreq += (rotary * 50);
+		if (hpffreq < 50)
+			hpffreq = 50;
+
+		if (hpffreq > 10000)
+			hpffreq = 10000;
+
+		FXsettings.hpfFreq = hpffreq;
+
+		LCD_StringInt(120, 50, hpffreq, 1);
+	}
+}
+
+void Menu_SetDSfreqHandler() {
+	if (MenuOKpressed(1))
+		Menu_GotoParent();
+
+	int8_t rotary 		= MenuRotaryRead(1);
+	uint16_t dsfreq		= FXsettings.dsFreq;
+
+	if (rotary) {
+		dsfreq += (rotary * 100);
+		if (dsfreq < 1)
+			dsfreq = 1;
+
+		if (dsfreq > 44100)
+			dsfreq = 44100;
+
+		FXsettings.dsFreq = dsfreq;
+
+		LCD_StringInt(120, 50, dsfreq, 1);
+	}
+}
+
+void Menu_SetBCbitsHandler() {
+	if (MenuOKpressed(1))
+		Menu_GotoParent();
+
+	int8_t rotary 		= MenuRotaryRead(1);
+	uint16_t bcbits	= FXsettings.bcBits;
+
+	if (rotary) {
+		bcbits += rotary;
+		if (bcbits < 1)
+			bcbits = 1;
+
+		if (bcbits > DAC_BITS - 1)
+			bcbits = DAC_BITS;
+
+		FXsettings.bcBits = bcbits;
+
+		LCD_StringInt(120, 50, bcbits, 1);
+	}
+}

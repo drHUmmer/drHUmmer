@@ -34,6 +34,11 @@ typedef struct {
 #define TITLE_LEVELBAR			"Set level bar"
 #define TITLE_TONEPOSBAR		"Set tone + bar"
 #define TITLE_TONENEGBAR		"Set tone - bar"
+#define TITLE_SETBPM			"Set BPM"
+#define TITLE_SETLPFFREQ		"Set lpf freq"
+#define TITLE_SETHPFFREQ		"Set hpf freq"
+#define TITLE_SETDSFREQ			"Set ds freq"
+#define TITLE_SETBCBITS			"Set bc bits"
 
 /////////////////////
 // Dispay settings //
@@ -73,6 +78,15 @@ typedef struct {
 	Menu_Typedef	fx;
 	Menu_Typedef	fx1;
 	Menu_Typedef	fx2;
+
+	// Settings
+	Menu_Typedef	bpm;
+	Menu_Typedef	fxSettings;
+	Menu_Typedef	lpFreq;
+	Menu_Typedef	hpFreq;
+	Menu_Typedef	dsFreq;
+	Menu_Typedef	bcBits;
+
 } Menus_Typedef;
 
 typedef struct {

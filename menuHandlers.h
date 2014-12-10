@@ -4,6 +4,8 @@
 #include "menuScreens.h"
 #include "menu.h"
 #include "LCDitems.h"
+#include "timers.h"
+#include "DAC.h"
 
 // Main
 void Menu_UpdateHandler();
@@ -22,5 +24,13 @@ void Menu_ToneNegBarHandler();
 void Menu_SetFxHandler();
 void Menu_SetFx1Handler();
 void Menu_SetFx2Handler();
+
+void Menu_SetBPMHandler();
+
+// FX settings
+void Menu_SetLPFfreqHandler();
+void Menu_SetHPFfreqHandler();
+void Menu_SetDSfreqHandler();
+void Menu_SetBCbitsHandler();
 
 #endif // MENUHANDLERS_H
