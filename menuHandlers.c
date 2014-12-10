@@ -36,10 +36,28 @@ void Menu_InfoHandler() {
 	 	return;
 	 }
 
-	 if (gui.bars.digitalDrum1Level.value != sequencer.instr0.level) {
-		 gui.bars.digitalDrum1Level.value = sequencer.instr0.level;
-		 LCD_Levelbar(&gui.bars.digitalDrum1Level, gui.bars.digitalDrum1Level.value);
+	 uint8_t oldValue 		= sequencer.instrID;
+	 int8_t newValue 		= oldValue;
+	 int8_t rotaryValue		= MenuRotaryRead(1);
+
+	 if (rotaryValue != 0) {
+		 newValue += rotaryValue;
+		 if (newValue < 0) {
+			 newValue += 6;
+		 }
+		 newValue %= 6;
+
+	 sequencer.instrID = newValue;
+	 if (newValue == 0)
+		 LCD_StringLine(212, 270, "0");
+	 else
+		 LCD_StringInt (212, 200, newValue, 0);
+
 	 }
+//	 if (gui.bars.digitalDrum1Level.value != sequencer.instr0.level) {
+//		 gui.bars.digitalDrum1Level.value = sequencer.instr0.level;
+//		 LCD_Levelbar(&gui.bars.digitalDrum1Level, gui.bars.digitalDrum1Level.value);
+//	 }
 }
 
 void Menu_MainHandler() {

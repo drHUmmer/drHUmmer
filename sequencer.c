@@ -15,7 +15,7 @@ void sequencerInit(void)
 	sequencer.instr0.sequence 		= 0x2222;	// 0010 0010 0010 0010			//hihat
 	sequencer.instr1.sequence 		= 0x0808;	// 0000 1000 0000 1000			//snare
 	sequencer.instr2.sequence 		= 0x8080;	// 1000 1000 1000 1000			//basskick
-	sequencer.instr3.sequence 		= 0x0000;	// 0000 0000 0000 0000			//cymbal
+	sequencer.instr3.sequence 		= 0x0001;	// 0000 0000 0000 0000			//cymbal
 
 	for(i=0;i<16;i++)
 	{

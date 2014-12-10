@@ -26,68 +26,20 @@ void Menu_Info() {
 
 // Progressbars
 	// D1
-	value = sequencer.instr0.tone;
-	level = sequencer.instr0.level;
-
-//	LCD_CreateVertProgressbar(0, 108, BARHEIGHT, 25, backgroundColour, colourLevel, level);
-	if (value > 0) {
-//		LCD_CreateVertProgressbar(BARHEIGHT / 2, 133, BARHEIGHT / 2, 25, backgroundColour, colourTonePos, value);	// Tone positive
-	}
-	else if (value < 0) {
-//		LCD_CreateVertProgressbar(0, 133, BARHEIGHT / 2, 25, colourToneNeg, backgroundColour, 100 + value);// Tone negative
-	}
-	else {
-		LCD_SetTextColor(ColourConverterDec(gui.colours.text));
-		LCD_DrawFullRect(BARHEIGHT / 2 - 2, 133, 4, 25);
-	}
+	LCD_Levelbar(&gui.bars.digitalDrum1Level, sequencer.instr0.level);
+	LCD_Tonebar(&gui.bars.digitalDrum1Tone, sequencer.instr0.tone);
 
 	// D2
-	value = sequencer.instr1.tone;
-	level = sequencer.instr1.level;
-
-//	LCD_CreateVertProgressbar(0, 162, BARHEIGHT, 25, backgroundColour, colourLevel, level);		// Level
-	if (value > 0) {
-//		LCD_CreateVertProgressbar(BARHEIGHT / 2, 187, BARHEIGHT / 2, 25, backgroundColour, colourTonePos, value);	// Tone positive
-	}
-	else if (value < 0) {
-//		LCD_CreateVertProgressbar(0, 187, BARHEIGHT / 2, 25, colourToneNeg, backgroundColour, 100 + value);// Tone negative
-	}
-	else {
-		LCD_SetTextColor(ColourConverterDec(gui.colours.text));
-		LCD_DrawFullRect(BARHEIGHT / 2 - 2, 187, 4, 25);
-	}
+	LCD_Levelbar(&gui.bars.digitalDrum2Level, sequencer.instr1.level);
+	LCD_Tonebar(&gui.bars.digitalDrum2Tone, sequencer.instr1.tone);
 
 	// D3
-	value = sequencer.instr2.tone;
-	level = sequencer.instr2.level;
-
-//	LCD_CreateVertProgressbar(0, 216, BARHEIGHT, 25, backgroundColour, colourLevel, level);
-	if (value > 0) {
-//		LCD_CreateVertProgressbar(BARHEIGHT / 2, 241, BARHEIGHT / 2, 25, backgroundColour, colourTonePos, value);	// Tone positive
-	}
-	else if (value < 0) {
-//		LCD_CreateVertProgressbar(0, 241, BARHEIGHT / 2, 25, colourToneNeg, backgroundColour, 100 + value);// Tone negative
-	}
-	else {
-		LCD_SetTextColor(ColourConverterDec(gui.colours.text));
-		LCD_DrawFullRect(BARHEIGHT / 2 - 2, 241, 4, 25);
-	}
+	LCD_Levelbar(&gui.bars.digitalDrum3Level, sequencer.instr2.level);
+	LCD_Tonebar(&gui.bars.digitalDrum3Tone, sequencer.instr2.tone);
 
 	// D4
-	value = sequencer.instr3.tone;
-	level = sequencer.instr3.level;
-
-//	LCD_CreateVertProgressbar(0, 270, BARHEIGHT, 25, backgroundColour, colourLevel, level);
-	if (value > 0) {
-//		LCD_CreateVertProgressbar(BARHEIGHT / 2, 295, BARHEIGHT / 2, 25, backgroundColour, colourTonePos, value);	// Tone positive
-	}
-	else if (value < 0) {
-//		LCD_CreateVertProgressbar(0, 295, BARHEIGHT / 2, 25, colourToneNeg, backgroundColour, 100 + value);// Tone negative
-	}
-	else {
-		LCD_SetTextColor(ColourConverterDec(gui.colours.text));
-		LCD_DrawFullRect(BARHEIGHT / 2 - 2, 295, 4, 25);
-	}
+	LCD_Levelbar(&gui.bars.digitalDrum4Level, sequencer.instr3.level);
+	LCD_Tonebar(&gui.bars.digitalDrum4Tone, sequencer.instr3.tone);
 
 // Texts
 	LCD_SetTextColor(ColourConverterDec(gui.colours.text));
@@ -95,6 +47,13 @@ void Menu_Info() {
 	// BPM
 	LCD_StringLine(212, 10, "BPM:");
 	LCD_StringInt (212, 60, sequencer.BPM, 0);
+
+	// Instrument
+	LCD_StringLine(212, 170, "Instr");
+	if (sequencer.instrID == 0)								// DEMO
+		 LCD_StringLine(212, 270, "0");						// CODE
+	 else													// !!
+		 LCD_StringInt (212, 200, sequencer.instrID, 0);	// !!
 
 	// Effect 1
 	switch (FXsettings.fx1) {

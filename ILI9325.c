@@ -49,6 +49,8 @@ void LCD_Init(void) {
 	LCD_CtrlLinesConfig();
 	LCD_FSMCConfig();
 
+	LCD_CharSize(24);
+
 	//Pulse reset
 	GPIO_ResetBits(GPIOE, GPIO_Pin_10);
 	Delay_ms(300);
@@ -384,8 +386,8 @@ void LCD_PutChar(int16_t PosX, int16_t PosY, char c) {
 }
 
 void LCD_StringInt(uint16_t PosX, uint16_t PosY, uint16_t value, uint8_t alignRight) {
-	if (value > 99999)
-		return;
+	if (value > 99999)	// Invalid
+		return;			// range
 
 	uint16_t temp = 0;
 	uint8_t count = 5;

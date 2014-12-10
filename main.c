@@ -59,7 +59,7 @@ int main(void)
 {
 	PLLInit();
 	sequencerInit();
-//	SPI3_Init();
+	SPI3_Init();
 
 /*****************
  * 	LED IO init
@@ -82,10 +82,15 @@ int main(void)
 	GPIO_Init(GPIOD, &GPIO_InitStruct);
 /* End LED IO init */
 
+	// Random button init (Demo 1)
+//	GPIO_InitStruct.GPIO_Pin = GPIO_Pin_0;
+//	GPIO_InitStruct.GPIO_Mode = GPIO_Mode_IN;
+//	GPIO_Init(GPIOE, &GPIO_InitStruct);
+
 	UIInit();
 
 	dacInit();
-	adcInit();
+//	adcInit();
 	NVICTimer2Init();
 	NVICTimer5Init();
 	Timer2Init();
@@ -104,71 +109,96 @@ int main(void)
 	SysTick_Init();
 	UART2_init(57600);
 
-	buttonz.buttonBack 	= 0;
-	buttonz.buttonOK 	= 0;
-	buttonz.rotaryValue	= 0;
+//	buttonz.buttonBack 	= 0;
+//	buttonz.buttonOK 	= 0;
+//	buttonz.rotaryValue	= 0;
 
 	LCD_Init();
 	LCD_Clear(ColourConverterDec(Black));
 
-	LCD_CharSize(24);
-
-	FXsettings.fx1	= LPF;
-	FXsettings.fx2	= HPF;
+	FXsettings.fx1	= NONE;
+	FXsettings.fx2	= NONE;
 	FXsettings.bcBits = 3;
 	FXsettings.dsFreq = 800;
 	FXsettings.lpfFreq = 3000;		// 3000
 	FXsettings.hpfFreq = 1500;		// 15000
 
-	sequencer.instr0.level 	= 25;
-	sequencer.instr1.level 	= 50;
-	sequencer.instr2.level 	= 75;
+	sequencer.instr0.level 	= 100;
+	sequencer.instr1.level 	= 100;
+	sequencer.instr2.level 	= 100;
 	sequencer.instr3.level 	= 100;
 
-	sequencer.instr0.tone 	= 75;
-	sequencer.instr1.tone 	= 0;
-	sequencer.instr2.tone 	= -25;
-	sequencer.instr3.tone 	= -75;
+	sequencer.instr0.tone 	= 1;
+	sequencer.instr1.tone 	= 1;
+	sequencer.instr2.tone 	= 1;
+	sequencer.instr3.tone 	= 1;
 
 	MenuSetup();
 
+	uint16_t sequencerButtons = 0;
+
 	while (1) {
-		uint16_t buttonvalue = UIButtonRead();
-		if (buttonvalue & 0x1000) {
-			buttonz.buttonOK = 1;
-			GPIO_SetBits(GPIOD, GPIO_Pin_12);
+//		uint16_t buttonvalue = UIButtonRead();
+//		if (buttonvalue & 0x1000) {
+//			buttonz.buttonOK = 1;
+//			GPIO_SetBits(GPIOD, GPIO_Pin_12);
+//		}
+//
+//		if (buttonvalue & 0x2000) {
+//			buttonz.buttonBack = 1;
+//			GPIO_SetBits(GPIOD, GPIO_Pin_13);
+//		}
+//
+//		if (buttonvalue & 0x4000) {
+//			GPIO_SetBits(GPIOD, GPIO_Pin_14);
+//			buttonz.rotaryValue = 1;
+//		}
+//
+//		if (buttonvalue & 0x8000) {
+//			GPIO_SetBits(GPIOD, GPIO_Pin_15);
+//			buttonz.rotaryValue = -1;
+//		}
+
+		// BLUE BUTTON
+		if (GPIO_ReadInputDataBit(GPIOA, GPIO_Pin_0)) {
+			sequencer.instrID ++;
+			sequencer.instrID %= 6;
 		}
 
-		if (buttonvalue & 0x2000) {
-			buttonz.buttonBack = 1;
-			GPIO_SetBits(GPIOD, GPIO_Pin_13);
+		// Rotary get
+		SPI_PIC_Send(PIC_GET_ROTARY, 0, PIC_ROTARY_1);
+		delay_1ms();
+		buttonz.rotaryValue = SPI_PIC_Receive();
+
+		// Button get
+		sequencerButtons = UIButtonRead();
+
+		buttonz.buttonOK = GPIO_ReadInputDataBit(GPIOE, GPIO_Pin_0);
+		buttonz.buttonBack = 0;
+
+		switch (sequencer.instrID) {
+		case 0: sequencer.bassdrum.sequence ^= sequencerButtons; 	break;	// A1
+		case 1: sequencer.snaredrum.sequence ^= sequencerButtons;	break;	// A2
+		case 2: sequencer.instr0.sequence ^= sequencerButtons;		break;	// D1
+		case 3: sequencer.instr1.sequence ^= sequencerButtons;		break;	// D2
+		case 4: sequencer.instr2.sequence ^= sequencerButtons;		break;	// D3
+		case 5: sequencer.instr3.sequence ^= sequencerButtons;		break;	// D4
 		}
 
-		if (buttonvalue & 0x4000) {
-			GPIO_SetBits(GPIOD, GPIO_Pin_14);
-			buttonz.rotaryValue = 1;
+		switch (sequencer.instrID) {
+		case 0: SPI_LED_Send(sequencer.bassdrum.sequence);			break;	// A1
+		case 1: SPI_LED_Send(sequencer.snaredrum.sequence);			break;	// A2
+		case 2: SPI_LED_Send(sequencer.instr0.sequence);			break;	// D1
+		case 3: SPI_LED_Send(sequencer.instr1.sequence);			break;	// D2
+		case 4: SPI_LED_Send(sequencer.instr2.sequence);			break;	// D3
+		case 5: SPI_LED_Send(sequencer.instr3.sequence);			break;	// D4
 		}
-
-		if (buttonvalue & 0x8000) {
-			GPIO_SetBits(GPIOD, GPIO_Pin_15);
-			buttonz.rotaryValue = -1;
-		}
-
 
 		Menu_UpdateHandler();
 		delay_nms(100);
-		sequencer.instr0.level ++;
-		sequencer.instr0.level %= 100;
-//		GPIO_ResetBits(GPIOD, GPIO_Pin_12);
-		GPIO_ResetBits(GPIOD, GPIO_Pin_13);
-		GPIO_ResetBits(GPIOD, GPIO_Pin_14);
-		GPIO_ResetBits(GPIOD, GPIO_Pin_15);
 	}
 
-	while(1)
-	{
-		delay_nms(50);
-	}
+	while(1) {};
 
 	#ifdef FILTER_DEMO	//quick 'n dirty user button read, no debouncing
 			uint8_t userButt=0;

@@ -49,7 +49,7 @@ void MenuSetup() {
 	// Settings Menu //
 	gui.menus.main.selectedOption							= 1;
 	gui.menus.main.nrOfOptions								= 3;
-	gui.menus.main.handler									= Menu_InfoHandler;
+	gui.menus.main.handler									= Menu_MainHandler;
 	gui.menus.main.parent									= Menu_Info;
 	strcpy(gui.menus.main.menuTitle							, TITLE_MAINSMENU);
 	strcpy(gui.menus.main.menuOptions [0]					, BACKSTRING);
@@ -276,7 +276,7 @@ void MenuSetup() {
 	gui.bars.digitalDrum4Tone.ySize							= 25;
 
 	// Start mainscreen
-	Menu_Main();
+	Menu_Info();
 }
 
 ////////////////////
