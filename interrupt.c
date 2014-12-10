@@ -28,23 +28,23 @@ void TIM2_IRQHandler(void)
 		if((sequencer.snaredrum.sequence &  sequencer.beatmask) && \
 				(sequencer.snaredrum.substeps[sequencer.stepcnt] &  sequencer.submask))
 		{
-			GPIO_msk |= GPIO_Pin_12;				//red
+			//GPIO_msk |= GPIO_Pin_12;				//red
 		}
 		if((sequencer.bassdrum.sequence &  sequencer.beatmask) && \
 				  (sequencer.bassdrum.substeps[sequencer.stepcnt] &  sequencer.submask))
 		{
-			GPIO_msk |= GPIO_Pin_13;				//orange
+			//GPIO_msk |= GPIO_Pin_13;				//orange
 		}
 		if((sequencer.instr0.sequence &  sequencer.beatmask) && \
 				  (sequencer.instr0.substeps[sequencer.stepcnt] &  sequencer.submask))
 		{
-			GPIO_msk |= GPIO_Pin_14;				//green
+			//GPIO_msk |= GPIO_Pin_14;				//green
 			sequencer.instr0.triggerflag = 1;
 		}
 		if((sequencer.instr1.sequence &  sequencer.beatmask) && \
 				  (sequencer.instr1.substeps[sequencer.stepcnt] &  sequencer.submask))
 		{
-			GPIO_msk |= GPIO_Pin_15;				//blu
+			//GPIO_msk |= GPIO_Pin_15;				//blu
 			sequencer.instr1.triggerflag = 1;
 		}
 		if((sequencer.instr2.sequence &  sequencer.beatmask) && \
