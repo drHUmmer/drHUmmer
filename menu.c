@@ -31,7 +31,7 @@ void MenuSetup() {
 	gui.colours.text 		= Green;
 	gui.colours.levelBar	= Red;
 	gui.colours.tonePosBar	= Blue2;
-	gui.colours.toneNegBar	= Blue;
+	gui.colours.toneNegBar	= Yellow;
 	gui.menus.current		= &gui.menus.info;
 
 	// Clear menu options
@@ -195,7 +195,7 @@ void MenuSetup() {
 	strcpy(gui.menus.fx1.menuOptions	[5]					, "Down-sampler");
 
 	// Set FX 2 //
-	gui.menus.fx2.selectedOption								= 1;
+	gui.menus.fx2.selectedOption							= 1;
 	gui.menus.fx2.nrOfOptions								= 6;
 	gui.menus.fx2.handler									= Menu_SetFx2Handler;
 	gui.menus.fx2.parent									= Menu_SetFx;
@@ -249,78 +249,78 @@ void MenuSetup() {
 
 // Progressbars
 	// Analog drum 1
-	gui.bars.analogDrum1Level.value							= 0;
+	gui.bars.analogDrum1Level.value							= sequencer.bassdrum.level;
 	gui.bars.analogDrum1Level.xPos							= 0;
 	gui.bars.analogDrum1Level.yPos							= 0;
 	gui.bars.analogDrum1Level.xSize							= 180;
 	gui.bars.analogDrum1Level.ySize							= 25;
 
-	gui.bars.analogDrum1Tone.value							= 0;
+	gui.bars.analogDrum1Tone.value							= sequencer.bassdrum.tone;
 	gui.bars.analogDrum1Tone.xPos							= 0;
 	gui.bars.analogDrum1Tone.yPos							= 25;
 	gui.bars.analogDrum1Tone.xSize							= 180;
 	gui.bars.analogDrum1Tone.ySize							= 25;
 
 	// Analog drum 2
-	gui.bars.analogDrum2Level.value							= 0;
+	gui.bars.analogDrum2Level.value							= sequencer.snaredrum.level;
 	gui.bars.analogDrum2Level.xPos							= 0;
 	gui.bars.analogDrum2Level.yPos							= 54;
 	gui.bars.analogDrum2Level.xSize							= 180;
 	gui.bars.analogDrum2Level.ySize							= 25;
 
-	gui.bars.analogDrum2Tone.value							= 0;
+	gui.bars.analogDrum2Tone.value							= sequencer.snaredrum.tone;
 	gui.bars.analogDrum2Tone.xPos							= 0;
 	gui.bars.analogDrum2Tone.yPos							= 79;
 	gui.bars.analogDrum2Tone.xSize							= 180;
 	gui.bars.analogDrum2Tone.ySize							= 25;
 
 	// Digital drum 1
-	gui.bars.digitalDrum1Level.value						= 0;
+	gui.bars.digitalDrum1Level.value						= sequencer.instr0.level;
 	gui.bars.digitalDrum1Level.xPos							= 0;
 	gui.bars.digitalDrum1Level.yPos							= 108;
 	gui.bars.digitalDrum1Level.xSize						= 180;
 	gui.bars.digitalDrum1Level.ySize						= 25;
 
-	gui.bars.digitalDrum1Tone.value							= 0;
+	gui.bars.digitalDrum1Tone.value							= sequencer.instr0.tone;
 	gui.bars.digitalDrum1Tone.xPos							= 0;
 	gui.bars.digitalDrum1Tone.yPos							= 133;
 	gui.bars.digitalDrum1Tone.xSize							= 180;
 	gui.bars.digitalDrum1Tone.ySize							= 25;
 
 	// Digital drum 2
-	gui.bars.digitalDrum2Level.value						= 0;
+	gui.bars.digitalDrum2Level.value						= sequencer.instr1.level;
 	gui.bars.digitalDrum2Level.xPos							= 0;
 	gui.bars.digitalDrum2Level.yPos							= 162;
 	gui.bars.digitalDrum2Level.xSize						= 180;
 	gui.bars.digitalDrum2Level.ySize						= 25;
 
-	gui.bars.digitalDrum2Tone.value							= 0;
+	gui.bars.digitalDrum2Tone.value							= sequencer.instr1.tone;
 	gui.bars.digitalDrum2Tone.xPos							= 0;
 	gui.bars.digitalDrum2Tone.yPos							= 187;
 	gui.bars.digitalDrum2Tone.xSize							= 180;
 	gui.bars.digitalDrum2Tone.ySize							= 25;
 
 	// Digital drum 3
-	gui.bars.digitalDrum3Level.value						= 0;
+	gui.bars.digitalDrum3Level.value						= sequencer.instr2.level;
 	gui.bars.digitalDrum3Level.xPos							= 0;
 	gui.bars.digitalDrum3Level.yPos							= 216;
 	gui.bars.digitalDrum3Level.xSize						= 180;
 	gui.bars.digitalDrum3Level.ySize						= 25;
 
-	gui.bars.digitalDrum3Tone.value							= 0;
+	gui.bars.digitalDrum3Tone.value							= sequencer.instr2.tone;
 	gui.bars.digitalDrum3Tone.xPos							= 0;
 	gui.bars.digitalDrum3Tone.yPos							= 241;
 	gui.bars.digitalDrum3Tone.xSize							= 180;
 	gui.bars.digitalDrum3Tone.ySize							= 25;
 
 	// Digital drum 4
-	gui.bars.digitalDrum4Level.value						= 0;
+	gui.bars.digitalDrum4Level.value						= sequencer.instr3.level;
 	gui.bars.digitalDrum4Level.xPos							= 0;
 	gui.bars.digitalDrum4Level.yPos							= 270;
 	gui.bars.digitalDrum4Level.xSize						= 180;
 	gui.bars.digitalDrum4Level.ySize						= 25;
 
-	gui.bars.digitalDrum4Tone.value							= 0;
+	gui.bars.digitalDrum4Tone.value							= sequencer.instr3.tone;
 	gui.bars.digitalDrum4Tone.xPos							= 0;
 	gui.bars.digitalDrum4Tone.yPos							= 295;
 	gui.bars.digitalDrum4Tone.xSize							= 180;

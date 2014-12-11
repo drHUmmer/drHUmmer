@@ -120,8 +120,8 @@ int main(void)
 	FXsettings.fx2	= NONE;
 	FXsettings.bcBits = 3;
 	FXsettings.dsFreq = 800;
-	FXsettings.lpfFreq = 3000;		// 3000
-	FXsettings.hpfFreq = 1500;		// 15000
+	FXsettings.lpfFreq = 900;		// 3000
+	FXsettings.hpfFreq = 1000;		// 15000
 
 	sequencer.instr0.level 	= 100;
 	sequencer.instr1.level 	= 100;

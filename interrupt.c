@@ -83,8 +83,7 @@ void TIM2_IRQHandler(void)
 void TIM5_IRQHandler(void)
 {
 	GPIO_SetBits(GPIOD, GPIO_Pin_12);
-	//uint16_t sampleMix = DC_COMP;	//was 2048
-	uint16_t sampleMix = 2048;
+	uint16_t sampleMix = DC_COMP;	//was 2048
 	uint16_t audioOut = DC_COMP;
 
 	if (TIM_GetITStatus(TIM5, TIM_IT_Update) != RESET)

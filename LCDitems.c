@@ -18,10 +18,10 @@
 //}
 
 void LCD_Levelbar (Progressbar_Typedef* bar, int8_t value) {
-	if (value == -1) { // Redraw
-		uint16_t progress = (uint16_t)((double) bar->xSize / 100.0 * (double) bar->value);
+	if (value == BAR_REDRAW) { // Redraw
+		uint16_t progress = ((uint16_t)((double) bar->xSize / 100.0 * (double) bar->value));
 		LCD_SetTextColor(ColourConverterDec(gui.colours.levelBar));
-		LCD_DrawFullRect(bar->xPos + bar->xSize - progress, bar->yPos, progress, bar->ySize);
+		LCD_DrawFullRect(bar->xPos, bar->yPos, progress, bar->ySize);
 	}
 
 	// Else draw changes
@@ -34,8 +34,22 @@ void LCD_Levelbar (Progressbar_Typedef* bar, int8_t value) {
 }
 
 void LCD_Tonebar (Progressbar_Typedef* bar, int8_t value){
-	if (value == -1) { // Redraw
+	if (value == BAR_REDRAW) { // Redraw
+		int8_t barValue = bar->value;
 
+		if (barValue < 0) {
+			LCD_SetTextColor(ColourConverterDec(gui.colours.toneNegBar));
+			barValue *= -1;
+			uint16_t progress = (uint16_t)((double) bar->xSize / 100.0 * (double) barValue);
+
+			LCD_DrawFullRect(bar->xPos + (bar->xSize / 2) - (progress / 2), bar->yPos, progress / 2, bar->ySize);
+		} else if (barValue > 0) {
+			LCD_SetTextColor(ColourConverterDec(gui.colours.tonePosBar));
+
+			uint16_t progress = (uint16_t)((double) bar->xSize / 100.0 * (double) barValue);
+
+			LCD_DrawFullRect(bar->xPos + (bar->xSize / 2), bar->yPos, progress / 2, bar->ySize);
+		}
 	}
 
 	// Else draw changes

@@ -4,6 +4,11 @@
 #include "menu.h"
 #include "ILI9325.h"
 
+/////////////
+// Defines //
+/////////////
+#define BAR_REDRAW	127
+
 ///////////////////////
 // Colour converters //
 ///////////////////////

@@ -437,10 +437,10 @@ void Menu_SetBPMHandler() {
 		Menu_GotoParent();
 
 	int8_t rotary 	= MenuRotaryRead(1);
-	uint16_t BPM	= sequencer.BPM;
+	int16_t BPM		= sequencer.BPM;
 
 	if (rotary) {
-		BPM += (rotary * 10);
+		BPM += (rotary * 5);
 		if (BPM < 50)
 			BPM = 50;
 
@@ -459,7 +459,8 @@ void Menu_SetLPFfreqHandler() {
 		Menu_GotoParent();
 
 	int8_t rotary 		= MenuRotaryRead(1);
-	uint16_t lpffreq	= FXsettings.lpfFreq;
+	int16_t lpffreq		= FXsettings.lpfFreq;
+	uint8_t count		= 0;
 
 	if (rotary) {
 		lpffreq += (rotary * 50);
@@ -480,7 +481,7 @@ void Menu_SetHPFfreqHandler() {
 		Menu_GotoParent();
 
 	int8_t rotary 		= MenuRotaryRead(1);
-	uint16_t hpffreq	= FXsettings.hpfFreq;
+	int16_t hpffreq		= FXsettings.hpfFreq;
 
 	if (rotary) {
 		hpffreq += (rotary * 50);
@@ -501,15 +502,15 @@ void Menu_SetDSfreqHandler() {
 		Menu_GotoParent();
 
 	int8_t rotary 		= MenuRotaryRead(1);
-	uint16_t dsfreq		= FXsettings.dsFreq;
+	int16_t dsfreq		= FXsettings.dsFreq;
 
 	if (rotary) {
 		dsfreq += (rotary * 100);
-		if (dsfreq < 1)
-			dsfreq = 1;
+		if (dsfreq < 100)
+			dsfreq = 100;
 
-		if (dsfreq > 44100)
-			dsfreq = 44100;
+		if (dsfreq > 22050)
+			dsfreq = 22050;
 
 		FXsettings.dsFreq = dsfreq;
 
@@ -522,7 +523,7 @@ void Menu_SetBCbitsHandler() {
 		Menu_GotoParent();
 
 	int8_t rotary 		= MenuRotaryRead(1);
-	uint16_t bcbits	= FXsettings.bcBits;
+	uint16_t bcbits		= FXsettings.bcBits;
 
 	if (rotary) {
 		bcbits += rotary;
@@ -530,7 +531,7 @@ void Menu_SetBCbitsHandler() {
 			bcbits = 1;
 
 		if (bcbits > DAC_BITS - 1)
-			bcbits = DAC_BITS;
+			bcbits = DAC_BITS - 1;
 
 		FXsettings.bcBits = bcbits;
 

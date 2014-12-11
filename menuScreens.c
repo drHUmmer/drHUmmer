@@ -3,9 +3,6 @@
 void Menu_Info() {
 	gui.menus.current = &gui.menus.info;
 
-	int8_t 	value = 0;
-	uint8_t level = 0;
-
 	// Clear screen
 	LCD_Clear(ColourConverterDec(gui.colours.background));
 
@@ -26,20 +23,20 @@ void Menu_Info() {
 
 // Progressbars
 	// D1
-	LCD_Levelbar(&gui.bars.digitalDrum1Level, sequencer.instr0.level);
-	LCD_Tonebar(&gui.bars.digitalDrum1Tone, sequencer.instr0.tone);
+	LCD_Levelbar(&gui.bars.digitalDrum1Level, 	BAR_REDRAW);
+	LCD_Tonebar(&gui.bars.digitalDrum1Tone, 	BAR_REDRAW);
 
 	// D2
-	LCD_Levelbar(&gui.bars.digitalDrum2Level, sequencer.instr1.level);
-	LCD_Tonebar(&gui.bars.digitalDrum2Tone, sequencer.instr1.tone);
+	LCD_Levelbar(&gui.bars.digitalDrum2Level, 	BAR_REDRAW);
+	LCD_Tonebar(&gui.bars.digitalDrum2Tone, 	BAR_REDRAW);
 
 	// D3
-	LCD_Levelbar(&gui.bars.digitalDrum3Level, sequencer.instr2.level);
-	LCD_Tonebar(&gui.bars.digitalDrum3Tone, sequencer.instr2.tone);
+	LCD_Levelbar(&gui.bars.digitalDrum3Level, 	BAR_REDRAW);
+	LCD_Tonebar(&gui.bars.digitalDrum3Tone, 	BAR_REDRAW);
 
 	// D4
-	LCD_Levelbar(&gui.bars.digitalDrum4Level, sequencer.instr3.level);
-	LCD_Tonebar(&gui.bars.digitalDrum4Tone, sequencer.instr3.tone);
+	LCD_Levelbar(&gui.bars.digitalDrum4Level, 	BAR_REDRAW);
+	LCD_Tonebar(&gui.bars.digitalDrum4Tone, 	BAR_REDRAW);
 
 // Texts
 	LCD_SetTextColor(ColourConverterDec(gui.colours.text));
@@ -81,7 +78,7 @@ void Menu_Colours() {
 
 void Menu_Main() {
 	gui.menus.current = &gui.menus.main;
-	gui.menus.main.selectedOption = 1;		// Always set the menu to "Set FX"
+//	gui.menus.main.selectedOption = 1;		// Always set the menu to "Set FX"
 	MenuRedrawScreen();
 }
 
