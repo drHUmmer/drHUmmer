@@ -128,10 +128,10 @@ int main(void)
 	sequencer.instr2.level 	= 100;
 	sequencer.instr3.level 	= 100;
 
-	sequencer.instr0.tone 	= 1;
-	sequencer.instr1.tone 	= 1;
-	sequencer.instr2.tone 	= 1;
-	sequencer.instr3.tone 	= 1;
+	sequencer.instr0.tone 	= 0;
+	sequencer.instr1.tone 	= 0;
+	sequencer.instr2.tone 	= -50;
+	sequencer.instr3.tone 	= -100;
 
 	MenuSetup();
 
@@ -196,6 +196,28 @@ int main(void)
 
 		Menu_UpdateHandler();
 		delay_nms(100);
+
+		sequencer.instr0.tone += 1;
+		if (sequencer.instr0.tone > 100)
+			sequencer.instr0.tone = -100;
+
+		sequencer.instr1.tone -= 10;
+		if (sequencer.instr1.tone < -100)
+			sequencer.instr1.tone = 100;
+
+		sequencer.instr2.tone = sequencer.instr0.tone * -1;
+		sequencer.instr3.tone = sequencer.instr1.tone * -1;
+
+		sequencer.instr0.level += 1;
+		if (sequencer.instr0.level > 100)
+			sequencer.instr0.level = 0;
+
+		sequencer.instr1.level -= 5;
+		if (sequencer.instr1.level > 100)
+			sequencer.instr1.level = 100;
+
+		sequencer.instr2.level = 100 - sequencer.instr0.level;
+		sequencer.instr3.level = 100 - sequencer.instr1.level;
 	}
 
 	while(1) {};

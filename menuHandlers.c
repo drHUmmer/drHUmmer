@@ -52,12 +52,21 @@ void Menu_InfoHandler() {
 		 LCD_StringLine(212, 270, "0");
 	 else
 		 LCD_StringInt (212, 200, newValue, 0);
-
 	 }
-//	 if (gui.bars.digitalDrum1Level.value != sequencer.instr0.level) {
-//		 gui.bars.digitalDrum1Level.value = sequencer.instr0.level;
-//		 LCD_Levelbar(&gui.bars.digitalDrum1Level, gui.bars.digitalDrum1Level.value);
-//	 }
+
+	 LCD_Levelbar(&gui.bars.analogDrum1Level	, sequencer.bassdrum.level);
+	 LCD_Levelbar(&gui.bars.analogDrum2Level	, sequencer.snaredrum.level);
+	 LCD_Levelbar(&gui.bars.digitalDrum1Level	, sequencer.instr0.level);
+	 LCD_Levelbar(&gui.bars.digitalDrum2Level	, sequencer.instr1.level);
+	 LCD_Levelbar(&gui.bars.digitalDrum3Level	, sequencer.instr2.level);
+	 LCD_Levelbar(&gui.bars.digitalDrum4Level	, sequencer.instr3.level);
+
+	 LCD_Tonebar(&gui.bars.analogDrum1Tone		, sequencer.bassdrum.tone);
+	 LCD_Tonebar(&gui.bars.analogDrum2Tone		, sequencer.snaredrum.tone);
+	 LCD_Tonebar(&gui.bars.digitalDrum1Tone		, sequencer.instr0.tone);
+	 LCD_Tonebar(&gui.bars.digitalDrum2Tone		, sequencer.instr1.tone);
+	 LCD_Tonebar(&gui.bars.digitalDrum3Tone		, sequencer.instr2.tone);
+	 LCD_Tonebar(&gui.bars.digitalDrum4Tone		, sequencer.instr3.tone);
 }
 
 void Menu_MainHandler() {
