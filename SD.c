@@ -85,7 +85,7 @@ uint16_t SDGet16(TCHAR* fname, uint16_t clusterIdx){
 	return (buff[0] | (buff[1] << 8));
 }
 
-FRESULT SDGet512(uint16_t* buf16, TCHAR* fname, uint16_t clusterIdx){
+FRESULT SDGet512(uint16_t* buf16, TCHAR* fname, uint32_t clusterIdx){
 
 	uint8_t buf8[1024] = {0};
 	uint32_t* br = 0;
@@ -108,8 +108,8 @@ FRESULT SDGet512(uint16_t* buf16, TCHAR* fname, uint16_t clusterIdx){
 	}else return result;
 
 
-	int16_t offset = 2048;
-	int16_t bitConv = 16;
+	int16_t offset = 1024;
+	int16_t bitConv = 32;
 
 	for (i=0; i<1024; i+=2){
 		data16  = (buf8[i] | (buf8[i+1] << 8));

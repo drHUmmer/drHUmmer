@@ -126,7 +126,7 @@ void TIM5_IRQHandler(void)
 			if(SDCnt == 0){
 				bufFlag = BUFF_A;
 				bufFillFlag = BUFFF_NF;
-		}
+			}
 
 		}
 

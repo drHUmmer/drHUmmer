@@ -33,7 +33,7 @@ uint16_t wavBufB[512];
 FRESULT SDInit(void);
 FRESULT SDGetNames(const TCHAR* path);
 uint16_t SDGet16(TCHAR* fname, uint16_t clusterIdx);
-FRESULT SDGet512(uint16_t* buf16, TCHAR* fname, uint16_t clusterIdx);
+FRESULT SDGet512(uint16_t* buf16, TCHAR* fname, uint32_t clusterIdx);
 void SDPut16(TCHAR* fname, uint16_t data);
 
 

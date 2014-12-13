@@ -117,7 +117,7 @@ int main(void)
 
 
 	bufFlag = BUFF_A;
-	SDGet512(wavBufA, fnames[1] ,44);
+	SDGet512(wavBufA, fnames[9] ,44);
 	bufFlag = BUFF_B;
 
 	Timer5Init();
@@ -127,17 +127,17 @@ int main(void)
 		if (bufFillFlag == BUFFF_NF){
 
 			if(bufFlag == BUFF_A){
-				if((i+=1024) > 1068){
+				if((i+=1024) > 207082){
 					i = 44;
 				}
-				SDGet512(wavBufA, fnames[1], i);
+				SDGet512(wavBufA, fnames[9], i);
 				bufFillFlag = BUFFF_F;
 
 			}else {
-				if((i+=1024) > 1068){
+				if((i+=1024) > 207082){
 					i = 44;
 				}
-				SDGet512(wavBufB, fnames[1], i);
+				SDGet512(wavBufB, fnames[9], i);
 				bufFillFlag = BUFFF_F;
 			}
 		}
