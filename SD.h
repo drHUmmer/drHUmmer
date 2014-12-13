@@ -5,7 +5,7 @@
 #include "stm32f4xx.h"
 #include "stm32f4xx_tim.h"
 #include "stm32f4xx_gpio.h"
-#include "stm32f4xx_spi.h"+
+#include "stm32f4xx_spi.h"
 #include "stm32f4xx_rcc.h"
 #include "misc.h"
 
@@ -24,14 +24,16 @@
 TCHAR	fnames[_MAX_FILES][13];
 uint8_t	nfiles;
 
-
+uint16_t wavBufA[512];
+uint16_t wavBufB[512];
+//uint32_t bufCnt = 0;
 
 
 // Functions
 FRESULT SDInit(void);
 FRESULT SDGetNames(const TCHAR* path);
 uint16_t SDGet16(TCHAR* fname, uint16_t clusterIdx);
-void SDGet512(uint8_t* buf, TCHAR* fname, uint16_t clusterIdx);
+void SDGet512(uint16_t* buf16, TCHAR* fname, uint16_t clusterIdx);
 void SDPut16(TCHAR* fname, uint16_t data);
 
 

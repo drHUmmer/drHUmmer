@@ -6,6 +6,12 @@
 
 //float wavCnt = 0;
 
+
+uint32_t SDCnt = 1;
+
+uint8_t bufFlag = BUFF_A;
+uint8_t bufFillFlag = BUFFF_NF;
+
 void TIM2_IRQHandler(void)
 {
 	uint16_t GPIO_msk = 0;
@@ -72,6 +78,7 @@ void TIM2_IRQHandler(void)
 	}
 }
 
+
 void TIM5_IRQHandler(void)
 {
 
@@ -103,6 +110,56 @@ void TIM5_IRQHandler(void)
 			sequencer.instr3.buffer_loc = 0;
 			sequencer.instr3.triggerflag = 0;
 		}
+
+		if(bufFlag == BUFF_A){
+			dacPut(wavBufB[SDCnt]);
+			SDCnt++;
+			SDCnt = SDCnt % 512;
+			if(SDCnt == 0){
+				bufFlag = BUFF_B;
+				bufFillFlag = BUFFF_NF;
+			}
+		}else {
+			dacPut(wavBufA[SDCnt]);
+			SDCnt++;
+			SDCnt = SDCnt % 512;
+			if(SDCnt == 0){
+				bufFlag = BUFF_A;
+				bufFillFlag = BUFFF_NF;
+		}
+
+		}
+
+		/*
+		if (SDCnt == 510){
+			SDCnt = 510;
+		}
+
+		if (SDCnt > 0){
+			dacPut(wavBufA[SDCnt-1]);
+			SDCnt++;
+			SDCnt = SDCnt % 513;
+
+		}
+		 */
+
+
+
+/*		uint16_t SDData = SDGet16(&(fnames[3]),SDCnt);
+		int16_t offset = 2048;
+
+		SDData /= 16;
+		SDData += offset;
+		SDData &= 0x0FFF;
+
+		SDData = (uint16_t) SDData;
+
+		dacPut(SDData);
+		if (SDCnt >= 45368) SDCnt=22;
+		else SDCnt++;
+*/
+
+
 
 /*		uint16_t sampleMix = 2048;
 		sampleMix = (hihatWav[sequencer.instr0.buffer_loc] + \

@@ -1,6 +1,7 @@
 
 #include "SD.h"
 
+
 FATFS FatFs;		// Fatfs object
 FIL fil; 			// File object
 uint32_t total;		// Total space
@@ -12,7 +13,30 @@ uint8_t	nfiles;
 
 FRESULT SDInit(){
 
-	return f_mount(&FatFs, "", 1);
+	FRESULT result = f_mount(&FatFs, "", 1);
+
+	//SPI1->CR1 &= ~(0x0038);
+	SPI_Cmd(SPI1, DISABLE);
+
+		SPI_InitTypeDef SPI_InitStruct;
+
+		RCC_APB2PeriphClockCmd(RCC_APB2Periph_SPI1, ENABLE);
+
+		SPI_StructInit(&SPI_InitStruct);
+		SPI_InitStruct.SPI_BaudRatePrescaler = SPI_BaudRatePrescaler_4;
+		SPI_InitStruct.SPI_DataSize = SPI_DataSize_8b;
+		SPI_InitStruct.SPI_Direction = SPI_Direction_2Lines_FullDuplex;
+		SPI_InitStruct.SPI_FirstBit = SPI_FirstBit_MSB;
+		SPI_InitStruct.SPI_Mode = SPI_Mode_Master;
+
+		SPI_InitStruct.SPI_CPOL = SPI_CPOL_Low;
+		SPI_InitStruct.SPI_CPHA = SPI_CPHA_1Edge;
+
+		SPI_InitStruct.SPI_NSS = SPI_NSS_Soft;
+		SPI_Init(SPI1, &SPI_InitStruct);
+		SPI_Cmd(SPI1, ENABLE);
+
+	return result;
 }
 
 
@@ -46,11 +70,9 @@ uint16_t SDGet16(TCHAR* fname, uint16_t clusterIdx){
 	FRESULT result;
 	uint8_t offset = 1;
 
-
-	uint16_t data;
 	result = f_open(&fil, &*(fname),FA_READ);
 	if (result == FR_OK) {
-		f_lseek(&fil,clusterIdx*2);
+		f_lseek(&fil,(clusterIdx*2));
 		result = f_read(&fil, &buff, 2, &br);
 		if (result)
 		{
@@ -59,29 +81,24 @@ uint16_t SDGet16(TCHAR* fname, uint16_t clusterIdx){
 		}
 		f_close(&fil);
 	}
-	data = buff[0];
-	data = buff[1];
-
-	data = (buff[0] | (buff[1] << 4));
 
 
-	return 0;
+	return (buff[0] | (buff[1] << 8));
 }
 
-void SDGet512(uint8_t* buf, TCHAR* fname, uint16_t clusterIdx){
+void SDGet512(uint16_t* buf16, TCHAR* fname, uint16_t clusterIdx){
 
-	uint8_t buff[512] = {0};
-	uint32_t br;
+	uint8_t buf8[1024] = {0};
+	uint32_t br,i;
 	FRESULT result;
 	uint8_t offset = 1;
+	int16_t data16;
 
-
-	uint16_t data;
 	result = f_open(&fil, &*(fname),FA_READ);
 	if (result == FR_OK) {
-		//result = f_read(&fil, &buff, 512, &br);
-		f_lseek(&fil,1024);
-		result = f_read(&fil, &buff, 512, &br);
+//		f_lseek(&fil,(clusterIdx*2));
+		f_lseek(&fil,clusterIdx);
+		result = f_read(&fil, &buf8, 1024, &br);
 		if (result)
 		{
 			f_close(&fil);
@@ -89,16 +106,22 @@ void SDGet512(uint8_t* buf, TCHAR* fname, uint16_t clusterIdx){
 		}
 		f_close(&fil);
 	}
-	data = buff[0];
-	data = buff[1];
-	data = buff[2];
-	data = buff[3];
-	data = buff[4];
-
-	data = (buff[0] & (buff[1] << 4) & (buff[2] << 8) & (buff[3] << 12));
 
 
-	return 0;
+	for (i=0; i<1024; i+=2){
+		data16  = (buf8[i] | (buf8[i+1] << 8));
+		//data16  += 32767;
+		//data16  &= 0xFFF0;
+
+		int16_t offset = 2048;
+
+		data16  /= 16; // 16 to 12 bit
+		data16 += offset; // DC comp
+		data16 &= 0x0FFF; // mask
+		buf16[i/2] = (uint16_t) data16;
+	}
+
+	return;
 }
 
 void SDPut16(TCHAR* fname, uint16_t data){

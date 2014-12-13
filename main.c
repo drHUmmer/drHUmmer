@@ -4,6 +4,11 @@ void task_a(void);
 void task_b(void);
 void leds(void);
 
+extern uint32_t SDCnt;
+extern uint8_t bufFlag;
+extern uint8_t bufFillFlag;
+
+
 #ifdef USE_OS
 OS_STK taskA_stk[128];  /*!< define "taskA" task stack */
 OS_STK taskB_stk[128];  /*!< define "taskB" task stack */
@@ -54,7 +59,7 @@ int main(void)
 {
 	PLLInit();
 	sequencerInit();
-	SPI3_Init();
+	//SPI3_Init();
 
 /*****************
  * 	LED IO init
@@ -84,7 +89,7 @@ int main(void)
 
 //	UIInit();
 
-//	dacInit();
+	dacInit();
 //	adcInit();
 //	NVICTimer2Init();
 //	NVICTimer5Init();
@@ -110,15 +115,89 @@ int main(void)
 		SDGetNames("/"); 		// root directory
 	}
 
+
+	bufFlag = BUFF_A;
+	SDGet512(&wavBufA, &(fnames[7]) ,44);
+	bufFlag = BUFF_B;
+
+	Timer5Init();
+
 	uint32_t i;
-	for(i=0;i<200;i++){
-		SDGet16(&(fnames[3]),i);
+	while(1){
+		if (bufFillFlag == BUFFF_NF){
+
+			if(bufFlag == BUFF_A){
+				if((i+=1024) > 1068){
+					i = 44;
+				}
+				SDGet512(&wavBufA,&(fnames[7]),i);
+				bufFillFlag = BUFFF_F;
+
+			}else {
+				if((i+=1024) > 1068){
+					i = 44;
+				}
+				SDGet512(&wavBufB,&(fnames[7]),i);
+				bufFillFlag = BUFFF_F;
+			}
+		}
+
+
+	}
+
+	/*
+	if (SDFlag){
+			if((i+=1024) > 14587){
+				i = 44;
+			}
+			SDGet512(&wavBufA,&(fnames[1]),i);
+			SDFlag = 0;
+		}
+
+	}
+	*/
+
+/*
+	SDGet512(&wavBufA, &(fnames[4]) ,44);
+	Timer5Init();
+
+	uint32_t i = 44;
+	while(1){
+		if(!SDCnt){ // zie interrupt
+			if((i+=1024) > 14587){
+				i = 44;
+			}
+			SDGet512(&wavBufA,&(fnames[4]),i);
+			SDCnt=1;
+		}
+
+	}
+*/
+
+/*	for (i=22; i<45369; i+=512){
+
+		SDGet512(&wavBuf,&(fnames[3],i);
+	}
+
+*/
+
+
+
+	 while (1) {
+
+		    }
+
+/*	uint32_t i;
+	uint16_t data;
+	for(i=22;i<45369;i++){
+		data = SDGet16(&(fnames[3]),i);
 	}
 
 
 	    while (1) {
 
 	    }
+*/
 }
 
 void EXTI1_IRQHandler(void)
