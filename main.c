@@ -117,7 +117,7 @@ int main(void)
 
 
 	bufFlag = BUFF_A;
-	SDGet512(&wavBufA, &(fnames[7]) ,44);
+	SDGet512(wavBufA, fnames[1] ,44);
 	bufFlag = BUFF_B;
 
 	Timer5Init();
@@ -130,14 +130,14 @@ int main(void)
 				if((i+=1024) > 1068){
 					i = 44;
 				}
-				SDGet512(&wavBufA,&(fnames[7]),i);
+				SDGet512(wavBufA, fnames[1], i);
 				bufFillFlag = BUFFF_F;
 
 			}else {
 				if((i+=1024) > 1068){
 					i = 44;
 				}
-				SDGet512(&wavBufB,&(fnames[7]),i);
+				SDGet512(wavBufB, fnames[1], i);
 				bufFillFlag = BUFFF_F;
 			}
 		}

@@ -53,7 +53,7 @@ void SPI3_Init(void)
 
 void SPI_PIC_Send(uint8_t command,uint8_t setting,uint8_t address)
 {
-	uint16_t dummy;
+	uint16_t dummy = 0;
 	uint8_t data = (command | setting | address);
 
 	while(!(SPI3->SR & SPI_I2S_FLAG_TXE));								//wait until SPI3 is available
@@ -77,7 +77,7 @@ void SPI_PIC_Send(uint8_t command,uint8_t setting,uint8_t address)
 #ifdef DEBUG	/*	debug mode	*/
 void SPI_LED_Send(uint16_t data)
 {
-	uint8_t dummy;
+	uint8_t dummy = 0;
 	uint8_t dataMSB = ((data & 0xFF00)>>8);
 	uint8_t dataLSB = (data & 0x00FF);
 

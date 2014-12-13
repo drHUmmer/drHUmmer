@@ -4,8 +4,8 @@
 
 FATFS FatFs;		// Fatfs object
 FIL fil; 			// File object
-uint32_t total;		// Total space
-uint32_t free;		// Free space
+//uint32_t total;		// Total space
+//uint32_t free;		// Free space
 
 
 TCHAR	fnames[_MAX_FILES][13] = {{"\0"},{"\0"}};
@@ -66,14 +66,13 @@ FRESULT SDGetNames(const TCHAR* path){
 uint16_t SDGet16(TCHAR* fname, uint16_t clusterIdx){
 
 	uint8_t buff[2] = {0};
-	uint32_t br;
+	uint32_t* br = 0;
 	FRESULT result;
-	uint8_t offset = 1;
 
 	result = f_open(&fil, &*(fname),FA_READ);
 	if (result == FR_OK) {
 		f_lseek(&fil,(clusterIdx*2));
-		result = f_read(&fil, &buff, 2, &br);
+		result = f_read(&fil, &buff, 2, (UINT*)br);
 		if (result)
 		{
 			f_close(&fil);
@@ -86,42 +85,49 @@ uint16_t SDGet16(TCHAR* fname, uint16_t clusterIdx){
 	return (buff[0] | (buff[1] << 8));
 }
 
-void SDGet512(uint16_t* buf16, TCHAR* fname, uint16_t clusterIdx){
+FRESULT SDGet512(uint16_t* buf16, TCHAR* fname, uint16_t clusterIdx){
 
 	uint8_t buf8[1024] = {0};
-	uint32_t br,i;
+	uint32_t* br = 0;
+	uint32_t i;
 	FRESULT result;
-	uint8_t offset = 1;
+	//uint8_t offset = 1;
 	int16_t data16;
 
 	result = f_open(&fil, &*(fname),FA_READ);
 	if (result == FR_OK) {
 //		f_lseek(&fil,(clusterIdx*2));
 		f_lseek(&fil,clusterIdx);
-		result = f_read(&fil, &buf8, 1024, &br);
+		result = f_read(&fil, &buf8, 1024, (UINT*)br);
 		if (result)
 		{
 			f_close(&fil);
 			return result;
 		}
 		f_close(&fil);
-	}
+	}else return result;
 
+
+	int16_t offset = 2048;
+	int16_t bitConv = 16;
 
 	for (i=0; i<1024; i+=2){
 		data16  = (buf8[i] | (buf8[i+1] << 8));
 		//data16  += 32767;
 		//data16  &= 0xFFF0;
 
-		int16_t offset = 2048;
 
-		data16  /= 16; // 16 to 12 bit
+
+		data16  /= bitConv; // 16 to 12 bit
+
 		data16 += offset; // DC comp
-		data16 &= 0x0FFF; // mask
+
+		//data16 &= 0x0FFF; // mask
+
 		buf16[i/2] = (uint16_t) data16;
 	}
 
-	return;
+	return FR_OK;
 }
 
 void SDPut16(TCHAR* fname, uint16_t data){
