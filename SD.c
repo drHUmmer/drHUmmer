@@ -23,7 +23,7 @@ FRESULT SDInit(){
 		RCC_APB2PeriphClockCmd(RCC_APB2Periph_SPI1, ENABLE);
 
 		SPI_StructInit(&SPI_InitStruct);
-		SPI_InitStruct.SPI_BaudRatePrescaler = SPI_BaudRatePrescaler_4;
+		SPI_InitStruct.SPI_BaudRatePrescaler = SPI_BaudRatePrescaler_2;
 		SPI_InitStruct.SPI_DataSize = SPI_DataSize_8b;
 		SPI_InitStruct.SPI_Direction = SPI_Direction_2Lines_FullDuplex;
 		SPI_InitStruct.SPI_FirstBit = SPI_FirstBit_MSB;
@@ -85,7 +85,7 @@ uint16_t SDGet16(TCHAR* fname, uint16_t clusterIdx){
 	return (buff[0] | (buff[1] << 8));
 }
 
-FRESULT SDGet512(uint16_t* buf16, TCHAR* fname, uint32_t clusterIdx){
+FRESULT SDGet512(uint16_t* buf16, TCHAR* fname, DWORD clusterIdx){
 
 	uint8_t buf8[1024] = {0};
 	uint32_t* br = 0;

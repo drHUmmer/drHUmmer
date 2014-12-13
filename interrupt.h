@@ -20,9 +20,14 @@ NVIC_InitTypeDef NVIC_InitStruct;
 #define BUFFF_NF 0
 #define BUFFF_F	 1
 
+#define TRUE 1
+#define FALSE 0
+
 extern uint32_t SDCnt;
 extern uint8_t bufFlag;
 extern uint8_t bufFillFlag;
+extern uint8_t bufABusy;
+extern uint8_t bufBBusy;
 
 
 void NVICTimer2Init(void);

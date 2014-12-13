@@ -106,8 +106,6 @@ int main(void)
 
 
 
-
-
 //	SysTick_Init();
 
 
@@ -117,7 +115,7 @@ int main(void)
 
 
 	bufFlag = BUFF_A;
-	SDGet512(wavBufA, fnames[9] ,44);
+	SDGet512(wavBufA, fnames[0] ,44);
 	bufFlag = BUFF_B;
 
 	Timer5Init();
@@ -127,17 +125,21 @@ int main(void)
 		if (bufFillFlag == BUFFF_NF){
 
 			if(bufFlag == BUFF_A){
-				if((i+=1024) > 207082){
+				if((i+=1024) > 2070082){
 					i = 44;
 				}
-				SDGet512(wavBufA, fnames[9], i);
+				bufABusy = TRUE;
+				SDGet512(wavBufA, fnames[0], (DWORD)i);
+				bufABusy = FALSE;
 				bufFillFlag = BUFFF_F;
 
 			}else {
-				if((i+=1024) > 207082){
+				if((i+=1024) > 2070082){
 					i = 44;
 				}
-				SDGet512(wavBufB, fnames[9], i);
+				bufBBusy = TRUE;
+				SDGet512(wavBufB, fnames[0], (DWORD)i);
+				bufBBusy = FALSE;
 				bufFillFlag = BUFFF_F;
 			}
 		}

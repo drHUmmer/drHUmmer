@@ -10,6 +10,8 @@
 uint32_t SDCnt = 1;
 
 uint8_t bufFlag = BUFF_A;
+uint8_t bufABusy = FALSE;
+uint8_t bufBBusy = FALSE;
 uint8_t bufFillFlag = BUFFF_NF;
 
 void TIM2_IRQHandler(void)
@@ -112,17 +114,22 @@ void TIM5_IRQHandler(void)
 		}
 
 		if(bufFlag == BUFF_A){
-			dacPut(wavBufB[SDCnt]);
-			SDCnt++;
-			SDCnt = SDCnt % 512;
+			if(!bufABusy){
+				dacPut(wavBufB[SDCnt]);
+				SDCnt++;
+				SDCnt = SDCnt % 512;
+			}
 			if(SDCnt == 0){
 				bufFlag = BUFF_B;
 				bufFillFlag = BUFFF_NF;
 			}
 		}else {
-			dacPut(wavBufA[SDCnt]);
-			SDCnt++;
-			SDCnt = SDCnt % 512;
+			if(!bufBBusy){
+				dacPut(wavBufA[SDCnt]);
+				SDCnt++;
+				SDCnt = SDCnt % 512;
+			}
+
 			if(SDCnt == 0){
 				bufFlag = BUFF_A;
 				bufFillFlag = BUFFF_NF;
