@@ -1,12 +1,12 @@
 #include "menuHandlers.h"
 
-static void Menu_GotoParent() {
+static void Menu_GotoParent(void) {
 	if (!MenuCompareTitle(TITLE_INFOSCREEN)) {
 		gui.menus.current->parent();
 	}
 }
 
-void Menu_UpdateHandler() {
+void Menu_Update_handler(void) {
 	if (MenuOKpressed(0)) {
 		if (MenuCompareSelected(BACKSTRING)) {
 			Menu_GotoParent();
@@ -30,33 +30,10 @@ void Menu_UpdateHandler() {
 	MenuBackpressed(1);
 }
 
-void Menu_InfoHandler() {
+void Menu_Info_handler(void) {
 	 if (MenuOKpressed(1)) {
 	 	Menu_Main();
 	 	return;
-	 }
-
-	 uint8_t oldValue 		= sequencer.instrID;
-	 int8_t newValue 		= oldValue;
-	 int8_t rotaryValue		= MenuRotaryRead(1);
-
-	 if (rotaryValue != 0) {
-		 newValue += rotaryValue;
-		 if (newValue < 0) {
-			 newValue += 6;
-		 }
-		 newValue %= 6;
-
-		 if (newValue >= 6)
-			 newValue = 0;
-		 if (newValue < 0)
-			 newValue = 5;
-
-	 sequencer.instrID = newValue;
-	 if (newValue == 0)
-		 LCD_StringLine(212, 270, "0");
-	 else
-		 LCD_StringInt (212, 200, newValue, 0);
 	 }
 
 	 LCD_Levelbar(&gui.bars.analogDrum1Level	, sequencer.bassdrum.level);
@@ -74,63 +51,153 @@ void Menu_InfoHandler() {
 	 LCD_Tonebar(&gui.bars.digitalDrum4Tone		, sequencer.instr3.tone - 100);
 }
 
-void Menu_MainHandler() {
+void Menu_Main_handler(void) {
 	MenuUpdateSelectedItem();
 
 	if (MenuOKpressed(1)) {
-		if (MenuCompareSelected("Set colours"))
-			Menu_Colours();
+		if (MenuCompareSelected(TITLE_MIDI))
+			Menu_MIDI();
 
-		if (MenuCompareSelected("Set fx"))
-			Menu_SetFx();
+		if (MenuCompareSelected(TITLE_SEQ))
+			Menu_SEQ();
 
-		if (MenuCompareSelected("Set BPM"))
-			Menu_SetBPM();
+		if (MenuCompareSelected(TITLE_FILE))
+			Menu_File();
 
-		if (MenuCompareSelected("Set hpf freq"))
-			Menu_SethpfFreq();
-
-		if (MenuCompareSelected("Set lpf freq"))
-			Menu_SetlpfFreq();
-
-		if (MenuCompareSelected("Set ds freq"))
-			Menu_SetDSFreq();
-
-		if (MenuCompareSelected("Set bc bits"))
-			Menu_SetBCbits();
-
+		if (MenuCompareSelected(TITLE_UI))
+			Menu_UI();
 	}
 }
 
-void Menu_ColourHandler() {
+//////////
+// MIDI //
+//////////
+void Menu_MIDI_handler (void) {
 	MenuUpdateSelectedItem();
 
 	if (MenuOKpressed(1)) {
-		if (MenuCompareSelected("Invert")) {
-			uint16_t temp 				= gui.colours.background;
-			gui.colours.background 		= gui.colours.text;
-			gui.colours.text 			= temp;
-			MenuRedrawScreen();
-		}
+		if (MenuCompareSelected(TITLE_MIDI))
+			Menu_MIDI();
 
+		if (MenuCompareSelected(TITLE_SEQ))
+			Menu_SEQ();
+
+		if (MenuCompareSelected(TITLE_FILE))
+			Menu_File();
+
+		if (MenuCompareSelected(TITLE_UI))
+			Menu_UI();
+	}
+}
+
+void Menu_MIDI_Channel_handler (void) {
+
+}
+
+void Menu_MIDI_Master_Slave_handler(void) {
+
+}
+
+void Menu_MIDI_Sync_handler (void) {
+
+}
+
+/////////
+// SEQ //
+/////////
+void Menu_SEQ_handler (void) {
+
+}
+
+void Menu_SEQ_BPM_handler (void) {
+	if (MenuOKpressed(1))
+		Menu_GotoParent();
+
+	int8_t rotary 	= MenuRotaryRead(1);
+	int16_t BPM		= sequencer.BPM;
+
+	if (rotary) {
+		BPM += (rotary * 5);
+		if (BPM < 50)
+			BPM = 50;
+
+		if (BPM > 400)
+			BPM = 400;
+
+		sequencer.BPM = BPM;
+		BPMUpdate(BPM);
+
+		LCD_StringInt(120, 50, sequencer.BPM, 1);
+	}
+}
+
+void Menu_SEQ_Patt_Live_Mode_handler (void) {
+
+}
+
+//////////
+// FILE //
+//////////
+void Menu_File_handler (void) {
+
+}
+
+void Menu_File_Sample_Select_handler (void) {
+
+}
+
+void Menu_File_Save_Pattern_handler (void) {
+
+}
+
+void Menu_File_Load_Pattern_handler (void) {
+
+}
+
+//////////////////////
+// FILTER BOOKMARKS //
+//////////////////////
+void Menu_Filter_Bookmark_handler (void) {
+
+}
+
+void Menu_Filter_Bookmark_1_handler (void) {
+
+}
+
+void Menu_Filter_Bookmark_2_handler (void) {
+
+}
+
+////////
+// UI //
+////////
+void Menu_UI_handler (void) {
+
+}
+
+void Menu_UI_colours_handler(void) {
+	MenuUpdateSelectedItem();
+
+	if (MenuOKpressed(1)) {
 		if (MenuCompareSelected("Back colour"))
-			Menu_SetBackcolour();
+			Menu_UI_backcolour();
 
 		if (MenuCompareSelected("Text colour"))
-			Menu_SetTextcolour();
+			Menu_UI_textcolour();
 
 		if (MenuCompareSelected("Level colour"))
-			Menu_SetLevelBarcolour();
+			Menu_UI_levelbarcolour();
 
 		if (MenuCompareSelected("Tone + colour"))
-			Menu_SetTonePosBarcolour();
+			Menu_UI_toneposbarcolour();
 
 		if (MenuCompareSelected("Tone - colour"))
-			Menu_SetToneNegBarcolour();
+			Menu_UI_tonenegbarcolour();
 	}
 }
 
-void Menu_BackcolourHandler() {
+void Menu_UI_backcolour_handler(void) {
 	MenuUpdateSelectedItem();
 
 	if (MenuOKpressed(1)) {
@@ -177,7 +244,7 @@ void Menu_BackcolourHandler() {
 	}
 }
 
-void Menu_TextcolourHandler() {
+void Menu_UI_textcolour_handler(void) {
 	MenuUpdateSelectedItem();
 
 	if (MenuOKpressed(1)) {
@@ -224,7 +291,7 @@ void Menu_TextcolourHandler() {
 	}
 }
 
-void Menu_LevelBarHandler() {
+void Menu_UI_levelbarcolour_handler(void) {
 	MenuUpdateSelectedItem();
 
 	if (MenuOKpressed(1)) {
@@ -271,7 +338,7 @@ void Menu_LevelBarHandler() {
 	}
 }
 
-void Menu_TonePosBarHandler() {
+void Menu_UI_toneposbarcolour_handler(void) {
 	MenuUpdateSelectedItem();
 
 	if (MenuOKpressed(1)) {
@@ -318,7 +385,7 @@ void Menu_TonePosBarHandler() {
 	}
 }
 
-void Menu_ToneNegBarHandler() {
+void Menu_UI_tonenegbarcolour_handler(void) {
 	MenuUpdateSelectedItem();
 
 	if (MenuOKpressed(1)) {
@@ -365,190 +432,14 @@ void Menu_ToneNegBarHandler() {
 	}
 }
 
-void Menu_SetFxHandler() {
-	MenuUpdateSelectedItem();
+void Menu_UI_info_handler (void) {
 
-	if (MenuOKpressed(1)) {
-		uint8_t currentSelectedOption = gui.menus.current->selectedOption;
-
-		if (strstr(gui.menus.current->menuOptions[currentSelectedOption], "Fx 1") != NULL) {
-			Menu_SetFx1();
-		}
-		if (strstr(gui.menus.current->menuOptions[currentSelectedOption], "Fx 2") != NULL) {
-			Menu_SetFx2();
-		}
-	}
 }
 
-void Menu_SetFx1Handler() {
-	MenuUpdateSelectedItem();
+void Menu_UI_info_1_handler (void) {
 
-	if (MenuOKpressed(1)) {
-		if (MenuCompareSelected("None"))
-			FXsettings.fx1 = NONE;
-
-		if (MenuCompareSelected("Low-pass"))
-			FXsettings.fx1 = LPF;
-
-		if (MenuCompareSelected("High-pass"))
-			FXsettings.fx1 = HPF;
-
-		if (MenuCompareSelected("Bitcrusher"))
-			FXsettings.fx1 = BC;
-
-		if (MenuCompareSelected("Down-sampler"))
-			FXsettings.fx1 = DS;
-
-		MenuClearTitle(gui.menus.current);
-
-		switch(FXsettings.fx1) {
-		case LPF: 	strcpy(gui.menus.current->menuTitle,	"Set fx 1 - LPF "); 	break;
-		case HPF: 	strcpy(gui.menus.current->menuTitle,	"Set fx 1 - HPF "); 	break;
-		case BC: 	strcpy(gui.menus.current->menuTitle,	"Set fx 1 - BC  "); 	break;
-		case DS: 	strcpy(gui.menus.current->menuTitle, 	"Set fx 1 - DS  "); 	break;
-		default: 	strcpy(gui.menus.current->menuTitle,	"Set fx 1 - NONE"); 	break;
-		}
-
-		MenuDrawTitle(1);
-	}
 }
 
-void Menu_SetFx2Handler() {
-	MenuUpdateSelectedItem();
-
-	if (MenuOKpressed(1)) {
-		if (MenuCompareSelected("None"))
-			FXsettings.fx2 = NONE;
-
-		if (MenuCompareSelected("Low-pass"))
-			FXsettings.fx2 = LPF;
-
-		if (MenuCompareSelected("High-pass"))
-			FXsettings.fx2 = HPF;
-
-		if (MenuCompareSelected("Bitcrusher"))
-			FXsettings.fx2 = BC;
-
-		if (MenuCompareSelected("Down-sampler"))
-			FXsettings.fx2 = DS;
-
-		MenuClearTitle(gui.menus.current);
-
-		switch(FXsettings.fx2) {
-		case LPF: 	strcpy(gui.menus.current->menuTitle, 	"Set fx 2 - LPF "); 	break;
-		case HPF: 	strcpy(gui.menus.current->menuTitle,	"Set fx 2 - HPF "); 	break;
-		case BC: 	strcpy(gui.menus.current->menuTitle,	"Set fx 2 - BC  "); 	break;
-		case DS: 	strcpy(gui.menus.current->menuTitle,	"Set fx 2 - DS  "); 	break;
-		default: 	strcpy(gui.menus.current->menuTitle,	"Set fx 2 - NONE"); 	break;
-		}
-
-		MenuDrawTitle(1);
-	}
-}
-
-void Menu_SetBPMHandler() {
-	if (MenuOKpressed(1))
-		Menu_GotoParent();
-
-	int8_t rotary 	= MenuRotaryRead(1);
-	int16_t BPM		= sequencer.BPM;
-
-	if (rotary) {
-		BPM += (rotary * 5);
-		if (BPM < 50)
-			BPM = 50;
-
-		if (BPM > 400)
-			BPM = 400;
-
-		sequencer.BPM = BPM;
-		BPMUpdate(BPM);
-
-		LCD_StringInt(120, 50, sequencer.BPM, 1);
-	}
-}
-
-void Menu_SetLPFfreqHandler() {
-	if (MenuOKpressed(1))
-		Menu_GotoParent();
-
-	int8_t rotary 		= MenuRotaryRead(1);
-	int16_t lpffreq		= FXsettings.lpfFreq;
-	uint8_t count		= 0;
-
-	if (rotary) {
-		lpffreq += (rotary * 50);
-		if (lpffreq < 50)
-			lpffreq = 50;
-
-		if (lpffreq > 10000)
-			lpffreq = 10000;
-
-		FXsettings.lpfFreq = lpffreq;
-
-		LCD_StringInt(120, 50, lpffreq, 1);
-	}
-}
-
-void Menu_SetHPFfreqHandler() {
-	if (MenuOKpressed(1))
-		Menu_GotoParent();
-
-	int8_t rotary 		= MenuRotaryRead(1);
-	int16_t hpffreq		= FXsettings.hpfFreq;
-
-	if (rotary) {
-		hpffreq += (rotary * 50);
-		if (hpffreq < 50)
-			hpffreq = 50;
-
-		if (hpffreq > 10000)
-			hpffreq = 10000;
-
-		FXsettings.hpfFreq = hpffreq;
-
-		LCD_StringInt(120, 50, hpffreq, 1);
-	}
-}
-
-void Menu_SetDSfreqHandler() {
-	if (MenuOKpressed(1))
-		Menu_GotoParent();
-
-	int8_t rotary 		= MenuRotaryRead(1);
-	int16_t dsfreq		= FXsettings.dsFreq;
-
-	if (rotary) {
-		dsfreq += (rotary * 100);
-		if (dsfreq < 100)
-			dsfreq = 100;
-
-		if (dsfreq > 22050)
-			dsfreq = 22050;
-
-		FXsettings.dsFreq = dsfreq;
-
-		LCD_StringInt(120, 50, dsfreq, 1);
-	}
-}
-
-void Menu_SetBCbitsHandler() {
-	if (MenuOKpressed(1))
-		Menu_GotoParent();
-
-	int8_t rotary 		= MenuRotaryRead(1);
-	uint16_t bcbits		= FXsettings.bcBits;
-
-	if (rotary) {
-		bcbits += rotary;
-		if (bcbits < 1)
-			bcbits = 1;
-
-		if (bcbits > DAC_BITS - 1)
-			bcbits = DAC_BITS - 1;
-
-		FXsettings.bcBits = bcbits;
-
-		LCD_StringInt(120, 50, bcbits, 1);
-	}
+void Menu_UI_info_2_handler (void) {
+	
 }

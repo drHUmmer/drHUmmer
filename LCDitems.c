@@ -62,7 +62,7 @@ static void LCD_TonebarNegChange(Progressbar_Typedef* bar, int8_t newValue) {
 		barValue *= -1;
 		deltaValue 	= newValue - barValue;
 		startHeight = (bar->xSize / 2) - (uint16_t)(((double)bar->xSize / 2.0) / (100.0 / (double)newValue));
-		drawColour	= Cyan;
+		drawColour	= gui.colours.toneNegBar;
 		deltaHeight = ((double)bar->xSize / (100.0 / (double)deltaValue) / 2) + 1;
 	}
 	else if (newValue > barValue) {
@@ -138,15 +138,11 @@ void LCD_Levelbar (Progressbar_Typedef* bar, int8_t value) {
 }
 
 void LCD_Tonebar (Progressbar_Typedef* bar, int8_t newValue){
-	int8_t barValue = bar->value;
-
 	////////////
 	// Redraw //
 	////////////
 	if (newValue == BAR_REDRAW) { // Redraw
 		bar->value = 0;
-//		LCD_TonebarNegChange(bar, bar->value);
-//		LCD_TonebarPosChange(bar, bar->value);
 		return;						// RETURN //
 	}
 

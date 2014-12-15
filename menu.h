@@ -28,7 +28,7 @@ typedef struct {
 
 // MIDI
 #define TITLE_MIDI					"MIDI"
-#define TITLE_MIDI_CHANNEL			"MIDI - CH"
+#define TITLE_MIDI_CHANNEL			"MIDI - Channel"
 #define TITLE_MIDI_MASTER_SLAVE		"MIDI - M/S"
 #define TITLE_MIDI_SYNC				"MIDI - Sync"
 
@@ -38,8 +38,16 @@ typedef struct {
 #define TITLE_SEQ_PATT_LIVE			"SEQ - Patt/live"
 
 // FILE
+#define TITLE_FILE					"File"
+#define TITLE_FILE_SAMPLE_SELECT	"File - Select"
+#define TITLE_FILE_SAVE_PATTERN		"File - Save"
+#define TITLE_FILE_LOAD_PATTERN		"File - Load"
+
+// Filter
+#define TITLE_FILTERBOOKMARK		"Filter bookmarks"
 
 // UI
+#define TITLE_UI					"UI"
 #define TITLE_UI_COLOURS			"UI - Colours"
 #define TITLE_UI_COLOURS_BACK		"Colours - back"
 #define TITLE_UI_COLOURS_TEXT		"Colours - text"
@@ -108,9 +116,9 @@ typedef struct {
 	// UI submenus
 	Menu_Typedef	ui_backcolour;
 	Menu_Typedef	ui_textcolour;
-	Menu_Typedef	ui_levelBarcolour;
-	Menu_Typedef	ui_tonePosBarcolour;
-	Menu_Typedef	ui_toneNegBarcolour;
+	Menu_Typedef	ui_levelbarcolour;
+	Menu_Typedef	ui_toneposbarcolour;
+	Menu_Typedef	ui_tonenegbarcolour;
 	Menu_Typedef	ui_info_1;
 	Menu_Typedef	ui_info_2;
 } Menus_Typedef;

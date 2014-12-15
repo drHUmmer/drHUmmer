@@ -22,10 +22,10 @@ void Menu_Info() {
 	LCD_DrawFullRect(0, 266, BARHEIGHT, 4);
 
 // Texts
-	MenuDrawInfo1();
-	MenuDrawInfo2();
-	MenuDrawEffect1();
-	MenuDrawEffect2();
+	MenuDrawInfo1(0);
+	MenuDrawInfo2(0);
+	MenuDrawEffect1(0);
+	MenuDrawEffect2(0);
 
 // Progressbars
 	// D1
@@ -45,45 +45,132 @@ void Menu_Info() {
 	LCD_Tonebar(&gui.bars.digitalDrum4Tone, 	BAR_REDRAW);
 }
 
-void Menu_Colours() {
-	gui.menus.current = &gui.menus.colours;
-	MenuRedrawScreen();
-}
-
-void Menu_Main() {
+void Menu_Main (void) {
 	gui.menus.current = &gui.menus.main;
 	MenuRedrawScreen();
 }
 
-void Menu_SetBackcolour() {
-	gui.menus.current = &gui.menus.backcolour;
+// MIDI
+void Menu_MIDI (void) {
+	gui.menus.current = &gui.menus.midi;
 	MenuRedrawScreen();
 }
 
-void Menu_SetTextcolour() {
-	gui.menus.current = &gui.menus.textcolour;
+void Menu_MIDI_Channel (void) {
+	gui.menus.current = &gui.menus.midi_channel;
 	MenuRedrawScreen();
 }
 
-void Menu_SetLevelBarcolour() {
-	gui.menus.current = &gui.menus.levelBarcolour;
+void Menu_MIDI_Master_Slave (void) {
+	gui.menus.current = &gui.menus.midi_master_slave;
 	MenuRedrawScreen();
 }
 
-void Menu_SetTonePosBarcolour() {
-	gui.menus.current = &gui.menus.tonePosBarcolour;
+void Menu_MIDI_Sync (void) {
+	gui.menus.current = &gui.menus.midi_sync;
 	MenuRedrawScreen();
 }
 
-void Menu_SetToneNegBarcolour() {
-	gui.menus.current = &gui.menus.toneNegBarcolour;
+// SEQ
+void Menu_SEQ (void) {
+	gui.menus.current = &gui.menus.seq;
 	MenuRedrawScreen();
 }
 
-void Menu_SetBPM() {
-	gui.menus.current = &gui.menus.bpm;
+void Menu_SEQ_BPM (void) {
+	gui.menus.current = &gui.menus.seq_bpm;
 	MenuRedrawScreen();
+}
 
-	LCD_StringLine(150, 50, "BPM:");
-	LCD_StringInt(120, 50, sequencer.BPM, 1);
+void Menu_SEQ_Patt_Live_Mode (void) {
+	gui.menus.current = &gui.menus.seq_patt_live_mode;
+	MenuRedrawScreen();
+}
+
+// FILE
+void Menu_File (void) {
+	gui.menus.current = &gui.menus.file;
+	MenuRedrawScreen();
+}
+
+void Menu_File_Sample_Select (void) {
+	gui.menus.current = &gui.menus.file_sample_select;
+	MenuRedrawScreen();
+}
+
+void Menu_File_Save_Pattern (void) {
+	gui.menus.current = &gui.menus.file_save_pattern;
+	MenuRedrawScreen();
+}
+
+void Menu_File_Load_Pattern (void) {
+	gui.menus.current = &gui.menus.file_load_pattern;
+	MenuRedrawScreen();
+}
+
+// Filter bookmarks
+void Menu_Filter_Bookmark (void) {
+	gui.menus.current = &gui.menus.filter_bookmark;
+	MenuRedrawScreen();
+}
+
+void Menu_Filter_Bookmark_1 (void) {
+	gui.menus.current = &gui.menus.filter_bookmark_1;
+	MenuRedrawScreen();
+}
+
+void Menu_Filter_Bookmark_2 (void) {
+	gui.menus.current = &gui.menus.filter_bookmark_2;
+	MenuRedrawScreen();
+}
+
+// UI
+void Menu_UI (void) {
+	gui.menus.current = &gui.menus.ui;
+	MenuRedrawScreen();
+}
+
+void Menu_UI_colours (void) {
+	gui.menus.current = &gui.menus.ui_colours;
+	MenuRedrawScreen();
+}
+
+void Menu_UI_info (void) {
+	gui.menus.current = &gui.menus.ui_info;
+	MenuRedrawScreen();
+}
+
+void Menu_UI_backcolour (void) {
+	gui.menus.current = &gui.menus.ui_backcolour;
+	MenuRedrawScreen();
+}
+
+void Menu_UI_textcolour (void) {
+	gui.menus.current = &gui.menus.ui_textcolour;
+	MenuRedrawScreen();
+}
+
+void Menu_UI_levelbarcolour (void) {
+	gui.menus.current = &gui.menus.ui_levelbarcolour;
+	MenuRedrawScreen();
+}
+
+void Menu_UI_toneposbarcolour (void) {
+	gui.menus.current = &gui.menus.ui_toneposbarcolour;
+	MenuRedrawScreen();
+}
+
+void Menu_UI_tonenegbarcolour (void) {
+	gui.menus.current = &gui.menus.ui_tonenegbarcolour;
+	MenuRedrawScreen();
+}
+
+void Menu_UI_info_1 (void) {
+	gui.menus.current = &gui.menus.ui_info_1;
+	MenuRedrawScreen();
+}
+
+void Menu_UI_info_2 (void) {
+	gui.menus.current = &gui.menus.ui_info_2;
+	MenuRedrawScreen();
 }

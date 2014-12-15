@@ -194,7 +194,7 @@ int main(void)
 		case 5: SPI_LED_Send(sequencer.instr3.sequence);			break;	// D4
 		}
 
-		Menu_UpdateHandler();
+		Menu_Update_handler();
 		delay_nms(100);
 
 		// TONE
