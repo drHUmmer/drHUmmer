@@ -17,15 +17,18 @@
 #include <stdio.h>
 #include <string.h>
 
+#include "interrupt.h"
 // Defines
 #define _MAX_FILES 20
+#define WAV_BUF_SIZE 512
+
 
 // Globals
 TCHAR	fnames[_MAX_FILES][13];
 uint8_t	nfiles;
 
-uint16_t wavBufA[512];
-uint16_t wavBufB[512];
+uint16_t wavBufA[WAV_BUF_SIZE];
+uint16_t wavBufB[WAV_BUF_SIZE];
 //uint32_t bufCnt = 0;
 
 

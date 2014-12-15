@@ -117,7 +117,7 @@ void TIM5_IRQHandler(void)
 			if(!bufABusy){
 				dacPut(wavBufB[SDCnt]);
 				SDCnt++;
-				SDCnt = SDCnt % 512;
+				SDCnt = SDCnt % WAV_BUF_SIZE;
 			}
 			if(SDCnt == 0){
 				bufFlag = BUFF_B;
@@ -127,7 +127,7 @@ void TIM5_IRQHandler(void)
 			if(!bufBBusy){
 				dacPut(wavBufA[SDCnt]);
 				SDCnt++;
-				SDCnt = SDCnt % 512;
+				SDCnt = SDCnt % WAV_BUF_SIZE;
 			}
 
 			if(SDCnt == 0){

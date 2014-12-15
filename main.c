@@ -125,7 +125,7 @@ int main(void)
 		if (bufFillFlag == BUFFF_NF){
 
 			if(bufFlag == BUFF_A){
-				if((i+=1024) > 2070082){
+				if((i+=(WAV_BUF_SIZE*2)) > 2070082){
 					i = 44;
 				}
 				bufABusy = TRUE;
@@ -134,7 +134,7 @@ int main(void)
 				bufFillFlag = BUFFF_F;
 
 			}else {
-				if((i+=1024) > 2070082){
+				if((i+=(WAV_BUF_SIZE*2)) > 2070082){
 					i = 44;
 				}
 				bufBBusy = TRUE;

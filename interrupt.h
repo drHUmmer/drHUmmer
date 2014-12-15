@@ -17,6 +17,7 @@ NVIC_InitTypeDef NVIC_InitStruct;
 #define BUFF_A 0
 #define BUFF_B 1
 
+
 #define BUFFF_NF 0
 #define BUFFF_F	 1
 

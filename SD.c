@@ -85,9 +85,9 @@ uint16_t SDGet16(TCHAR* fname, uint16_t clusterIdx){
 	return (buff[0] | (buff[1] << 8));
 }
 
-FRESULT SDGet512(uint16_t* buf16, TCHAR* fname, DWORD clusterIdx){
+FRESULT SDGet512(uint16_t* buf16, TCHAR* fname, uint32_t clusterIdx){
 
-	uint8_t buf8[1024] = {0};
+	uint8_t buf8[(WAV_BUF_SIZE*2)] = {0};
 	uint32_t* br = 0;
 	uint32_t i;
 	FRESULT result;
@@ -98,7 +98,7 @@ FRESULT SDGet512(uint16_t* buf16, TCHAR* fname, DWORD clusterIdx){
 	if (result == FR_OK) {
 //		f_lseek(&fil,(clusterIdx*2));
 		f_lseek(&fil,clusterIdx);
-		result = f_read(&fil, &buf8, 1024, (UINT*)br);
+		result = f_read(&fil, &buf8, (WAV_BUF_SIZE*2), (UINT*)br);
 		if (result)
 		{
 			f_close(&fil);
@@ -111,7 +111,7 @@ FRESULT SDGet512(uint16_t* buf16, TCHAR* fname, DWORD clusterIdx){
 	int16_t offset = 1024;
 	int16_t bitConv = 32;
 
-	for (i=0; i<1024; i+=2){
+	for (i=0; i<(WAV_BUF_SIZE*2); i+=2){
 		data16  = (buf8[i] | (buf8[i+1] << 8));
 		//data16  += 32767;
 		//data16  &= 0xFFF0;
