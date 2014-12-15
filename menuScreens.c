@@ -10,48 +10,22 @@ void Menu_Info() {
 // Lines //
 	LCD_SetTextColor(ColourConverterDec(gui.colours.text));
 	// Fx
-	LCD_DrawFullRect(210, 0, 3, 320);			// Horizontal line [BPM]
-	LCD_DrawFullRect(BARHEIGHT, 0, 3, 320);		// Horizontal line [filters]
-	LCD_DrawFullRect(BARHEIGHT, 158, 59, 4);	// Top veritcal line
+	LCD_DrawFullRect(210, 0, 3, 320);			// Horizontal line 		(1st row line)
+	LCD_DrawFullRect(BARHEIGHT, 0, 3, 320);		// Horizontal line 		(2nd row line)
+	LCD_DrawFullRect(BARHEIGHT, 158, 59, 4);	// Top veritcal line 	(split into coloums)
 
 	// Verical lines (seperating drums)
-	LCD_DrawFullRect(0, 50, BARHEIGHT, 4);
+	LCD_DrawFullRect(0, 50,  BARHEIGHT, 4);
 	LCD_DrawFullRect(0, 104, BARHEIGHT, 4);
 	LCD_DrawFullRect(0, 158, BARHEIGHT, 4);
 	LCD_DrawFullRect(0, 212, BARHEIGHT, 4);
 	LCD_DrawFullRect(0, 266, BARHEIGHT, 4);
 
 // Texts
-	LCD_SetTextColor(ColourConverterDec(gui.colours.text));
-
-	// BPM
-	LCD_StringLine(212, 10, "BPM:");
-	LCD_StringInt (212, 60, sequencer.BPM, 0);
-
-	// Instrument
-	LCD_StringLine(212, 170, "Instr");
-	if (sequencer.instrID == 0)								// DEMO
-		 LCD_StringLine(212, 270, "0");						// CODE
-	 else													// !!
-		 LCD_StringInt (212, 200, sequencer.instrID, 0);	// !!
-
-	// Effect 1
-	switch (FXsettings.fx1) {
-	case LPF: 	LCD_StringLine(182,10, "LP"); LCD_StringInt(182, 60, FXsettings.lpfFreq, 1);	break;
-	case HPF: 	LCD_StringLine(182,10, "HP"); LCD_StringInt(182, 60, FXsettings.hpfFreq, 1);	break;
-	case BC: 	LCD_StringLine(182,10, "BC"); LCD_StringInt(182, 60, FXsettings.bcBits, 1);		break;
-	case DS: 	LCD_StringLine(182,10, "DS"); LCD_StringInt(182, 60, FXsettings.dsFreq, 1); 	break;
-	case NONE:	LCD_StringLine(182,10, "fx 1 off"); break;
-	}
-
-	// Effect 2
-	switch (FXsettings.fx2) {
-	case LPF: 	LCD_StringLine(182,170, "LP"); LCD_StringInt(182, 220, FXsettings.lpfFreq, 1); 	break;
-	case HPF: 	LCD_StringLine(182,170, "HP"); LCD_StringInt(182, 220, FXsettings.hpfFreq, 1);	break;
-	case BC: 	LCD_StringLine(182,170, "BC"); LCD_StringInt(182, 220, FXsettings.bcBits, 1);	break;
-	case DS: 	LCD_StringLine(182,170, "DS"); LCD_StringInt(182, 220, FXsettings.dsFreq, 1);	break;
-	case NONE:	LCD_StringLine(182,170, "fx 2 off"); break;
-	}
+	MenuDrawInfo1();
+	MenuDrawInfo2();
+	MenuDrawEffect1();
+	MenuDrawEffect2();
 
 // Progressbars
 	// D1
@@ -69,8 +43,6 @@ void Menu_Info() {
 	// D4
 	LCD_Levelbar(&gui.bars.digitalDrum4Level, 	BAR_REDRAW);
 	LCD_Tonebar(&gui.bars.digitalDrum4Tone, 	BAR_REDRAW);
-
-	delay_nms(100);
 }
 
 void Menu_Colours() {
@@ -80,7 +52,6 @@ void Menu_Colours() {
 
 void Menu_Main() {
 	gui.menus.current = &gui.menus.main;
-//	gui.menus.main.selectedOption = 1;		// Always set the menu to "Set FX"
 	MenuRedrawScreen();
 }
 
@@ -109,107 +80,10 @@ void Menu_SetToneNegBarcolour() {
 	MenuRedrawScreen();
 }
 
-void Menu_SetFx() {
-	gui.menus.current = &gui.menus.fx;
-
-	switch(FXsettings.fx1) {
-	case LPF: 	strcpy(gui.menus.fx.menuOptions[1], "Fx 1 - LPF "); break;
-	case HPF: 	strcpy(gui.menus.fx.menuOptions[1], "Fx 1 - HPF "); break;
-	case BC: 	strcpy(gui.menus.fx.menuOptions[1], "Fx 1 - BC  "); break;
-	case DS: 	strcpy(gui.menus.fx.menuOptions[1], "Fx 1 - DS  "); break;
-	default: 	strcpy(gui.menus.fx.menuOptions[1], "Fx 1 - NONE"); break;
-	}
-
-	switch(FXsettings.fx2) {
-	case LPF: 	strcpy(gui.menus.fx.menuOptions[2], "Fx 2 - LPF "); break;
-	case HPF: 	strcpy(gui.menus.fx.menuOptions[2], "Fx 2 - HPF "); break;
-	case BC: 	strcpy(gui.menus.fx.menuOptions[2], "Fx 2 - BC  "); break;
-	case DS: 	strcpy(gui.menus.fx.menuOptions[2], "Fx 2 - DS  "); break;
-	default: 	strcpy(gui.menus.fx.menuOptions[2], "Fx 2 - NONE"); break;
-	}
-
-	MenuRedrawScreen();
-}
-
-void Menu_SetFx1() {
-	gui.menus.current = &gui.menus.fx1;
-
-	MenuClearTitle(&gui.menus.fx1);
-
-	switch(FXsettings.fx1) {
-	case LPF: 	strcpy(gui.menus.fx1.menuTitle,	"Set fx 1 - LPF "); 	break;
-	case HPF: 	strcpy(gui.menus.fx1.menuTitle,	"Set fx 1 - HPF "); 	break;
-	case BC: 	strcpy(gui.menus.fx1.menuTitle,	"Set fx 1 - BC  "); 	break;
-	case DS: 	strcpy(gui.menus.fx1.menuTitle,	"Set fx 1 - DS  "); 	break;
-	default: 	strcpy(gui.menus.fx1.menuTitle,	"Set fx 1 - NONE"); 	break;
-	}
-
-	MenuRedrawScreen();
-}
-
-void Menu_SetFx2() {
-	gui.menus.current = &gui.menus.fx2;
-
-	MenuClearTitle(&gui.menus.fx2);
-
-	switch(FXsettings.fx2) {
-	case LPF: 	strcpy(gui.menus.fx2.menuTitle,	"Set fx 2 - LPF "); 	break;
-	case HPF: 	strcpy(gui.menus.fx2.menuTitle,	"Set fx 2 - HPF "); 	break;
-	case BC: 	strcpy(gui.menus.fx2.menuTitle,	"Set fx 2 - BC  "); 	break;
-	case DS: 	strcpy(gui.menus.fx2.menuTitle,	"Set fx 2 - DS  "); 	break;
-	default: 	strcpy(gui.menus.fx2.menuTitle,	"Set fx 2 - NONE"); 	break;
-	}
-
-	MenuRedrawScreen();
-}
-
 void Menu_SetBPM() {
 	gui.menus.current = &gui.menus.bpm;
 	MenuRedrawScreen();
 
 	LCD_StringLine(150, 50, "BPM:");
 	LCD_StringInt(120, 50, sequencer.BPM, 1);
-}
-
-void Menu_SetlpfFreq() {
-	gui.menus.current = &gui.menus.lpFreq;
-	MenuRedrawScreen();
-
-	LCD_StringLine(180, 50, "Set low-pass");
-	LCD_StringLine(150, 50, "frequency:");
-	LCD_StringInt(120, 50, FXsettings.lpfFreq, 1);
-	LCD_StringLine(60, 50, "min: 50 Hz");
-	LCD_StringLine(30, 50, "max: 10000 Hz");
-}
-
-void Menu_SethpfFreq() {
-	gui.menus.current = &gui.menus.hpFreq;
-	MenuRedrawScreen();
-
-	LCD_StringLine(180, 50, "Set high-pass");
-	LCD_StringLine(150, 50, "frequency:");
-	LCD_StringInt(120, 50, FXsettings.hpfFreq, 1);
-	LCD_StringLine(60, 50, "min: 50 Hz");
-	LCD_StringLine(30, 50, "max: 10000 Hz");
-}
-
-void Menu_SetDSFreq() {
-	gui.menus.current = &gui.menus.dsFreq;
-	MenuRedrawScreen();
-
-	LCD_StringLine(120, 10, "freq:");
-	LCD_StringInt(120, 50, FXsettings.dsFreq, 1);
-	LCD_StringLine(60, 50, "min: 100");
-	LCD_StringLine(30, 50, "max: 22050");
-}
-
-void Menu_SetBCbits() {
-	gui.menus.current = &gui.menus.bcBits;
-	MenuRedrawScreen();
-
-	LCD_StringLine(180, 50, "Set bitcrusher");
-	LCD_StringLine(150, 50, "bits:");
-	LCD_StringInt(120, 50, FXsettings.bcBits, 1);
-	LCD_StringLine(60, 50, "min: 1");
-	LCD_StringLine(30, 50, "max: 11");
 }

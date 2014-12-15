@@ -23,22 +23,33 @@ typedef struct {
 /////////////////
 // Menu titles //
 /////////////////
-#define TITLE_INFOSCREEN		"Info"
-#define TITLE_MAINSMENU			"Settings"
-#define TITLE_COLOURMENU		"Colours"
-#define TITLE_BACKCOLOURMENU	"Back colour"
-#define TITLE_TEXTCOLOURMENU	"Text colour"
-#define TITLE_SETFX				"Set fx"
-#define TITLE_SETFX1			"Set fx 1"
-#define TITLE_SETFX2			"Set fx 2"
-#define TITLE_LEVELBAR			"Set level bar"
-#define TITLE_TONEPOSBAR		"Set tone + bar"
-#define TITLE_TONENEGBAR		"Set tone - bar"
-#define TITLE_SETBPM			"Set BPM"
-#define TITLE_SETLPFFREQ		"Set lpf freq"
-#define TITLE_SETHPFFREQ		"Set hpf freq"
-#define TITLE_SETDSFREQ			"Set ds freq"
-#define TITLE_SETBCBITS			"Set bc bits"
+#define TITLE_INFOSCREEN			"Info"
+#define TITLE_MAINSMENU				"Settings"
+
+// MIDI
+#define TITLE_MIDI					"MIDI"
+#define TITLE_MIDI_CHANNEL			"MIDI - CH"
+#define TITLE_MIDI_MASTER_SLAVE		"MIDI - M/S"
+#define TITLE_MIDI_SYNC				"MIDI - Sync"
+
+// SEQ
+#define TITLE_SEQ					"SEQ"
+#define TITLE_SEQ_BPM				"SEQ - BPM"
+#define TITLE_SEQ_PATT_LIVE			"SEQ - Patt/live"
+
+// FILE
+
+// UI
+#define TITLE_UI_COLOURS			"UI - Colours"
+#define TITLE_UI_COLOURS_BACK		"Colours - back"
+#define TITLE_UI_COLOURS_TEXT		"Colours - text"
+#define TITLE_UI_COLOURS_LEVEL		"Colours - level"
+#define TITLE_UI_COLOURS_TONEPOS	"Colours - tone +"
+#define TITLE_UI_COLOURS_TONENEG	"Colours - tone -"
+#define TITLE_UI_INFO				"UI - Info"
+#define TITLE_UI_INFO_1				"Info - left"
+#define TITLE_UI_INFO_2				"Info - right"
+
 
 /////////////////////
 // Dispay settings //
@@ -67,27 +78,41 @@ typedef struct {
 	Menu_Typedef	info;
 	Menu_Typedef	main;
 
-	// Colours
-	Menu_Typedef	colours;
-	Menu_Typedef	backcolour;
-	Menu_Typedef	textcolour;
-	Menu_Typedef	levelBarcolour;
-	Menu_Typedef	tonePosBarcolour;
-	Menu_Typedef	toneNegBarcolour;
+	// MIDI
+	Menu_Typedef	midi;
+	Menu_Typedef	midi_channel;
+	Menu_Typedef	midi_master_slave;
+	Menu_Typedef	midi_sync;
 
-	// FX
-	Menu_Typedef	fx;
-	Menu_Typedef	fx1;
-	Menu_Typedef	fx2;
+	// SEQ
+	Menu_Typedef	seq;
+	Menu_Typedef	seq_bpm;
+	Menu_Typedef	seq_patt_live_mode;
 
-	// Settings
-	Menu_Typedef	bpm;
-	Menu_Typedef	fxSettings;
-	Menu_Typedef	lpFreq;
-	Menu_Typedef	hpFreq;
-	Menu_Typedef	dsFreq;
-	Menu_Typedef	bcBits;
+	// FILE
+	Menu_Typedef	file;
+	Menu_Typedef	file_sample_select;
+	Menu_Typedef	file_save_pattern;
+	Menu_Typedef	file_load_pattern;
 
+	// Filter
+	Menu_Typedef	filter_bookmark;
+	Menu_Typedef	filter_bookmark_1;
+	Menu_Typedef	filter_bookmark_2;
+
+	// UI
+	Menu_Typedef	ui;
+	Menu_Typedef	ui_colours;
+	Menu_Typedef	ui_info;
+	
+	// UI submenus
+	Menu_Typedef	ui_backcolour;
+	Menu_Typedef	ui_textcolour;
+	Menu_Typedef	ui_levelBarcolour;
+	Menu_Typedef	ui_tonePosBarcolour;
+	Menu_Typedef	ui_toneNegBarcolour;
+	Menu_Typedef	ui_info_1;
+	Menu_Typedef	ui_info_2;
 } Menus_Typedef;
 
 typedef struct {
@@ -137,6 +162,10 @@ void 	MenuUpdateSelectedItem		(void);
 uint8_t MenuBackpressed				(uint8_t reset);
 uint8_t MenuOKpressed				(uint8_t reset);
 int8_t  MenuRotaryRead				(uint8_t reset);
+void 	MenuDrawEffect1				(uint8_t redraw);
+void 	MenuDrawEffect2				(uint8_t redraw);
+void 	MenuDrawInfo1				(uint8_t redraw);
+void 	MenuDrawInfo2				(uint8_t redraw);
 
 /////////////////////////
 // Structure prototype //
