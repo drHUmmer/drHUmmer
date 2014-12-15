@@ -5,6 +5,7 @@ void Menu_Info() {
 
 	// Clear screen
 	LCD_Clear(ColourConverterDec(gui.colours.background));
+	delay_nms(100);
 
 // Lines //
 	LCD_SetTextColor(ColourConverterDec(gui.colours.text));
@@ -13,30 +14,12 @@ void Menu_Info() {
 	LCD_DrawFullRect(BARHEIGHT, 0, 3, 320);		// Horizontal line [filters]
 	LCD_DrawFullRect(BARHEIGHT, 158, 59, 4);	// Top veritcal line
 
-
 	// Verical lines (seperating drums)
 	LCD_DrawFullRect(0, 50, BARHEIGHT, 4);
 	LCD_DrawFullRect(0, 104, BARHEIGHT, 4);
 	LCD_DrawFullRect(0, 158, BARHEIGHT, 4);
 	LCD_DrawFullRect(0, 212, BARHEIGHT, 4);
 	LCD_DrawFullRect(0, 266, BARHEIGHT, 4);
-
-// Progressbars
-	// D1
-	LCD_Levelbar(&gui.bars.digitalDrum1Level, 	BAR_REDRAW);
-	LCD_Tonebar(&gui.bars.digitalDrum1Tone, 	BAR_REDRAW);
-
-	// D2
-	LCD_Levelbar(&gui.bars.digitalDrum2Level, 	BAR_REDRAW);
-	LCD_Tonebar(&gui.bars.digitalDrum2Tone, 	BAR_REDRAW);
-
-	// D3
-	LCD_Levelbar(&gui.bars.digitalDrum3Level, 	BAR_REDRAW);
-	LCD_Tonebar(&gui.bars.digitalDrum3Tone, 	BAR_REDRAW);
-
-	// D4
-	LCD_Levelbar(&gui.bars.digitalDrum4Level, 	BAR_REDRAW);
-	LCD_Tonebar(&gui.bars.digitalDrum4Tone, 	BAR_REDRAW);
 
 // Texts
 	LCD_SetTextColor(ColourConverterDec(gui.colours.text));
@@ -69,6 +52,25 @@ void Menu_Info() {
 	case DS: 	LCD_StringLine(182,170, "DS"); LCD_StringInt(182, 220, FXsettings.dsFreq, 1);	break;
 	case NONE:	LCD_StringLine(182,170, "fx 2 off"); break;
 	}
+
+// Progressbars
+	// D1
+	LCD_Levelbar(&gui.bars.digitalDrum1Level, 	BAR_REDRAW);
+	LCD_Tonebar(&gui.bars.digitalDrum1Tone, 	BAR_REDRAW);
+
+	// D2
+	LCD_Levelbar(&gui.bars.digitalDrum2Level, 	BAR_REDRAW);
+	LCD_Tonebar(&gui.bars.digitalDrum2Tone, 	BAR_REDRAW);
+
+	// D3
+	LCD_Levelbar(&gui.bars.digitalDrum3Level, 	BAR_REDRAW);
+	LCD_Tonebar(&gui.bars.digitalDrum3Tone, 	BAR_REDRAW);
+
+	// D4
+	LCD_Levelbar(&gui.bars.digitalDrum4Level, 	BAR_REDRAW);
+	LCD_Tonebar(&gui.bars.digitalDrum4Tone, 	BAR_REDRAW);
+
+	delay_nms(100);
 }
 
 void Menu_Colours() {
@@ -173,30 +175,41 @@ void Menu_SetlpfFreq() {
 	gui.menus.current = &gui.menus.lpFreq;
 	MenuRedrawScreen();
 
-	LCD_StringLine(150, 50, "LPF freq:");
+	LCD_StringLine(180, 50, "Set low-pass");
+	LCD_StringLine(150, 50, "frequency:");
 	LCD_StringInt(120, 50, FXsettings.lpfFreq, 1);
+	LCD_StringLine(60, 50, "min: 50 Hz");
+	LCD_StringLine(30, 50, "max: 10000 Hz");
 }
 
 void Menu_SethpfFreq() {
 	gui.menus.current = &gui.menus.hpFreq;
 	MenuRedrawScreen();
 
-	LCD_StringLine(150, 50, "HPF freq:");
+	LCD_StringLine(180, 50, "Set high-pass");
+	LCD_StringLine(150, 50, "frequency:");
 	LCD_StringInt(120, 50, FXsettings.hpfFreq, 1);
+	LCD_StringLine(60, 50, "min: 50 Hz");
+	LCD_StringLine(30, 50, "max: 10000 Hz");
 }
 
 void Menu_SetDSFreq() {
 	gui.menus.current = &gui.menus.dsFreq;
 	MenuRedrawScreen();
 
-	LCD_StringLine(150, 50, "DS freq:");
+	LCD_StringLine(120, 10, "freq:");
 	LCD_StringInt(120, 50, FXsettings.dsFreq, 1);
+	LCD_StringLine(60, 50, "min: 100");
+	LCD_StringLine(30, 50, "max: 22050");
 }
 
 void Menu_SetBCbits() {
 	gui.menus.current = &gui.menus.bcBits;
 	MenuRedrawScreen();
 
-	LCD_StringLine(150, 50, "BC bits:");
+	LCD_StringLine(180, 50, "Set bitcrusher");
+	LCD_StringLine(150, 50, "bits:");
 	LCD_StringInt(120, 50, FXsettings.bcBits, 1);
+	LCD_StringLine(60, 50, "min: 1");
+	LCD_StringLine(30, 50, "max: 11");
 }

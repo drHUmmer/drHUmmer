@@ -7,9 +7,6 @@ static void LCD_TonebarPosChange(Progressbar_Typedef* bar, int8_t newValue) {
 	uint16_t 	startHeight = 0;
 	uint16_t	drawColour	= 0x00;
 
-	if (newValue < 0 && barValue <= 0)		// Nothing to do. Invalid range
-		return;								// RETURN //
-
 	if (newValue < 0)
 		newValue = 0;
 	if (barValue < 0)
@@ -23,15 +20,16 @@ static void LCD_TonebarPosChange(Progressbar_Typedef* bar, int8_t newValue) {
 		deltaValue 	= newValue - barValue;
 		startHeight = (bar->xSize / 2) + (uint16_t)(((double)bar->xSize / 2.0) / (100.0 / (double)barValue));
 		drawColour	= gui.colours.tonePosBar;
+		deltaHeight = (uint16_t)((double)bar->xSize / (100.0 / (double)deltaValue) / 2) + 1;
 	}
-	else { // newValue < barValue
+	else if (newValue < barValue){
 		deltaValue 	= barValue - newValue;
 		startHeight = (bar->xSize / 2) + (uint16_t)(((double)bar->xSize / 2.0) / (100.0 / (double)newValue));
 		drawColour	= gui.colours.background;
+		deltaHeight = (uint16_t)((double)bar->xSize / (100.0 / (double)deltaValue) / 2) + 2;
 	}
-
-	// Calculate bar height
-	deltaHeight = bar->xSize / (100 / deltaValue) / 2 + 1;
+	else
+		return;
 
 	// Overdraw protection
 	if (startHeight + deltaHeight > bar->xSize)
@@ -50,9 +48,6 @@ static void LCD_TonebarNegChange(Progressbar_Typedef* bar, int8_t newValue) {
 	int16_t 	startHeight = 0;
 	uint16_t	drawColour	= 0x00;
 
-	if (newValue > 0 && barValue >= 0)		// Nothing to do. Invalid range
-		return;								// RETURN //
-
 	if (barValue > 0)
 		barValue = 0;
 	if (newValue > 0)
@@ -68,17 +63,18 @@ static void LCD_TonebarNegChange(Progressbar_Typedef* bar, int8_t newValue) {
 		deltaValue 	= newValue - barValue;
 		startHeight = (bar->xSize / 2) - (uint16_t)(((double)bar->xSize / 2.0) / (100.0 / (double)newValue));
 		drawColour	= Cyan;
+		deltaHeight = ((double)bar->xSize / (100.0 / (double)deltaValue) / 2) + 1;
 	}
-	else { // newValue < barValue
+	else if (newValue > barValue) {
 		newValue *= -1;
 		barValue *= -1;
 		deltaValue 	= barValue - newValue;
 		startHeight = (bar->xSize / 2) - (uint16_t)(((double)bar->xSize / 2.0) / (100.0 / (double)barValue));
 		drawColour	= gui.colours.background;
+		deltaHeight = ((double)bar->xSize / (100.0 / (double)deltaValue) / 2) + 3;
 	}
-
-	// Calculate bar height
-	deltaHeight = bar->xSize / (100 / deltaValue) / 2 + 1;
+	else
+		return;
 
 	// Draw bar
 	LCD_SetTextColor(ColourConverterDec(drawColour));
@@ -109,15 +105,14 @@ static void LCD_LevelBarChange (Progressbar_Typedef* bar, int8_t newValue) {
 		deltaValue 	= newValue - barValue;
 		startHeight = (uint16_t)(((double)bar->xSize) / (100.0 / (double)barValue));
 		drawColour	= gui.colours.levelBar;
+		deltaHeight = (uint16_t)((double)bar->xSize / (100.0 / (double)deltaValue)) + 1;
 	}
 	else { // newValue < barValue
 		deltaValue 	= barValue - newValue;
 		startHeight = (uint16_t)(((double)bar->xSize) / (100.0 / (double)newValue));
 		drawColour	= gui.colours.background;
+		deltaHeight = (uint16_t)((double)bar->xSize / (100.0 / (double)deltaValue)) + 2;
 	}
-
-	// Calculate bar height
-	deltaHeight = bar->xSize / (100 / deltaValue) + 1;
 
 	// Overdraw protection
 	if (startHeight + deltaHeight > bar->xSize)
@@ -131,15 +126,9 @@ static void LCD_LevelBarChange (Progressbar_Typedef* bar, int8_t newValue) {
 
 void LCD_Levelbar (Progressbar_Typedef* bar, int8_t value) {
 	if (value == BAR_REDRAW) { // Redraw
-		uint16_t progress = ((uint16_t)((double) bar->xSize / 100.0 * (double) bar->value));
-		LCD_SetTextColor(ColourConverterDec(gui.colours.levelBar));
-		LCD_DrawFullRect(bar->xPos, bar->yPos, progress, bar->ySize);
+		bar->value = 0;
 		return;															// RETURN //
 	}
-
-	// Same value?? Be lazy, so don't do anything :)
-	if (value == bar->value)
-		return;															// RETURN //
 
 	// Else draw changes
 	LCD_LevelBarChange(bar, value);
@@ -155,44 +144,11 @@ void LCD_Tonebar (Progressbar_Typedef* bar, int8_t newValue){
 	// Redraw //
 	////////////
 	if (newValue == BAR_REDRAW) { // Redraw
-		//////////////////
-		// Negative bar //
-		//////////////////
-		if (barValue < 0) {
-			// Set correct colour
-			LCD_SetTextColor(ColourConverterDec(gui.colours.toneNegBar));
-
-			// Make value positive
-			barValue *= -1;
-
-			// Calculate progress bar
-			uint16_t progress = (uint16_t)((double) bar->xSize / 100.0 * (double) barValue);
-
-			// Draw progress bar
-			LCD_DrawFullRect(bar->xPos + (bar->xSize / 2) - (progress / 2), bar->yPos, progress / 2, bar->ySize);
-		}
-		//////////////////
-		// Positive bar //
-		//////////////////
-		else if (barValue > 0) {
-			// Set correct colour
-			LCD_SetTextColor(ColourConverterDec(gui.colours.tonePosBar));
-
-			// Calculate progress bar
-			uint16_t progress = (uint16_t)((double) bar->xSize / 100.0 * (double) barValue);
-
-			// Draw progress bar
-			LCD_DrawFullRect(bar->xPos + (bar->xSize / 2), bar->yPos, progress / 2, bar->ySize);
-		}
-
+		bar->value = 0;
+//		LCD_TonebarNegChange(bar, bar->value);
+//		LCD_TonebarPosChange(bar, bar->value);
 		return;						// RETURN //
 	}
-
-	////////////////
-	// Same value //
-	////////////////
-	if (newValue == barValue)
-		return;						// RETURN //
 
 	//////////////////
 	// Draw changes //

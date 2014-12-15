@@ -49,12 +49,14 @@ void MenuSetup() {
 	// Main screen //
 	gui.menus.info.selectedOption							= 0;
 	gui.menus.info.nrOfOptions								= 0;
+	gui.menus.info.showCursor								= 0;
 	gui.menus.info.handler									= Menu_InfoHandler;
 	strcpy(gui.menus.info.menuTitle							, TITLE_INFOSCREEN);
 	
 	// Settings Menu //
-	gui.menus.main.selectedOption							= 1;
+	gui.menus.main.selectedOption							= 0;
 	gui.menus.main.nrOfOptions								= 8;
+	gui.menus.main.showCursor								= 1;
 	gui.menus.main.handler									= Menu_MainHandler;
 	gui.menus.main.parent									= Menu_Info;
 	strcpy(gui.menus.main.menuTitle							, TITLE_MAINSMENU);
@@ -70,6 +72,7 @@ void MenuSetup() {
 	// Colours //
 	gui.menus.colours.selectedOption						= 1;
 	gui.menus.colours.nrOfOptions							= 7;
+	gui.menus.colours.showCursor							= 1;
 	gui.menus.colours.handler								= Menu_ColourHandler;
 	gui.menus.colours.parent								= Menu_Main;
 	strcpy(gui.menus.colours.menuTitle						, TITLE_COLOURMENU);
@@ -84,6 +87,7 @@ void MenuSetup() {
 	// Background colour //
 	gui.menus.backcolour.selectedOption						= 1;
 	gui.menus.backcolour.nrOfOptions						= 11;
+	gui.menus.backcolour.showCursor							= 1;
 	gui.menus.backcolour.handler							= Menu_BackcolourHandler;
 	gui.menus.backcolour.parent								= Menu_Colours;
 	strcpy(gui.menus.backcolour.menuTitle					, TITLE_BACKCOLOURMENU);
@@ -102,6 +106,7 @@ void MenuSetup() {
 	// Text colour //
 	gui.menus.textcolour.selectedOption						= 1;
 	gui.menus.textcolour.nrOfOptions						= 11;
+	gui.menus.textcolour.showCursor							= 1;
 	gui.menus.textcolour.handler							= Menu_TextcolourHandler;
 	gui.menus.textcolour.parent								= Menu_Colours;
 	strcpy(gui.menus.textcolour.menuTitle	  				, TITLE_TEXTCOLOURMENU);
@@ -120,6 +125,7 @@ void MenuSetup() {
 	// Level colour //
 	gui.menus.levelBarcolour.selectedOption					= 1;
 	gui.menus.levelBarcolour.nrOfOptions					= 11;
+	gui.menus.levelBarcolour.showCursor							= 1;
 	gui.menus.levelBarcolour.handler						= Menu_LevelBarHandler;
 	gui.menus.levelBarcolour.parent							= Menu_Colours;
 	strcpy(gui.menus.levelBarcolour.menuTitle	  			, TITLE_LEVELBAR);
@@ -138,6 +144,7 @@ void MenuSetup() {
 	// Tone + colour //
 	gui.menus.tonePosBarcolour.selectedOption				= 1;
 	gui.menus.tonePosBarcolour.nrOfOptions					= 11;
+	gui.menus.tonePosBarcolour.showCursor							= 1;
 	gui.menus.tonePosBarcolour.handler						= Menu_TonePosBarHandler;
 	gui.menus.tonePosBarcolour.parent						= Menu_Colours;
 	strcpy(gui.menus.tonePosBarcolour.menuTitle	  			, TITLE_TONEPOSBAR);
@@ -156,6 +163,7 @@ void MenuSetup() {
 	// Tone - colour //
 	gui.menus.toneNegBarcolour.selectedOption				= 1;
 	gui.menus.toneNegBarcolour.nrOfOptions					= 11;
+	gui.menus.toneNegBarcolour.showCursor							= 1;
 	gui.menus.toneNegBarcolour.handler						= Menu_ToneNegBarHandler;
 	gui.menus.toneNegBarcolour.parent						= Menu_Colours;
 	strcpy(gui.menus.toneNegBarcolour.menuTitle	  			, TITLE_TONENEGBAR);
@@ -174,6 +182,7 @@ void MenuSetup() {
 	// Set FX //
 	gui.menus.fx.selectedOption								= 1;
 	gui.menus.fx.nrOfOptions								= 3;
+	gui.menus.fx.showCursor							= 1;
 	gui.menus.fx.handler									= Menu_SetFxHandler;
 	gui.menus.fx.parent										= Menu_Main;
 	strcpy(gui.menus.fx.menuTitle							, TITLE_SETFX);
@@ -184,6 +193,7 @@ void MenuSetup() {
 	// Set FX 1 //
 	gui.menus.fx1.selectedOption								= 1;
 	gui.menus.fx1.nrOfOptions								= 6;
+	gui.menus.fx1.showCursor							= 1;
 	gui.menus.fx1.handler									= Menu_SetFx1Handler;
 	gui.menus.fx1.parent									= Menu_SetFx;
 	strcpy(gui.menus.fx1.menuTitle							, TITLE_SETFX1);
@@ -197,6 +207,7 @@ void MenuSetup() {
 	// Set FX 2 //
 	gui.menus.fx2.selectedOption							= 1;
 	gui.menus.fx2.nrOfOptions								= 6;
+	gui.menus.fx2.showCursor							= 1;
 	gui.menus.fx2.handler									= Menu_SetFx2Handler;
 	gui.menus.fx2.parent									= Menu_SetFx;
 	strcpy(gui.menus.fx2.menuTitle							, TITLE_SETFX2);
@@ -210,6 +221,7 @@ void MenuSetup() {
 	// Set BPM //
 	gui.menus.bpm.selectedOption							= 1;
 	gui.menus.bpm.nrOfOptions								= 1;
+	gui.menus.bpm.showCursor								= 0;
 	gui.menus.bpm.handler									= Menu_SetBPMHandler;
 	gui.menus.bpm.parent									= Menu_Main;
 	strcpy(gui.menus.bpm.menuTitle							, TITLE_SETBPM);
@@ -218,6 +230,7 @@ void MenuSetup() {
 	// Set LPF freq //
 	gui.menus.lpFreq.selectedOption							= 1;
 	gui.menus.lpFreq.nrOfOptions							= 1;
+	gui.menus.lpFreq.showCursor								= 0;
 	gui.menus.lpFreq.handler								= Menu_SetLPFfreqHandler;
 	gui.menus.lpFreq.parent									= Menu_Main;
 	strcpy(gui.menus.lpFreq.menuTitle						, TITLE_SETLPFFREQ);
@@ -226,6 +239,7 @@ void MenuSetup() {
 	// Set HPF freq //
 	gui.menus.hpFreq.selectedOption							= 1;
 	gui.menus.hpFreq.nrOfOptions							= 1;
+	gui.menus.hpFreq.showCursor								= 0;
 	gui.menus.hpFreq.handler								= Menu_SetHPFfreqHandler;
 	gui.menus.hpFreq.parent									= Menu_Main;
 	strcpy(gui.menus.hpFreq.menuTitle						, TITLE_SETHPFFREQ);
@@ -234,6 +248,7 @@ void MenuSetup() {
 	// Set DS freq //
 	gui.menus.dsFreq.selectedOption							= 1;
 	gui.menus.dsFreq.nrOfOptions							= 1;
+	gui.menus.dsFreq.showCursor								= 0;
 	gui.menus.dsFreq.handler								= Menu_SetDSfreqHandler;
 	gui.menus.dsFreq.parent									= Menu_Main;
 	strcpy(gui.menus.dsFreq.menuTitle						, TITLE_SETDSFREQ);
@@ -242,6 +257,7 @@ void MenuSetup() {
 	// Set BC bits //
 	gui.menus.bcBits.selectedOption							= 1;
 	gui.menus.bcBits.nrOfOptions							= 1;
+	gui.menus.bcBits.showCursor								= 0;
 	gui.menus.bcBits.handler								= Menu_SetBCbitsHandler;
 	gui.menus.bcBits.parent									= Menu_Main;
 	strcpy(gui.menus.bcBits.menuTitle						, TITLE_SETBCBITS);
@@ -368,7 +384,7 @@ uint8_t MenuCompareSelected(char* toCompare) {
 }
 
 void MenuDrawCurrentlySelected () {
-	if (!MenuCompareTitle(TITLE_INFOSCREEN)) {
+	if (gui.menus.current->showCursor) {
 		LCD_SetTextColor(ColourConverterDec(gui.colours.background));
 		LCD_DrawFullRect(10, 3, 176, 19);
 		LCD_SetTextColor(ColourConverterDec(gui.colours.text));

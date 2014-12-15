@@ -11,7 +11,7 @@ typedef struct
 	uint16_t sequence;		// Trigger sequence, 1 bit per quarter note
 	uint8_t  substeps[16];	// Up to 8 substeps per quarter note
 	uint8_t level;			// Level (volume) setting of instrument
-	int8_t tone;			// Tone setting of instrument
+	uint8_t tone;			// Tone setting of instrument
 	uint32_t file_addr;		// Physical address of file on storage medium
 	uint32_t file_length; 	// Length of file (number of samples?)
 	uint32_t buffer_loc;	// Pointer to current location in sample buffer

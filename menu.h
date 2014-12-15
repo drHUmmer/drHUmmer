@@ -55,6 +55,7 @@ typedef struct {
 typedef struct {
 	char			menuTitle[MAXSTRINGLENGTH];				// Menutitle
 	char			menuOptions[MAXOPTIONS][MAXSTRINGLENGTH];	// Names of options
+	uint8_t			showCursor;								// Show cursor
 	int8_t			selectedOption;							// Currently selected option
 	uint8_t			nrOfOptions;							// Total number of options
 	void			(*handler)(void);						// Handler function pointer
