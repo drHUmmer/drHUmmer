@@ -146,11 +146,33 @@ int main(void)
 
 void UI_task(void)
 {
+	uint8_t i;
+	uint8_t cur_buttons[4];
+	int8_t cur_rotaries[11];
+
 	for(;;)
 	{
-		GPIO_SetBits(GPIOD, GPIO_Pin_12);
-		GPIO_ResetBits(GPIOD, GPIO_Pin_15);
-		CoTickDelay(15);
+		SPI_PIC_Send(PIC_GET_BUTTON,0,PIC_BUTTONS_ALL);
+		CoTickDelay(1);
+		for(i=0;i<4;i++)
+		{
+			cur_buttons[i] = SPI_PIC_Receive();
+		}
+		CoTickDelay(1);
+
+		SPI_PIC_Send(PIC_GET_ROTARY,0,PIC_ROTARY_ALL);
+		CoTickDelay(1);
+		for(i=0;i<11;i++)
+		{
+			cur_rotaries[i] = SPI_PIC_Receive();
+		}
+		CoTickDelay(1);
+
+		SPI_LED_Send((cur_buttons[0] << 8) | cur_buttons[1]);
+		CoTickDelay(40);
+//		GPIO_SetBits(GPIOD, GPIO_Pin_12);
+//		GPIO_ResetBits(GPIOD, GPIO_Pin_15);
+//		CoTickDelay(15);
 	}
 }
 
@@ -158,9 +180,9 @@ void LCD_task(void)
 {
 	for(;;)
 	{
-		GPIO_SetBits(GPIOD, GPIO_Pin_13);
-		GPIO_ResetBits(GPIOD, GPIO_Pin_12);
-		CoTickDelay(4);
+//		GPIO_SetBits(GPIOD, GPIO_Pin_13);
+//		GPIO_ResetBits(GPIOD, GPIO_Pin_12);
+//		CoTickDelay(4);
 	}
 }
 
@@ -168,9 +190,9 @@ void SD_task(void)
 {
 	for(;;)
 	{
-		GPIO_SetBits(GPIOD, GPIO_Pin_14);
-		GPIO_ResetBits(GPIOD, GPIO_Pin_13);
-		CoTickDelay(2);
+//		GPIO_SetBits(GPIOD, GPIO_Pin_14);
+//		GPIO_ResetBits(GPIOD, GPIO_Pin_13);
+//		CoTickDelay(2);
 	}
 }
 
@@ -178,7 +200,7 @@ void Sequencer_task(void)
 {
 	for(;;)
 	{
-		CoTickDelay(1);
+//		CoTickDelay(1);
 	}
 }
 
@@ -186,9 +208,9 @@ void Filter_task(void)
 {
 	for(;;)
 	{
-		GPIO_SetBits(GPIOD, GPIO_Pin_15);
-		GPIO_ResetBits(GPIOD, GPIO_Pin_14);
-		CoTickDelay(7);
+//		GPIO_SetBits(GPIOD, GPIO_Pin_15);
+//		GPIO_ResetBits(GPIOD, GPIO_Pin_14);
+//		CoTickDelay(7);
 	}
 }
 
@@ -196,7 +218,7 @@ void MIDI_task(void)
 {
 	for(;;)
 	{
-		CoTickDelay(1);
+//		CoTickDelay(1);
 	}
 }
 

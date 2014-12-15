@@ -79,8 +79,8 @@
     <File name="cmsis_boot/cmsis_lib/source/stm32f4xx_dac.c" path="cmsis_lib/source/stm32f4xx_dac.c" type="1"/>
     <File name="cmsis_boot/cmsis_lib/include/stm32f4xx_dac.h" path="cmsis_lib/include/stm32f4xx_dac.h" type="1"/>
     <File name="includes/DAC.h" path="DAC.h" type="1"/>
-    <File name="includes/main.h" path="main.h" type="1"/>
     <File name="source/SPI.c" path="SPI.c" type="1"/>
+    <File name="includes/main.h" path="main.h" type="1"/>
     <File name="cmsis_boot/cmsis_lib/include/stm32f4xx_syscfg.h" path="cmsis_lib/include/stm32f4xx_syscfg.h" type="1"/>
     <File name="cmsis/core_cm4_simd.h" path="cmsis/core_cm4_simd.h" type="1"/>
     <File name="CoOS/kernel/OsServiceReq.h" path="CoOS/kernel/OsServiceReq.h" type="1"/>
@@ -139,9 +139,9 @@
     <File name="cmsis_boot/startup" path="" type="2"/>
     <File name="cmsis/core_cm4.h" path="cmsis/core_cm4.h" type="1"/>
     <File name="CoOS/kernel/OsTask.h" path="CoOS/kernel/OsTask.h" type="1"/>
-    <File name="CoOS/kernel/timer.c" path="CoOS/kernel/timer.c" type="1"/>
     <File name="cmsis_boot/cmsis_lib/source/misc.c" path="cmsis_lib/source/misc.c" type="1"/>
     <File name="includes/interrupt.h" path="interrupt.h" type="1"/>
+    <File name="CoOS/kernel/timer.c" path="CoOS/kernel/timer.c" type="1"/>
     <File name="source/ADC.c" path="ADC.c" type="1"/>
     <File name="CoOS/Document" path="" type="2"/>
     <File name="CoOS/OsConfig.h" path="CoOS/OsConfig.h" type="1"/>
@@ -160,8 +160,8 @@
     <File name="includes" path="" type="2"/>
     <File name="cmsis_boot/cmsis_lib/include/stm32f4xx_exti.h" path="cmsis_lib/include/stm32f4xx_exti.h" type="1"/>
     <File name="CoOS/kernel/OsEvent.h" path="CoOS/kernel/OsEvent.h" type="1"/>
-    <File name="cmsis_boot/cmsis_lib/include/stm32f4xx_adc.h" path="cmsis_lib/include/stm32f4xx_adc.h" type="1"/>
     <File name="source/main.c" path="main.c" type="1"/>
+    <File name="cmsis_boot/cmsis_lib/include/stm32f4xx_adc.h" path="cmsis_lib/include/stm32f4xx_adc.h" type="1"/>
     <File name="CoOS/portable/arch.c" path="CoOS/portable/arch.c" type="1"/>
     <File name="CoOS/kernel/event.c" path="CoOS/kernel/event.c" type="1"/>
     <File name="source/UI.c" path="UI.c" type="1"/>
