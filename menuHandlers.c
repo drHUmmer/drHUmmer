@@ -68,9 +68,9 @@ void Menu_Info_handler(void) {
 	switch (gui.infobars.info1.setting) {
 		case INFO_NONE:					gui.infobars.info1.value = 0; 							break;
 		case INFO_BPM:					gui.infobars.info1.value = sequencer.BPM; 				break;
-		case INFO_PLAY_STATUS:			gui.infobars.info1.value = 0;							break; // ToDo: IMPLEMENT
+		case INFO_PLAY_STATUS:			gui.infobars.info1.value = sequencer.playing;			break;
 		case INFO_INSTRUMENT:			gui.infobars.info1.value = sequencer.instrID;			break;
-		case INFO_PATT_LIVE_MODE:		gui.infobars.info1.value = 1;							break; // ToDo: IMPLEMENT
+		case INFO_PATT_LIVE_MODE:		gui.infobars.info1.value = sequencer.patt_live_mode;	break;
 		case INFO_MIDI_CHANNEL:			gui.infobars.info1.value = settings.midi.channel;		break;
 		case INFO_MIDI_MASTER_SLAVE:	gui.infobars.info1.value = settings.midi.master_slave;	break;
 		case INFO_MIDI_SYNC:			gui.infobars.info1.value = settings.midi.sync;			break;
@@ -78,9 +78,9 @@ void Menu_Info_handler(void) {
 	switch (gui.infobars.info2.setting) {
 		case INFO_NONE:					gui.infobars.info2.value = 0; 							break;
 		case INFO_BPM:					gui.infobars.info2.value = sequencer.BPM; 				break;
-		case INFO_PLAY_STATUS:			gui.infobars.info2.value = 0;							break; // ToDo: IMPLEMENT
+		case INFO_PLAY_STATUS:			gui.infobars.info2.value = sequencer.playing;			break;
 		case INFO_INSTRUMENT:			gui.infobars.info2.value = sequencer.instrID;			break;
-		case INFO_PATT_LIVE_MODE:		gui.infobars.info2.value = 1;							break; // ToDo: IMPLEMENT
+		case INFO_PATT_LIVE_MODE:		gui.infobars.info2.value = sequencer.patt_live_mode;	break;
 		case INFO_MIDI_CHANNEL:			gui.infobars.info2.value = settings.midi.channel;		break;
 		case INFO_MIDI_MASTER_SLAVE:	gui.infobars.info2.value = settings.midi.master_slave;	break;
 		case INFO_MIDI_SYNC:			gui.infobars.info2.value = settings.midi.sync;			break;
@@ -125,35 +125,83 @@ void Menu_MIDI_handler (void) {
 			Menu_MIDI_Master_Slave();
 
 		if (MenuCompareSelected("Sync"))
-			Menu_SEQ_Sync();
+			Menu_MIDI_Sync();
 	}
 }
 
 void Menu_MIDI_Channel_handler (void) {
+	if (MenuOKpressed(1)) {
+		Menu_GotoParent();
+	}
+
 	// Change value with rotary
+	int8_t rotaryValue = MenuRotaryRead(1);
+	int8_t channelValue = settings.midi.channel;
+	
+	if (rotaryValue) {
+		channelValue += rotaryValue;
+
+		if (channelValue < 0)
+			channelValue = channelValue + 16;
+		
+		if (channelValue >= 16)
+			channelValue -= 16;
+
+		settings.midi.channel = channelValue;
+
+
+		LCD_StringInt(SCREENLINE2, 167, channelValue, 1);
+	}
 }
 
 void Menu_MIDI_Master_Slave_handler(void) {
 	MenuUpdateSelectedItem();
 
 	if (MenuOKpressed(1)) {
-		if (MenuCompareSelected("Master"))
-			Menu_MIDI_Channel();
+		if (MenuCompareSelected("Master")) {
+			settings.midi.master_slave = MIDI_MASTER;
+			LCD_StringLine(SCREENLINE6, SCREENINFOSTART, "MIDI MASTER");
+		}
 
-		if (MenuCompareSelected("Slave"))
-			Menu_MIDI_Master_Slave();
+
+		if (MenuCompareSelected("Slave")) {
+			settings.midi.master_slave = MIDI_SLAVE;
+			LCD_StringLine(SCREENLINE6, SCREENINFOSTART, "MIDI SLAVE ");
+		}
 	}
 }
 
 void Menu_MIDI_Sync_handler (void) {
+	MenuUpdateSelectedItem();
 
+	if (MenuOKpressed(1)) {
+		if (MenuCompareSelected("Sync on")) {
+			settings.midi.sync = MIDI_SYNC_ON;
+
+			LCD_StringLine(SCREENLINE6, SCREENINFOSTART, "Sync is ON ");
+		}
+
+		if (MenuCompareSelected("Sync off")) {
+			settings.midi.sync = MIDI_SYNC_OFF;
+
+			LCD_StringLine(SCREENLINE6, SCREENINFOSTART, "Sync is OFF");
+		}
+	}
 }
 
 /////////
 // SEQ //
 /////////
 void Menu_SEQ_handler (void) {
+	MenuUpdateSelectedItem();
 
+	if (MenuOKpressed(1)) {
+		if (MenuCompareSelected("BPM"))
+			Menu_SEQ_BPM();
+
+		if (MenuCompareSelected("Pattern / live"))
+			Menu_SEQ_Patt_Live_Mode();
+	}
 }
 
 void Menu_SEQ_BPM_handler (void) {
@@ -174,23 +222,42 @@ void Menu_SEQ_BPM_handler (void) {
 		sequencer.BPM = BPM;
 		BPMUpdate(BPM);
 
-		LCD_StringInt(120, 50, sequencer.BPM, 1);
+		LCD_StringInt(SCREENLINE2, SCREENSTART + (18*5), sequencer.BPM, 1);
 	}
 }
 
 void Menu_SEQ_Patt_Live_Mode_handler (void) {
+	MenuUpdateSelectedItem();
 
-}
+	if (MenuOKpressed(1)) {
+		if (MenuCompareSelected("Pattern")) {
+			sequencer.patt_live_mode = SEQ_PATTERN_MODE;
+			LCD_StringLine(SCREENLINE6, SCREENINFOSTART, "Patt. selected");
+		}
 
-void Menu_SEQ_Sync_handler (void) {
-
+		if (MenuCompareSelected("Live")) {
+			sequencer.patt_live_mode = SEQ_LIVE_MODE;
+			LCD_StringLine(SCREENLINE6, SCREENINFOSTART, "Live selected ");
+		}
+	}
 }
 
 //////////
 // FILE //
 //////////
 void Menu_File_handler (void) {
+	MenuUpdateSelectedItem();
 
+	if (MenuOKpressed(1)) {
+		if (MenuCompareSelected("Select pattern"))
+			Menu_File_Sample_Select();
+
+		if (MenuCompareSelected("Save pattern"))
+			Menu_File_Save_Pattern();
+
+		if (MenuCompareSelected("Load pattern"))
+			Menu_File_Save_Pattern();
+	}
 }
 
 void Menu_File_Sample_Select_handler (void) {
@@ -209,7 +276,15 @@ void Menu_File_Load_Pattern_handler (void) {
 // FILTER BOOKMARKS //
 //////////////////////
 void Menu_Filter_Bookmark_handler (void) {
+	MenuUpdateSelectedItem();
 
+	if (MenuOKpressed(1)) {
+		if (MenuCompareSelected("Bookmark 1"))
+			Menu_Filter_Bookmark_1();
+
+		if (MenuCompareSelected("Bookmark 2"))
+			Menu_Filter_Bookmark_2();
+	}
 }
 
 void Menu_Filter_Bookmark_1_handler (void) {
@@ -484,7 +559,15 @@ void Menu_UI_tonenegbarcolour_handler(void) {
 }
 
 void Menu_UI_info_handler (void) {
+	MenuUpdateSelectedItem();
 
+	if (MenuOKpressed(1)) {
+		if (MenuCompareSelected("Colours"))
+			Menu_UI_colours();
+
+		if (MenuCompareSelected("Info"))
+			Menu_UI_info();
+	}
 }
 
 void Menu_UI_info_1_handler (void) {

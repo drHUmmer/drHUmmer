@@ -394,8 +394,13 @@ void LCD_StringInt(uint16_t PosX, uint16_t PosY, uint16_t value, uint8_t alignRi
 	uint8_t first = 0;	// Not 0 passed?
 
 	if (value == 0) {
-		if (alignRight)
+		if (alignRight) {
+			LCD_PutChar(PosX, PosY + (0*18), ' ');
+			LCD_PutChar(PosX, PosY + (1*18), ' ');
+			LCD_PutChar(PosX, PosY + (2*18), ' ');
+			LCD_PutChar(PosX, PosY + (3*18), ' ');
 			LCD_PutChar(PosX, PosY + (4*18), '0');
+		}
 		else
 			LCD_PutChar(PosX, PosY, '0');
 

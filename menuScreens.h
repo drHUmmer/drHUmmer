@@ -7,7 +7,15 @@
 #include "filter.h"
 #include "sequencer.h"
 
-#define BARHEIGHT	180
+#define BARHEIGHT		180
+#define SCREENLINE1		160
+#define SCREENLINE2		130
+#define SCREENLINE3		100
+#define SCREENLINE4		70
+#define SCREENLINE5		40
+#define SCREENLINE6		10
+#define SCREENSTART		5
+#define SCREENINFOSTART	40
 
 // Function prototypes
 void Menu_Info();
@@ -22,8 +30,7 @@ void Menu_MIDI_Sync				(void);
 // SEQ
 void Menu_SEQ					(void);
 void Menu_SEQ_BPM				(void);
-void Menu_SEQ_Patt_Live_Mode	(void);	// IMPLEMENT
-void Menu_SEQ_Sync				(void);
+void Menu_SEQ_Patt_Live_Mode	(void);	// ToDo: IMPLEMENT
 
 // FILE
 void Menu_File					(void);

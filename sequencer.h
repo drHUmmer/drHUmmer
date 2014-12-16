@@ -3,6 +3,9 @@
 
 #include "stm32f4xx.h"
 
+#define SEQ_LIVE_MODE 		0
+#define SEQ_PATTERN_MODE 	1
+
 void sequencerInit(void);
 
 typedef struct
@@ -22,6 +25,8 @@ typedef struct
 
 typedef struct
 {
+	uint8_t  playing;		// Self explanatory
+	uint8_t	 patt_live_mode;// Pattern mode or live mode selected
 	uint32_t BPM;			// Current sequencer BPM
 	uint16_t beatclk;		// counter, 24/beat, 6/step
 	uint16_t beatmask;		// the current beat (mask, not a counter)

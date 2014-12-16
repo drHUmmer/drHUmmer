@@ -139,8 +139,8 @@ int main(void)
 
 	settings.midi.channel 		= 0;
 
-	gui.infobars.info1.setting = INFO_MIDI_CHANNEL;
-	gui.infobars.info2.setting = INFO_PATTERN_ID;
+	gui.infobars.info1.setting = INFO_PATT_LIVE_MODE;
+	gui.infobars.info2.setting = INFO_PATT_LIVE_MODE;
 
 	FXsettings.fx1				= LPF;
 	FXsettings.fx2				= BC;

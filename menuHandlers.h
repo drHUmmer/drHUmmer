@@ -23,7 +23,6 @@ void Menu_MIDI_Sync_handler				(void); //
 void Menu_SEQ_handler					(void); // 
 void Menu_SEQ_BPM_handler				(void); // X
 void Menu_SEQ_Patt_Live_Mode_handler	(void); // 
-void Menu_SEQ_Sync_handler				(void); //
 
 // FILE
 void Menu_File_handler					(void); //

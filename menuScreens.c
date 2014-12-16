@@ -59,6 +59,11 @@ void Menu_MIDI (void) {
 void Menu_MIDI_Channel (void) {
 	gui.menus.current = &gui.menus.midi_channel;
 	MenuRedrawScreen();
+
+	LCD_StringLine(SCREENLINE2, SCREENSTART, "MIDI ch:");
+	LCD_StringInt(SCREENLINE2, 167, settings.midi.channel, 1);
+	LCD_StringLine(SCREENLINE4, SCREENSTART, "Min ch: 0");
+	LCD_StringLine(SCREENLINE5, SCREENSTART, "Max ch: 15");
 }
 
 void Menu_MIDI_Master_Slave (void) {
@@ -80,14 +85,15 @@ void Menu_SEQ (void) {
 void Menu_SEQ_BPM (void) {
 	gui.menus.current = &gui.menus.seq_bpm;
 	MenuRedrawScreen();
+
+	LCD_StringLine(SCREENLINE2, SCREENSTART, "BPM:");
+	LCD_StringInt(SCREENLINE2, SCREENSTART + (18*5), sequencer.BPM, 1);
+
+	LCD_StringLine(SCREENLINE4, SCREENSTART, "Min:   50");
+	LCD_StringLine(SCREENLINE5, SCREENSTART, "Max:   300");
 }
 
 void Menu_SEQ_Patt_Live_Mode (void) {
-	gui.menus.current = &gui.menus.seq_patt_live_mode;
-	MenuRedrawScreen();
-}
-
-void Menu_SEQ_Sync (void) {
 	gui.menus.current = &gui.menus.seq_patt_live_mode;
 	MenuRedrawScreen();
 }

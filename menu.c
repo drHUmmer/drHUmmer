@@ -119,9 +119,9 @@ void MenuSetup() {
 	gui.menus.midi_master_slave.handler						= Menu_MIDI_Master_Slave_handler;
 	gui.menus.midi_master_slave.parent						= Menu_MIDI;
 	strcpy(gui.menus.midi_master_slave.menuTitle			, TITLE_MIDI_MASTER_SLAVE);
-	strcpy(gui.menus.midi_sync.menuOptions[0]				, BACKSTRING);
-	strcpy(gui.menus.midi_sync.menuOptions[1]				, "Master");
-	strcpy(gui.menus.midi_sync.menuOptions[2]				, "Slave");
+	strcpy(gui.menus.midi_master_slave.menuOptions[0]		, BACKSTRING);
+	strcpy(gui.menus.midi_master_slave.menuOptions[1]		, "Master");
+	strcpy(gui.menus.midi_master_slave.menuOptions[2]		, "Slave");
 
 	gui.menus.midi_sync.selectedOption						= 0;
 	gui.menus.midi_sync.nrOfOptions							= 3;
@@ -130,14 +130,14 @@ void MenuSetup() {
 	gui.menus.midi_sync.parent								= Menu_MIDI;
 	strcpy(gui.menus.midi_sync.menuTitle					, TITLE_MIDI_SYNC);
 	strcpy(gui.menus.midi_sync.menuOptions[0]				, BACKSTRING);
-	strcpy(gui.menus.midi_sync.menuOptions[1]				, "Sync");
-	strcpy(gui.menus.midi_sync.menuOptions[2]				, "Don't sync");
+	strcpy(gui.menus.midi_sync.menuOptions[1]				, "Sync on");
+	strcpy(gui.menus.midi_sync.menuOptions[2]				, "Sync off");
 
 /////////
 // SEQ //
 /////////
 	gui.menus.seq.selectedOption							= 0;
-	gui.menus.seq.nrOfOptions								= 4;
+	gui.menus.seq.nrOfOptions								= 3;
 	gui.menus.seq.showCursor								= 1;
 	gui.menus.seq.handler									= Menu_SEQ_handler;
 	gui.menus.seq.parent									= Menu_Main;
@@ -145,7 +145,6 @@ void MenuSetup() {
 	strcpy(gui.menus.seq.menuOptions[0]						, BACKSTRING);
 	strcpy(gui.menus.seq.menuOptions[1]						, "BPM");
 	strcpy(gui.menus.seq.menuOptions[2]						, "Pattern / live");
-	strcpy(gui.menus.seq.menuOptions[3]						, "Sync");
 
 	gui.menus.seq_bpm.selectedOption						= 0;
 	gui.menus.seq_bpm.nrOfOptions							= 0;
@@ -163,16 +162,6 @@ void MenuSetup() {
 	strcpy(gui.menus.seq_patt_live_mode.menuOptions[0]		, BACKSTRING);
 	strcpy(gui.menus.seq_patt_live_mode.menuOptions[1]		, "Pattern");
 	strcpy(gui.menus.seq_patt_live_mode.menuOptions[2]		, "Live");
-
-	gui.menus.seq_patt_live_mode.selectedOption				= 0;
-	gui.menus.seq_patt_live_mode.nrOfOptions				= 3;
-	gui.menus.seq_patt_live_mode.showCursor					= 1;
-	gui.menus.seq_patt_live_mode.handler					= Menu_SEQ_Sync_handler;
-	gui.menus.seq_patt_live_mode.parent						= Menu_SEQ;
-	strcpy(gui.menus.seq_patt_live_mode.menuTitle			, TITLE_SEQ_SYNC);
-	strcpy(gui.menus.seq_patt_live_mode.menuOptions[0]		, BACKSTRING);
-	strcpy(gui.menus.seq_patt_live_mode.menuOptions[1]		, "Sync");
-	strcpy(gui.menus.seq_patt_live_mode.menuOptions[2]		, "No sync");
 
 //////////
 // FILE //
@@ -619,7 +608,7 @@ void MenuDrawEffect1 (uint8_t redraw) {
 	if (redraw || (filter != int_filter) || (value != int_value)) {
 		LCD_StringLine(FXBAR_1_X, FXBAR_1_Y, "        ");
 
-		LCD_StringLine(FXBAR_1_X, FXBAR_1_Y, "fx nr 01"); 
+		LCD_StringLine(FXBAR_1_X, FXBAR_1_Y, "Not set");
 
 		int_filter 	= filter;
 		int_value 	= value;
@@ -637,8 +626,7 @@ void MenuDrawEffect2 (uint8_t redraw) {
 		LCD_StringLine(FXBAR_2_X, FXBAR_2_Y, "        ");
 
 		// redraw
-		LCD_StringLine(FXBAR_2_X, FXBAR_2_Y, "fx nr 0"); 
-		LCD_StringInt(FXBAR_2_X, FXBAR_2_Y + (7*18), 2, 0);
+		LCD_StringLine(FXBAR_2_X, FXBAR_2_Y, "Not set");
 
 		int_filter 	= filter;
 		int_value 	= value;
@@ -657,7 +645,7 @@ void MenuDrawInfo1 (uint8_t redraw) {
 
 		switch (filter) {
 			case INFO_NONE: 
-				LCD_StringLine(INFOBAR_1_X, INFOBAR_1_Y, "Info nr1"); 
+//				LCD_StringLine(INFOBAR_1_X, INFOBAR_1_Y, "Info nr1");
 				break;
 
 			case INFO_BPM: 	
@@ -666,11 +654,14 @@ void MenuDrawInfo1 (uint8_t redraw) {
 				break;
 
 			case INFO_PLAY_STATUS:
-				// IMPLEMENT
+				if (value)
+					LCD_StringLine(INFOBAR_1_X, INFOBAR_1_Y, "Playing");
+				else
+					LCD_StringLine(INFOBAR_1_X, INFOBAR_1_Y, "Paused");
 				break;
 
 			case INFO_PATT_LIVE_MODE:
-				if (value)
+				if (value == SEQ_LIVE_MODE)
 					LCD_StringLine(INFOBAR_1_X, INFOBAR_1_Y, "Live");
 				else
 					LCD_StringLine(INFOBAR_1_X, INFOBAR_1_Y, "Pattern");
@@ -719,7 +710,7 @@ void MenuDrawInfo2 (uint8_t redraw) {
 
 		switch (filter) {
 			case INFO_NONE: 
-				LCD_StringLine(INFOBAR_2_X, INFOBAR_2_Y, "Info nr2"); 
+//				LCD_StringLine(INFOBAR_2_X, INFOBAR_2_Y, "Info nr2");
 				break;
 
 			case INFO_BPM: 	
@@ -728,11 +719,14 @@ void MenuDrawInfo2 (uint8_t redraw) {
 				break;
 
 			case INFO_PLAY_STATUS:
-				// IMPLEMENT
+				if (value)
+					LCD_StringLine(INFOBAR_2_X, INFOBAR_2_X, "Playing");
+				else
+					LCD_StringLine(INFOBAR_2_X, INFOBAR_2_X, "Paused");
 				break;
 
 			case INFO_PATT_LIVE_MODE:
-				if (value)
+				if (value == SEQ_LIVE_MODE)
 					LCD_StringLine(INFOBAR_2_X, INFOBAR_2_Y, "Live");
 				else
 					LCD_StringLine(INFOBAR_2_X, INFOBAR_2_Y, "Pattern");
