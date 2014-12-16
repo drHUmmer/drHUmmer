@@ -31,24 +31,66 @@ void Menu_Update_handler(void) {
 }
 
 void Menu_Info_handler(void) {
-	 if (MenuOKpressed(1)) {
-	 	Menu_Main();
-	 	return;
-	 }
+	if (MenuOKpressed(1)) {
+		Menu_Main();
+		return;
+	}
 
-	 LCD_Levelbar(&gui.bars.analogDrum1Level	, sequencer.bassdrum.level);
-	 LCD_Levelbar(&gui.bars.analogDrum2Level	, sequencer.snaredrum.level);
-	 LCD_Levelbar(&gui.bars.digitalDrum1Level	, sequencer.instr0.level);
-	 LCD_Levelbar(&gui.bars.digitalDrum2Level	, sequencer.instr1.level);
-	 LCD_Levelbar(&gui.bars.digitalDrum3Level	, sequencer.instr2.level);
-	 LCD_Levelbar(&gui.bars.digitalDrum4Level	, sequencer.instr3.level);
+	LCD_Levelbar(&gui.bars.analogDrum1Level	, sequencer.bassdrum.level);
+	LCD_Levelbar(&gui.bars.analogDrum2Level	, sequencer.snaredrum.level);
+	LCD_Levelbar(&gui.bars.digitalDrum1Level	, sequencer.instr0.level);
+	LCD_Levelbar(&gui.bars.digitalDrum2Level	, sequencer.instr1.level);
+	LCD_Levelbar(&gui.bars.digitalDrum3Level	, sequencer.instr2.level);
+	LCD_Levelbar(&gui.bars.digitalDrum4Level	, sequencer.instr3.level);
 
-	 LCD_Tonebar(&gui.bars.analogDrum1Tone		, sequencer.bassdrum.tone - 100);
-	 LCD_Tonebar(&gui.bars.analogDrum2Tone		, sequencer.snaredrum.tone - 100);
-	 LCD_Tonebar(&gui.bars.digitalDrum1Tone		, sequencer.instr0.tone - 100);
-	 LCD_Tonebar(&gui.bars.digitalDrum2Tone		, sequencer.instr1.tone - 100);
-	 LCD_Tonebar(&gui.bars.digitalDrum3Tone		, sequencer.instr2.tone - 100);
-	 LCD_Tonebar(&gui.bars.digitalDrum4Tone		, sequencer.instr3.tone - 100);
+	LCD_Tonebar(&gui.bars.analogDrum1Tone		, sequencer.bassdrum.tone);
+	LCD_Tonebar(&gui.bars.analogDrum2Tone		, sequencer.snaredrum.tone);
+	LCD_Tonebar(&gui.bars.digitalDrum1Tone		, sequencer.instr0.tone);
+	LCD_Tonebar(&gui.bars.digitalDrum2Tone		, sequencer.instr1.tone);
+	LCD_Tonebar(&gui.bars.digitalDrum3Tone		, sequencer.instr2.tone);
+	LCD_Tonebar(&gui.bars.digitalDrum4Tone		, sequencer.instr3.tone);
+
+	// Update filter setting values
+	switch (FXsettings.fx1) {
+		case LPF:	gui.infobars.fx1.setting = LPF;	gui.infobars.fx1.value = FXsettings.lpfFreq;	break;
+		case HPF:	gui.infobars.fx1.setting = HPF;	gui.infobars.fx1.value = FXsettings.hpfFreq;	break;
+		case BC:	gui.infobars.fx1.setting = BC;	gui.infobars.fx1.value = FXsettings.bcBits;		break;
+		case DS:	gui.infobars.fx1.setting = DS;	gui.infobars.fx1.value = FXsettings.dsFreq;		break;
+	}
+	switch (FXsettings.fx2) {
+		case LPF:	gui.infobars.fx2.setting = LPF;	gui.infobars.fx2.value = FXsettings.lpfFreq;	break;
+		case HPF:	gui.infobars.fx2.setting = HPF;	gui.infobars.fx2.value = FXsettings.hpfFreq;	break;
+		case BC:	gui.infobars.fx2.setting = BC;	gui.infobars.fx2.value = FXsettings.bcBits;		break;
+		case DS:	gui.infobars.fx2.setting = DS;	gui.infobars.fx2.value = FXsettings.dsFreq;		break;
+	}
+
+	 // Update info setting values
+	switch (gui.infobars.info1.setting) {
+		case INFO_NONE:					gui.infobars.info1.value = 0; 							break;
+		case INFO_BPM:					gui.infobars.info1.value = sequencer.BPM; 				break;
+		case INFO_PLAY_STATUS:			gui.infobars.info1.value = 0;							break; // ToDo: IMPLEMENT
+		case INFO_INSTRUMENT:			gui.infobars.info1.value = sequencer.instrID;			break;
+		case INFO_PATT_LIVE_MODE:		gui.infobars.info1.value = 1;							break; // ToDo: IMPLEMENT
+		case INFO_MIDI_CHANNEL:			gui.infobars.info1.value = settings.midi.channel;		break;
+		case INFO_MIDI_MASTER_SLAVE:	gui.infobars.info1.value = settings.midi.master_slave;	break;
+		case INFO_MIDI_SYNC:			gui.infobars.info1.value = settings.midi.sync;			break;
+	}
+	switch (gui.infobars.info2.setting) {
+		case INFO_NONE:					gui.infobars.info2.value = 0; 							break;
+		case INFO_BPM:					gui.infobars.info2.value = sequencer.BPM; 				break;
+		case INFO_PLAY_STATUS:			gui.infobars.info2.value = 0;							break; // ToDo: IMPLEMENT
+		case INFO_INSTRUMENT:			gui.infobars.info2.value = sequencer.instrID;			break;
+		case INFO_PATT_LIVE_MODE:		gui.infobars.info2.value = 1;							break; // ToDo: IMPLEMENT
+		case INFO_MIDI_CHANNEL:			gui.infobars.info2.value = settings.midi.channel;		break;
+		case INFO_MIDI_MASTER_SLAVE:	gui.infobars.info2.value = settings.midi.master_slave;	break;
+		case INFO_MIDI_SYNC:			gui.infobars.info2.value = settings.midi.sync;			break;
+	}
+
+	// Draw updates, if needed
+	MenuDrawInfo1	(0);
+	MenuDrawInfo2	(0);
+	MenuDrawEffect1	(0);
+	MenuDrawEffect2	(0);
 }
 
 void Menu_Main_handler(void) {
@@ -76,26 +118,31 @@ void Menu_MIDI_handler (void) {
 	MenuUpdateSelectedItem();
 
 	if (MenuOKpressed(1)) {
-		if (MenuCompareSelected(TITLE_MIDI))
-			Menu_MIDI();
+		if (MenuCompareSelected("Channel"))
+			Menu_MIDI_Channel();
 
-		if (MenuCompareSelected(TITLE_SEQ))
-			Menu_SEQ();
+		if (MenuCompareSelected("Master / slave"))
+			Menu_MIDI_Master_Slave();
 
-		if (MenuCompareSelected(TITLE_FILE))
-			Menu_File();
-
-		if (MenuCompareSelected(TITLE_UI))
-			Menu_UI();
+		if (MenuCompareSelected("Sync"))
+			Menu_SEQ_Sync();
 	}
 }
 
 void Menu_MIDI_Channel_handler (void) {
-
+	// Change value with rotary
 }
 
 void Menu_MIDI_Master_Slave_handler(void) {
+	MenuUpdateSelectedItem();
 
+	if (MenuOKpressed(1)) {
+		if (MenuCompareSelected("Master"))
+			Menu_MIDI_Channel();
+
+		if (MenuCompareSelected("Slave"))
+			Menu_MIDI_Master_Slave();
+	}
 }
 
 void Menu_MIDI_Sync_handler (void) {
@@ -132,6 +179,10 @@ void Menu_SEQ_BPM_handler (void) {
 }
 
 void Menu_SEQ_Patt_Live_Mode_handler (void) {
+
+}
+
+void Menu_SEQ_Sync_handler (void) {
 
 }
 

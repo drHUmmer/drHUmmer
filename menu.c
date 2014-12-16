@@ -137,7 +137,7 @@ void MenuSetup() {
 // SEQ //
 /////////
 	gui.menus.seq.selectedOption							= 0;
-	gui.menus.seq.nrOfOptions								= 3;
+	gui.menus.seq.nrOfOptions								= 4;
 	gui.menus.seq.showCursor								= 1;
 	gui.menus.seq.handler									= Menu_SEQ_handler;
 	gui.menus.seq.parent									= Menu_Main;
@@ -145,6 +145,7 @@ void MenuSetup() {
 	strcpy(gui.menus.seq.menuOptions[0]						, BACKSTRING);
 	strcpy(gui.menus.seq.menuOptions[1]						, "BPM");
 	strcpy(gui.menus.seq.menuOptions[2]						, "Pattern / live");
+	strcpy(gui.menus.seq.menuOptions[3]						, "Sync");
 
 	gui.menus.seq_bpm.selectedOption						= 0;
 	gui.menus.seq_bpm.nrOfOptions							= 0;
@@ -162,6 +163,16 @@ void MenuSetup() {
 	strcpy(gui.menus.seq_patt_live_mode.menuOptions[0]		, BACKSTRING);
 	strcpy(gui.menus.seq_patt_live_mode.menuOptions[1]		, "Pattern");
 	strcpy(gui.menus.seq_patt_live_mode.menuOptions[2]		, "Live");
+
+	gui.menus.seq_patt_live_mode.selectedOption				= 0;
+	gui.menus.seq_patt_live_mode.nrOfOptions				= 3;
+	gui.menus.seq_patt_live_mode.showCursor					= 1;
+	gui.menus.seq_patt_live_mode.handler					= Menu_SEQ_Sync_handler;
+	gui.menus.seq_patt_live_mode.parent						= Menu_SEQ;
+	strcpy(gui.menus.seq_patt_live_mode.menuTitle			, TITLE_SEQ_SYNC);
+	strcpy(gui.menus.seq_patt_live_mode.menuOptions[0]		, BACKSTRING);
+	strcpy(gui.menus.seq_patt_live_mode.menuOptions[1]		, "Sync");
+	strcpy(gui.menus.seq_patt_live_mode.menuOptions[2]		, "No sync");
 
 //////////
 // FILE //
@@ -599,49 +610,161 @@ int8_t MenuRotaryRead(uint8_t reset) {
 }
 
 void MenuDrawEffect1 (uint8_t redraw) {
-	if (redraw) {
-		LCD_SetTextColor(ColourConverterDec(gui.colours.background));
-		LCD_DrawFullRect(182, 0, 25, 155);
-		LCD_SetTextColor(ColourConverterDec(gui.colours.text));
-	}
+	static uint8_t 	int_filter 	= 0;
+	static uint16_t	int_value 	= 0;
 
-	switch (FXsettings.fx1) {
-	case LPF: 	LCD_StringLine(182,10, "LP"); LCD_StringInt(182, 60, FXsettings.lpfFreq, 1);	break;
-	case HPF: 	LCD_StringLine(182,10, "HP"); LCD_StringInt(182, 60, FXsettings.hpfFreq, 1);	break;
-	case BC: 	LCD_StringLine(182,10, "BC"); LCD_StringInt(182, 60, FXsettings.bcBits, 1);		break;
-	case DS: 	LCD_StringLine(182,10, "DS"); LCD_StringInt(182, 60, FXsettings.dsFreq, 1); 	break;
-	case NONE:	LCD_StringLine(182,10, "fx 1 off"); break;
+	uint8_t filter = gui.infobars.fx1.setting;
+	uint8_t value = gui.infobars.fx1.value;
+
+	if (redraw || (filter != int_filter) || (value != int_value)) {
+		LCD_StringLine(FXBAR_1_X, FXBAR_1_Y, "        ");
+
+		LCD_StringLine(FXBAR_1_X, FXBAR_1_Y, "fx nr 01"); 
+
+		int_filter 	= filter;
+		int_value 	= value;
 	}
 }
 
 void MenuDrawEffect2 (uint8_t redraw) {
-	if (redraw) {
-		LCD_SetTextColor(ColourConverterDec(gui.colours.background));
-		LCD_DrawFullRect(182, 165, 25, 155);
-		LCD_SetTextColor(ColourConverterDec(gui.colours.text));
-	}
+	static uint8_t 	int_filter 	= 0;
+	static uint16_t	int_value 	= 0;
 
-	switch (FXsettings.fx2) {
-	case LPF: 	LCD_StringLine(182,170, "LP"); LCD_StringInt(182, 220, FXsettings.lpfFreq, 1); 	break;
-	case HPF: 	LCD_StringLine(182,170, "HP"); LCD_StringInt(182, 220, FXsettings.hpfFreq, 1);	break;
-	case BC: 	LCD_StringLine(182,170, "BC"); LCD_StringInt(182, 220, FXsettings.bcBits, 1);	break;
-	case DS: 	LCD_StringLine(182,170, "DS"); LCD_StringInt(182, 220, FXsettings.dsFreq, 1);	break;
-	case NONE:	LCD_StringLine(182,170, "fx 2 off"); break;
+	uint8_t filter = gui.infobars.fx2.setting;
+	uint8_t value = gui.infobars.fx2.value;
+
+	if (redraw || (filter != int_filter) || (value != int_value)) {
+		LCD_StringLine(FXBAR_2_X, FXBAR_2_Y, "        ");
+
+		// redraw
+		LCD_StringLine(FXBAR_2_X, FXBAR_2_Y, "fx nr 0"); 
+		LCD_StringInt(FXBAR_2_X, FXBAR_2_Y + (7*18), 2, 0);
+
+		int_filter 	= filter;
+		int_value 	= value;
 	}
 }
 
 void MenuDrawInfo1 (uint8_t redraw) {
-	if (redraw) {
-		LCD_SetTextColor(ColourConverterDec(Red));				// DEBUG COLOUR //
-		LCD_DrawFullRect(160, 165, 25, 155);					// !! TEST !! ALIGNMENT //
-		LCD_SetTextColor(ColourConverterDec(gui.colours.text));
+	static uint8_t	int_filter 	= 0;
+	static uint16_t int_value 	= 0;
+
+	uint8_t filter 	= gui.infobars.info1.setting;
+	uint16_t value 	= gui.infobars.info1.value;
+
+	if (redraw || (filter != int_filter) || (value != int_value)) {
+		LCD_StringLine(INFOBAR_1_X, INFOBAR_1_Y, "        ");
+
+		switch (filter) {
+			case INFO_NONE: 
+				LCD_StringLine(INFOBAR_1_X, INFOBAR_1_Y, "Info nr1"); 
+				break;
+
+			case INFO_BPM: 	
+				LCD_StringLine(INFOBAR_1_X, INFOBAR_1_Y, "BPM"); 
+				LCD_StringInt(INFOBAR_1_X, INFOBAR_1_Y + (3*18), value, 1);
+				break;
+
+			case INFO_PLAY_STATUS:
+				// IMPLEMENT
+				break;
+
+			case INFO_PATT_LIVE_MODE:
+				if (value)
+					LCD_StringLine(INFOBAR_1_X, INFOBAR_1_Y, "Live");
+				else
+					LCD_StringLine(INFOBAR_1_X, INFOBAR_1_Y, "Pattern");
+				break;
+
+			case INFO_PATTERN_ID:
+				LCD_StringLine(INFOBAR_1_X, INFOBAR_1_Y, "Patt");
+				LCD_StringInt(INFOBAR_1_X, INFOBAR_1_Y + (7*18), value, 0);
+				break;
+
+			case INFO_MIDI_CHANNEL:
+				LCD_StringLine(INFOBAR_1_X, INFOBAR_1_Y, "Ch");
+				LCD_StringInt(INFOBAR_1_X, INFOBAR_1_Y + (3*18), value, 1);
+				break;
+
+			case INFO_MIDI_MASTER_SLAVE:
+				if (value == MIDI_MASTER)
+					LCD_StringLine(INFOBAR_1_X, INFOBAR_1_Y, "Master");
+				else
+					LCD_StringLine(INFOBAR_1_X, INFOBAR_1_Y, "Slave ");
+				break;
+
+			case INFO_MIDI_SYNC:
+				if (value == MIDI_SYNC_ON)
+					LCD_StringLine(INFOBAR_1_X, INFOBAR_1_Y, "Sync On ");
+				else
+					LCD_StringLine(INFOBAR_1_X, INFOBAR_1_Y, "Sync Off");
+				break;
+		}
+
+		// Update internal values
+		int_filter 	= filter;
+		int_value 	= value;
 	}
 }
 
 void MenuDrawInfo2 (uint8_t redraw) {
-	if (redraw) {
-		LCD_SetTextColor(ColourConverterDec(Red));				// DEBUG COLOUR //
-		LCD_DrawFullRect(160, 165, 25, 155);					// !! TEST !! ALIGNMENT //
-		LCD_SetTextColor(ColourConverterDec(gui.colours.text));
+	static uint8_t	int_filter 	= 0;
+	static uint16_t int_value 	= 0;
+
+	uint8_t filter 	= gui.infobars.info2.setting;
+	uint16_t value 	= gui.infobars.info2.value;
+
+	if (redraw || (filter != int_filter) || (value != int_value)) {
+		LCD_StringLine(INFOBAR_2_X, INFOBAR_2_Y, "        ");
+
+		switch (filter) {
+			case INFO_NONE: 
+				LCD_StringLine(INFOBAR_2_X, INFOBAR_2_Y, "Info nr2"); 
+				break;
+
+			case INFO_BPM: 	
+				LCD_StringLine(INFOBAR_2_X, INFOBAR_2_Y, "BPM"); 
+				LCD_StringInt(INFOBAR_2_X, INFOBAR_2_Y + (3*18), value, 1);
+				break;
+
+			case INFO_PLAY_STATUS:
+				// IMPLEMENT
+				break;
+
+			case INFO_PATT_LIVE_MODE:
+				if (value)
+					LCD_StringLine(INFOBAR_2_X, INFOBAR_2_Y, "Live");
+				else
+					LCD_StringLine(INFOBAR_2_X, INFOBAR_2_Y, "Pattern");
+				break;
+
+			case INFO_PATTERN_ID:
+				LCD_StringLine(INFOBAR_2_X, INFOBAR_2_Y, "Patt");
+				LCD_StringInt(INFOBAR_2_X, INFOBAR_2_Y + (7*18), value, 0);
+				break;	
+
+			case INFO_MIDI_CHANNEL:
+				LCD_StringLine(INFOBAR_2_X, INFOBAR_2_Y, "Ch");
+				LCD_StringInt(INFOBAR_2_X, INFOBAR_2_Y + (3*18), value, 1);
+				break;
+
+			case INFO_MIDI_MASTER_SLAVE:
+				if (value == MIDI_MASTER)
+					LCD_StringLine(INFOBAR_2_X, INFOBAR_2_Y, "Master");
+				else
+					LCD_StringLine(INFOBAR_2_X, INFOBAR_2_Y, "Slave ");
+				break;
+
+			case INFO_MIDI_SYNC:
+				if (value == MIDI_SYNC_ON)
+					LCD_StringLine(INFOBAR_2_X, INFOBAR_2_Y, "Sync On ");
+				else
+					LCD_StringLine(INFOBAR_2_X, INFOBAR_2_Y, "Sync Off");
+				break;
+		}
+
+		// Update internal values
+		int_filter 	= filter;
+		int_value 	= value;
 	}
 }

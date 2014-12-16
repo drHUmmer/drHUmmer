@@ -163,6 +163,8 @@
     <File name="cmsis/core_cm4.h" path="cmsis/core_cm4.h" type="1"/>
     <File name="source/LCDitems.c" path="LCDitems.c" type="1"/>
     <File name="CoOS/kernel/OsTask.h" path="CoOS/kernel/OsTask.h" type="1"/>
+    <File name="source/settings.c" path="settings.c" type="1"/>
+    <File name="includes/settings.h" path="settings.h" type="1"/>
     <File name="cmsis_lib/source/misc.c" path="cmsis_lib/source/misc.c" type="1"/>
     <File name="cmsis_lib/include/stm32f4xx_tim.h" path="cmsis_lib/include/stm32f4xx_tim.h" type="1"/>
     <File name="cmsis_lib/source/stm32f4xx_adc.c" path="cmsis_lib/source/stm32f4xx_adc.c" type="1"/>

@@ -22,7 +22,8 @@ void Menu_MIDI_Sync				(void);
 // SEQ
 void Menu_SEQ					(void);
 void Menu_SEQ_BPM				(void);
-void Menu_SEQ_Patt_Live_Mode	(void);
+void Menu_SEQ_Patt_Live_Mode	(void);	// IMPLEMENT
+void Menu_SEQ_Sync				(void);
 
 // FILE
 void Menu_File					(void);

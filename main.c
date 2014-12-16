@@ -135,7 +135,15 @@ int main(void)
 
 	MenuSetup();
 
-	uint16_t sequencerButtons = 0;
+	uint16_t sequencerButtons 	= 0;
+
+	settings.midi.channel 		= 0;
+
+	gui.infobars.info1.setting = INFO_MIDI_CHANNEL;
+	gui.infobars.info2.setting = INFO_PATTERN_ID;
+
+	FXsettings.fx1				= LPF;
+	FXsettings.fx2				= BC;
 
 	while (1) {
 //		uint16_t buttonvalue = UIButtonRead();

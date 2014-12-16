@@ -36,6 +36,7 @@ typedef struct {
 #define TITLE_SEQ					"SEQ"
 #define TITLE_SEQ_BPM				"SEQ - BPM"
 #define TITLE_SEQ_PATT_LIVE			"SEQ - Patt/live"
+#define TITLE_SEQ_SYNC				"SEQ - Sync"
 
 // FILE
 #define TITLE_FILE					"File"
@@ -58,6 +59,18 @@ typedef struct {
 #define TITLE_UI_INFO_1				"Info - left"
 #define TITLE_UI_INFO_2				"Info - right"
 
+///////////////////////////
+// Infobar possibilities //
+///////////////////////////
+#define INFO_NONE				0x00
+#define INFO_BPM				0x01
+#define INFO_PLAY_STATUS		0x02 // ToDo: Implement
+#define INFO_INSTRUMENT			0x03
+#define INFO_PATT_LIVE_MODE		0x04
+#define INFO_PATTERN_ID			0x05 // ToDo: Implement
+#define INFO_MIDI_CHANNEL		0x06
+#define INFO_MIDI_MASTER_SLAVE	0x07
+#define INFO_MIDI_SYNC			0x08
 
 /////////////////////
 // Dispay settings //
@@ -68,17 +81,27 @@ typedef struct {
 #define CURRENTLYSELECTEDCHAR	'>'
 #define OPTIONSPERMENU			6
 
+#define INFOBAR_1_X				213
+#define INFOBAR_1_Y				8
+#define INFOBAR_2_X				INFOBAR_1_X
+#define INFOBAR_2_Y				(INFOBAR_1_Y + 160)
+
+#define FXBAR_1_X				183
+#define FXBAR_1_Y				INFOBAR_1_Y
+#define FXBAR_2_X				FXBAR_1_X
+#define FXBAR_2_Y				(FXBAR_1_Y + 160)
+
 /////////////
 // Structs //
 /////////////
 typedef struct {
-	char			menuTitle[MAXSTRINGLENGTH];				// Menutitle
-	char			menuOptions[MAXOPTIONS][MAXSTRINGLENGTH];	// Names of options
-	uint8_t			showCursor;								// Show cursor
-	int8_t			selectedOption;							// Currently selected option
-	uint8_t			nrOfOptions;							// Total number of options
-	void			(*handler)(void);						// Handler function pointer
-	void			(*parent)(void);						// Parent screen
+	char			menuTitle	[MAXSTRINGLENGTH];				// Menutitle
+	char			menuOptions	[MAXOPTIONS][MAXSTRINGLENGTH];	// Names of options
+	uint8_t			showCursor;									// Show cursor
+	int8_t			selectedOption;								// Currently selected option
+	uint8_t			nrOfOptions;								// Total number of options
+	void			(*handler)(void);							// Handler function pointer
+	void			(*parent)(void);							// Parent screen
 } Menu_Typedef;
 
 typedef struct {
@@ -147,9 +170,22 @@ typedef struct {
 } Progressbars_Typedef;
 
 typedef struct {
+	uint8_t					setting;
+	uint16_t 				value;
+} Infobar_Typedef;
+
+typedef struct {
+	Infobar_Typedef			info1;
+	Infobar_Typedef			info2;
+	Infobar_Typedef			fx1;
+	Infobar_Typedef			fx2;
+} Infobars_Typedef;
+
+typedef struct {
 	Colours_Typedef			colours;
 	Menus_Typedef			menus;
 	Progressbars_Typedef	bars;
+	Infobars_Typedef		infobars;
 } MenuSettings_TypeDef;
 
 /////////////////////////

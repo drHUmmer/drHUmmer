@@ -14,7 +14,7 @@ void Menu_Info() {
 	LCD_DrawFullRect(BARHEIGHT, 0, 3, 320);		// Horizontal line 		(2nd row line)
 	LCD_DrawFullRect(BARHEIGHT, 158, 59, 4);	// Top veritcal line 	(split into coloums)
 
-	// Verical lines (seperating drums)
+	// Verical lines (seperating instruments)
 	LCD_DrawFullRect(0, 50,  BARHEIGHT, 4);
 	LCD_DrawFullRect(0, 104, BARHEIGHT, 4);
 	LCD_DrawFullRect(0, 158, BARHEIGHT, 4);
@@ -22,10 +22,10 @@ void Menu_Info() {
 	LCD_DrawFullRect(0, 266, BARHEIGHT, 4);
 
 // Texts
-	MenuDrawInfo1(0);
-	MenuDrawInfo2(0);
-	MenuDrawEffect1(0);
-	MenuDrawEffect2(0);
+	MenuDrawInfo1(1);
+	MenuDrawInfo2(1);
+	MenuDrawEffect1(1);
+	MenuDrawEffect2(1);
 
 // Progressbars
 	// D1
@@ -83,6 +83,11 @@ void Menu_SEQ_BPM (void) {
 }
 
 void Menu_SEQ_Patt_Live_Mode (void) {
+	gui.menus.current = &gui.menus.seq_patt_live_mode;
+	MenuRedrawScreen();
+}
+
+void Menu_SEQ_Sync (void) {
 	gui.menus.current = &gui.menus.seq_patt_live_mode;
 	MenuRedrawScreen();
 }
