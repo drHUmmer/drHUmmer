@@ -46,6 +46,8 @@ typedef struct {
 
 // Filter
 #define TITLE_FILTERBOOKMARK		"Filter bookmarks"
+#define TITLE_FILTERBOOKMARK_1		"Set bookmark 1"
+#define TITLE_FILTERBOOKMARK_2		"Set bookmark 2"
 
 // UI
 #define TITLE_UI					"UI"
@@ -56,40 +58,41 @@ typedef struct {
 #define TITLE_UI_COLOURS_TONEPOS	"Colours - tone +"
 #define TITLE_UI_COLOURS_TONENEG	"Colours - tone -"
 #define TITLE_UI_INFO				"UI - Info"
-#define TITLE_UI_INFO_1				"Info - left"
-#define TITLE_UI_INFO_2				"Info - right"
+#define TITLE_UI_INFO_1				"Infobar 1"
+#define TITLE_UI_INFO_2				"Infobar 2"
 
 ///////////////////////////
 // Infobar possibilities //
 ///////////////////////////
-#define INFO_NONE				0x00
-#define INFO_BPM				0x01
-#define INFO_PLAY_STATUS		0x02 // ToDo: Implement
-#define INFO_INSTRUMENT			0x03
-#define INFO_PATT_LIVE_MODE		0x04
-#define INFO_PATTERN_ID			0x05 // ToDo: Implement
-#define INFO_MIDI_CHANNEL		0x06
-#define INFO_MIDI_MASTER_SLAVE	0x07
-#define INFO_MIDI_SYNC			0x08
+#define INFO_NONE					0x00
+#define INFO_BPM					0x01
+#define INFO_PLAY_STATUS			0x02
+#define INFO_INSTRUMENT				0x03
+#define INFO_PATT_LIVE_MODE			0x04
+#define INFO_PATTERN_ID				0x05
+#define INFO_MIDI_CHANNEL			0x06
+#define INFO_MIDI_MASTER_SLAVE		0x07
+#define INFO_MIDI_SYNC				0x08
 
 /////////////////////
 // Dispay settings //
 /////////////////////
-#define BACKSTRING				"../"
-#define MAXSTRINGLENGTH			17
-#define MAXOPTIONS				(2 * OPTIONSPERMENU)
-#define CURRENTLYSELECTEDCHAR	'>'
-#define OPTIONSPERMENU			6
+#define BACKSTRING					"../"
+#define MAXSTRINGLENGTH				17
+#define MAXOPTIONS					(2 * OPTIONSPERMENU)
+#define CURRENTLYSELECTEDCHAR		'>'
+#define OPTIONSPERMENU				6
+#define CHARWIDTH					18
 
-#define INFOBAR_1_X				213
-#define INFOBAR_1_Y				8
-#define INFOBAR_2_X				INFOBAR_1_X
-#define INFOBAR_2_Y				(INFOBAR_1_Y + 160)
+#define INFOBAR_1_X					213
+#define INFOBAR_1_Y					8
+#define INFOBAR_2_X					INFOBAR_1_X
+#define INFOBAR_2_Y					(INFOBAR_1_Y + 160)
 
-#define FXBAR_1_X				183
-#define FXBAR_1_Y				INFOBAR_1_Y
-#define FXBAR_2_X				FXBAR_1_X
-#define FXBAR_2_Y				(FXBAR_1_Y + 160)
+#define FXBAR_1_X					183
+#define FXBAR_1_Y					INFOBAR_1_Y
+#define FXBAR_2_X					FXBAR_1_X
+#define FXBAR_2_Y					(FXBAR_1_Y + 160)
 
 /////////////
 // Structs //
@@ -105,53 +108,53 @@ typedef struct {
 } Menu_Typedef;
 
 typedef struct {
-	Menu_Typedef*	current;
-	Menu_Typedef	info;
-	Menu_Typedef	main;
+	Menu_Typedef*			current;
+	Menu_Typedef			info;
+	Menu_Typedef			main;
 
 	// MIDI
-	Menu_Typedef	midi;
-	Menu_Typedef	midi_channel;
-	Menu_Typedef	midi_master_slave;
-	Menu_Typedef	midi_sync;
+	Menu_Typedef			midi;
+	Menu_Typedef			midi_channel;
+	Menu_Typedef			midi_master_slave;
+	Menu_Typedef			midi_sync;
 
 	// SEQ
-	Menu_Typedef	seq;
-	Menu_Typedef	seq_bpm;
-	Menu_Typedef	seq_patt_live_mode;
+	Menu_Typedef			seq;
+	Menu_Typedef			seq_bpm;
+	Menu_Typedef			seq_patt_live_mode;
 
 	// FILE
-	Menu_Typedef	file;
-	Menu_Typedef	file_sample_select;
-	Menu_Typedef	file_save_pattern;
-	Menu_Typedef	file_load_pattern;
+	Menu_Typedef			file;
+	Menu_Typedef			file_sample_select;
+	Menu_Typedef			file_save_pattern;
+	Menu_Typedef			file_load_pattern;
 
 	// Filter
-	Menu_Typedef	filter_bookmark;
-	Menu_Typedef	filter_bookmark_1;
-	Menu_Typedef	filter_bookmark_2;
+	Menu_Typedef			filter_bookmark;
+	Menu_Typedef			filter_bookmark_1;
+	Menu_Typedef			filter_bookmark_2;
 
 	// UI
-	Menu_Typedef	ui;
-	Menu_Typedef	ui_colours;
-	Menu_Typedef	ui_info;
+	Menu_Typedef			ui;
+	Menu_Typedef			ui_colours;
+	Menu_Typedef			ui_info;
 	
 	// UI submenus
-	Menu_Typedef	ui_backcolour;
-	Menu_Typedef	ui_textcolour;
-	Menu_Typedef	ui_levelbarcolour;
-	Menu_Typedef	ui_toneposbarcolour;
-	Menu_Typedef	ui_tonenegbarcolour;
-	Menu_Typedef	ui_info_1;
-	Menu_Typedef	ui_info_2;
+	Menu_Typedef			ui_backcolour;
+	Menu_Typedef			ui_textcolour;
+	Menu_Typedef			ui_levelbarcolour;
+	Menu_Typedef			ui_toneposbarcolour;
+	Menu_Typedef			ui_tonenegbarcolour;
+	Menu_Typedef			ui_info_1;
+	Menu_Typedef			ui_info_2;
 } Menus_Typedef;
 
 typedef struct {
-	uint16_t		background;
-	uint16_t		text;
-	uint16_t		levelBar;
-	uint16_t		tonePosBar;
-	uint16_t		toneNegBar;
+	uint16_t				background;
+	uint16_t				text;
+	uint16_t				levelBar;
+	uint16_t				tonePosBar;
+	uint16_t				toneNegBar;
 } Colours_Typedef;
 
 typedef struct {

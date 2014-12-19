@@ -128,11 +128,39 @@ void Menu_Filter_Bookmark (void) {
 void Menu_Filter_Bookmark_1 (void) {
 	gui.menus.current = &gui.menus.filter_bookmark_1;
 	MenuRedrawScreen();
+
+	// ToDo: Draw current settings
+
 }
 
 void Menu_Filter_Bookmark_2 (void) {
 	gui.menus.current = &gui.menus.filter_bookmark_2;
 	MenuRedrawScreen();
+
+	// ToDo: Draw current settings
+	uint8_t filter1 = settings.filter_bookmark_2.fx1_filter;
+	uint16_t value1 = settings.filter_bookmark_2.fx1_value;
+
+	uint8_t filter2 = settings.filter_bookmark_2.fx2_filter;
+	uint16_t value2 = settings.filter_bookmark_2.fx2_value;
+
+	uint8_t textFilterOffset	= SCREENSTART + (CHARWIDTH * 5);
+	uint8_t textValueOffset		= SCREENSTART + (CHARWIDTH * 11);
+
+
+	LCD_StringLine(SCREENLINE5, SCREENSTART, "Fx1:");
+	LCD_StringLine(SCREENLINE6, SCREENSTART, "Fx2:");
+
+	switch (filter) {
+		case INFO_NONE:	
+			LCD_StringLine(SCREENLINE5, textFilterOffset, "NONE");
+			break;
+
+		case INFO_BPM:	
+			LCD_StringLine(SCREENLINE5, textFilterOffset, "BPM ");
+			LCD_StringInt(SCREENLINE5, textValueOffset, value1, 0);
+			break;
+	}
 }
 
 // UI

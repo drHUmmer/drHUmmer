@@ -1,7 +1,6 @@
 #include "menu.h"
 
-/*
- * Menu hierarchy
+/* Menu hierarchy
  *
  * Info
  * \ Main
@@ -79,7 +78,7 @@ void MenuSetup() {
 	strcpy(gui.menus.info.menuTitle							, TITLE_INFOSCREEN);
 	
 	// Settings Menu //
-	gui.menus.main.selectedOption							= 0;
+	gui.menus.main.selectedOption							= 1;
 	gui.menus.main.nrOfOptions								= 6;
 	gui.menus.main.showCursor								= 1;
 	gui.menus.main.handler									= Menu_Main_handler;
@@ -95,7 +94,7 @@ void MenuSetup() {
 //////////
 // MIDI //
 //////////
-	gui.menus.midi.selectedOption							= 0;
+	gui.menus.midi.selectedOption							= 1;
 	gui.menus.midi.nrOfOptions								= 4;
 	gui.menus.midi.showCursor								= 1;
 	gui.menus.midi.handler									= Menu_MIDI_handler;
@@ -113,7 +112,7 @@ void MenuSetup() {
 	gui.menus.midi_channel.parent							= Menu_MIDI;
 	strcpy(gui.menus.midi_channel.menuTitle					, TITLE_MIDI_CHANNEL);
 
-	gui.menus.midi_master_slave.selectedOption				= 0;
+	gui.menus.midi_master_slave.selectedOption				= 1;
 	gui.menus.midi_master_slave.nrOfOptions					= 3;
 	gui.menus.midi_master_slave.showCursor					= 1;
 	gui.menus.midi_master_slave.handler						= Menu_MIDI_Master_Slave_handler;
@@ -123,7 +122,7 @@ void MenuSetup() {
 	strcpy(gui.menus.midi_master_slave.menuOptions[1]		, "Master");
 	strcpy(gui.menus.midi_master_slave.menuOptions[2]		, "Slave");
 
-	gui.menus.midi_sync.selectedOption						= 0;
+	gui.menus.midi_sync.selectedOption						= 1;
 	gui.menus.midi_sync.nrOfOptions							= 3;
 	gui.menus.midi_sync.showCursor							= 1;
 	gui.menus.midi_sync.handler								= Menu_MIDI_Sync_handler;
@@ -136,7 +135,7 @@ void MenuSetup() {
 /////////
 // SEQ //
 /////////
-	gui.menus.seq.selectedOption							= 0;
+	gui.menus.seq.selectedOption							= 1;
 	gui.menus.seq.nrOfOptions								= 3;
 	gui.menus.seq.showCursor								= 1;
 	gui.menus.seq.handler									= Menu_SEQ_handler;
@@ -146,14 +145,14 @@ void MenuSetup() {
 	strcpy(gui.menus.seq.menuOptions[1]						, "BPM");
 	strcpy(gui.menus.seq.menuOptions[2]						, "Pattern / live");
 
-	gui.menus.seq_bpm.selectedOption						= 0;
+	gui.menus.seq_bpm.selectedOption						= 1;
 	gui.menus.seq_bpm.nrOfOptions							= 0;
 	gui.menus.seq_bpm.showCursor							= 0;
 	gui.menus.seq_bpm.handler								= Menu_SEQ_BPM_handler;
 	gui.menus.seq_bpm.parent								= Menu_SEQ;
 	strcpy(gui.menus.seq_bpm.menuTitle						, TITLE_SEQ_BPM);
 
-	gui.menus.seq_patt_live_mode.selectedOption				= 0;
+	gui.menus.seq_patt_live_mode.selectedOption				= 1;
 	gui.menus.seq_patt_live_mode.nrOfOptions				= 3;
 	gui.menus.seq_patt_live_mode.showCursor					= 1;
 	gui.menus.seq_patt_live_mode.handler					= Menu_SEQ_Patt_Live_Mode_handler;
@@ -166,7 +165,7 @@ void MenuSetup() {
 //////////
 // FILE //
 //////////
-	gui.menus.file.selectedOption							= 0;
+	gui.menus.file.selectedOption							= 1;
 	gui.menus.file.nrOfOptions								= 3;
 	gui.menus.file.showCursor								= 1;
 	gui.menus.file.handler									= Menu_File_handler;
@@ -174,7 +173,7 @@ void MenuSetup() {
 	strcpy(gui.menus.file.menuTitle							, TITLE_FILE);
 	strcpy(gui.menus.file.menuOptions[0]					, BACKSTRING);
 
-	gui.menus.file_sample_select.selectedOption				= 0;
+	gui.menus.file_sample_select.selectedOption				= 1;
 	gui.menus.file_sample_select.nrOfOptions				= 3;
 	gui.menus.file_sample_select.showCursor					= 1;
 	gui.menus.file_sample_select.handler					= Menu_File_Sample_Select_handler;
@@ -182,7 +181,7 @@ void MenuSetup() {
 	strcpy(gui.menus.file_sample_select.menuTitle			, TITLE_FILE_SAMPLE_SELECT);
 	strcpy(gui.menus.file_sample_select.menuOptions[0]		, BACKSTRING);
 
-	gui.menus.file_save_pattern.selectedOption				= 0;
+	gui.menus.file_save_pattern.selectedOption				= 1;
 	gui.menus.file_save_pattern.nrOfOptions					= 1;
 	gui.menus.file_save_pattern.showCursor					= 1;
 	gui.menus.file_save_pattern.handler						= Menu_File_Save_Pattern_handler;
@@ -190,13 +189,49 @@ void MenuSetup() {
 	strcpy(gui.menus.file_save_pattern.menuTitle			, TITLE_FILE_SAVE_PATTERN);
 	strcpy(gui.menus.file_save_pattern.menuOptions[0]		, BACKSTRING);
 
-	gui.menus.file_load_pattern.selectedOption				= 0;
+	gui.menus.file_load_pattern.selectedOption				= 1;
 	gui.menus.file_load_pattern.nrOfOptions					= 1;
 	gui.menus.file_load_pattern.showCursor					= 1;
 	gui.menus.file_load_pattern.handler						= Menu_File_Load_Pattern_handler;
 	gui.menus.file_load_pattern.parent						= Menu_File;
 	strcpy(gui.menus.file_load_pattern.menuTitle			, TITLE_FILE_LOAD_PATTERN);
 	strcpy(gui.menus.file_load_pattern.menuOptions[0]		, BACKSTRING);
+
+//////////////////////
+// FILTER BOOKMARKS //
+//////////////////////
+	// filterbookmark
+	gui.menus.filter_bookmark.selectedOption				= 1;
+	gui.menus.filter_bookmark.nrOfOptions					= 3;
+	gui.menus.filter_bookmark.showCursor					= 1;
+	gui.menus.filter_bookmark.handler						= Menu_Filter_Bookmark_handler;
+	gui.menus.filter_bookmark.parent						= Menu_Main;
+	strcpy(gui.menus.filter_bookmark.menuTitle				, TITLE_FILTERBOOKMARK);
+	strcpy(gui.menus.filter_bookmark.menuOptions	[0]		, BACKSTRING);
+	strcpy(gui.menus.filter_bookmark.menuOptions	[1]		, "Bookmark 1");
+	strcpy(gui.menus.filter_bookmark.menuOptions	[2]		, "Bookmark 2");
+
+	// filterbookmark 1
+	gui.menus.filter_bookmark_1.selectedOption				= 1;
+	gui.menus.filter_bookmark_1.nrOfOptions					= 3;
+	gui.menus.filter_bookmark_1.showCursor					= 1;
+	gui.menus.filter_bookmark_1.handler						= Menu_Filter_Bookmark_1_handler;
+	gui.menus.filter_bookmark_1.parent						= Menu_Main;
+	strcpy(gui.menus.filter_bookmark_1.menuTitle			, TITLE_FILTERBOOKMARK_1);
+	strcpy(gui.menus.filter_bookmark_1.menuOptions	[0]		, BACKSTRING);
+	strcpy(gui.menus.filter_bookmark_1.menuOptions	[1]		, "Set fx 1");
+	strcpy(gui.menus.filter_bookmark_1.menuOptions	[2]		, "Set fx 2");
+
+	// filterbookmark 2
+	gui.menus.filter_bookmark_2.selectedOption				= 1;
+	gui.menus.filter_bookmark_2.nrOfOptions					= 3;
+	gui.menus.filter_bookmark_2.showCursor					= 1;
+	gui.menus.filter_bookmark_2.handler						= Menu_Filter_Bookmark_2_handler;
+	gui.menus.filter_bookmark_2.parent						= Menu_Main;
+	strcpy(gui.menus.filter_bookmark_2.menuTitle			, TITLE_FILTERBOOKMARK_2);
+	strcpy(gui.menus.filter_bookmark_2.menuOptions	[0]		, BACKSTRING);
+	strcpy(gui.menus.filter_bookmark_2.menuOptions	[1]		, "Set fx 1");
+	strcpy(gui.menus.filter_bookmark_2.menuOptions	[2]		, "Set fx 2");
 
 ////////
 // UI //
@@ -319,6 +354,7 @@ void MenuSetup() {
 	strcpy(gui.menus.ui_tonenegbarcolour.menuOptions [9]	, "Grey");
 	strcpy(gui.menus.ui_tonenegbarcolour.menuOptions [10]	, "Blue - 2");
 
+	// UI - Info
 	gui.menus.ui_info.selectedOption						= 1;
 	gui.menus.ui_info.nrOfOptions							= 3;
 	gui.menus.ui_info.showCursor							= 1;
@@ -326,11 +362,12 @@ void MenuSetup() {
 	gui.menus.ui_info.parent								= Menu_UI;
 	strcpy(gui.menus.ui_info.menuTitle						, TITLE_UI_INFO);
 	strcpy(gui.menus.ui_info.menuOptions	[0]				, BACKSTRING);
-	strcpy(gui.menus.ui_info.menuOptions	[1]				, "Info bar left");
-	strcpy(gui.menus.ui_info.menuOptions	[2]				, "Info bar right");
+	strcpy(gui.menus.ui_info.menuOptions	[1]				, "Infobar 1");
+	strcpy(gui.menus.ui_info.menuOptions	[2]				, "Infobar 2");
 
+	// UI - Infobar 1
 	gui.menus.ui_info_1.selectedOption						= 1;
-	gui.menus.ui_info_1.nrOfOptions							= 3;
+	gui.menus.ui_info_1.nrOfOptions							= 9;
 	gui.menus.ui_info_1.showCursor							= 1;
 	gui.menus.ui_info_1.handler								= Menu_UI_info_1_handler;
 	gui.menus.ui_info_1.parent								= Menu_UI_info;
@@ -338,12 +375,16 @@ void MenuSetup() {
 	strcpy(gui.menus.ui_info_1.menuOptions	[0]				, BACKSTRING);
 	strcpy(gui.menus.ui_info_1.menuOptions	[1]				, "BPM");
 	strcpy(gui.menus.ui_info_1.menuOptions	[2]				, "Instrument");
-	strcpy(gui.menus.ui_info_1.menuOptions	[3]				, "Pattern");
-	strcpy(gui.menus.ui_info_1.menuOptions	[4]				, "Patt/Live mode");
-	strcpy(gui.menus.ui_info_1.menuOptions	[5]				, "Play status");
+	strcpy(gui.menus.ui_info_1.menuOptions	[3]				, "Patt/Live mode");
+	strcpy(gui.menus.ui_info_1.menuOptions	[4]				, "Pattern ID");
+	strcpy(gui.menus.ui_info_1.menuOptions	[5]				, "MIDI Channel");
+	strcpy(gui.menus.ui_info_1.menuOptions	[6]				, "MIDI M/S");
+	strcpy(gui.menus.ui_info_1.menuOptions	[7]				, "MIDI Sync");
+	strcpy(gui.menus.ui_info_1.menuOptions	[8]				, "Play status");
 
+	// UI - Infobar 2
 	gui.menus.ui_info_2.selectedOption						= 1;
-	gui.menus.ui_info_2.nrOfOptions							= 3;
+	gui.menus.ui_info_2.nrOfOptions							= 9;
 	gui.menus.ui_info_2.showCursor							= 1;
 	gui.menus.ui_info_2.handler								= Menu_UI_info_2_handler;
 	gui.menus.ui_info_2.parent								= Menu_UI_info;
@@ -351,9 +392,12 @@ void MenuSetup() {
 	strcpy(gui.menus.ui_info_2.menuOptions	[0]				, BACKSTRING);
 	strcpy(gui.menus.ui_info_2.menuOptions	[1]				, "BPM");
 	strcpy(gui.menus.ui_info_2.menuOptions	[2]				, "Instrument");
-	strcpy(gui.menus.ui_info_2.menuOptions	[3]				, "Pattern");
-	strcpy(gui.menus.ui_info_2.menuOptions	[4]				, "Patt/Live mode");
-	strcpy(gui.menus.ui_info_2.menuOptions	[5]				, "Play status");
+	strcpy(gui.menus.ui_info_2.menuOptions	[3]				, "Patt/Live mode");
+	strcpy(gui.menus.ui_info_2.menuOptions	[4]				, "Pattern ID");
+	strcpy(gui.menus.ui_info_2.menuOptions	[5]				, "MIDI Channel");
+	strcpy(gui.menus.ui_info_2.menuOptions	[6]				, "MIDI M/S");
+	strcpy(gui.menus.ui_info_2.menuOptions	[7]				, "MIDI Sync");
+	strcpy(gui.menus.ui_info_2.menuOptions	[8]				, "Play status");
 
 // Progressbars
 	// Analog drum 1
@@ -650,7 +694,7 @@ void MenuDrawInfo1 (uint8_t redraw) {
 
 			case INFO_BPM: 	
 				LCD_StringLine(INFOBAR_1_X, INFOBAR_1_Y, "BPM"); 
-				LCD_StringInt(INFOBAR_1_X, INFOBAR_1_Y + (3*18), value, 1);
+				LCD_StringInt(INFOBAR_1_X, INFOBAR_1_Y + (3*CHARWIDTH), value, 1);
 				break;
 
 			case INFO_PLAY_STATUS:
@@ -669,12 +713,12 @@ void MenuDrawInfo1 (uint8_t redraw) {
 
 			case INFO_PATTERN_ID:
 				LCD_StringLine(INFOBAR_1_X, INFOBAR_1_Y, "Patt");
-				LCD_StringInt(INFOBAR_1_X, INFOBAR_1_Y + (7*18), value, 0);
+				LCD_StringInt(INFOBAR_1_X, INFOBAR_1_Y + (7*CHARWIDTH), value, 0);
 				break;
 
 			case INFO_MIDI_CHANNEL:
 				LCD_StringLine(INFOBAR_1_X, INFOBAR_1_Y, "Ch");
-				LCD_StringInt(INFOBAR_1_X, INFOBAR_1_Y + (3*18), value, 1);
+				LCD_StringInt(INFOBAR_1_X, INFOBAR_1_Y + (3*CHARWIDTH), value, 1);
 				break;
 
 			case INFO_MIDI_MASTER_SLAVE:
@@ -686,10 +730,21 @@ void MenuDrawInfo1 (uint8_t redraw) {
 
 			case INFO_MIDI_SYNC:
 				if (value == MIDI_SYNC_ON)
-					LCD_StringLine(INFOBAR_1_X, INFOBAR_1_Y, "Sync On ");
+					LCD_StringLine(INFOBAR_1_X, INFOBAR_1_Y, "Sync on ");
 				else
-					LCD_StringLine(INFOBAR_1_X, INFOBAR_1_Y, "Sync Off");
+					LCD_StringLine(INFOBAR_1_X, INFOBAR_1_Y, "Sync off");
 				break;
+
+			case INFO_INSTRUMENT:
+				LCD_StringLine(INFOBAR_1_X, INFOBAR_1_Y, "Instr");
+				switch (sequencer.instrID) {
+					case 0:		LCD_StringLine(INFOBAR_1_X, INFOBAR_1_Y +(6*CHARWIDTH), "A1"); break;
+					case 1:		LCD_StringLine(INFOBAR_1_X, INFOBAR_1_Y +(6*CHARWIDTH), "A2"); break;
+					case 2:		LCD_StringLine(INFOBAR_1_X, INFOBAR_1_Y +(6*CHARWIDTH), "D1"); break;
+					case 3:		LCD_StringLine(INFOBAR_1_X, INFOBAR_1_Y +(6*CHARWIDTH), "D2"); break;
+					case 4:		LCD_StringLine(INFOBAR_1_X, INFOBAR_1_Y +(6*CHARWIDTH), "D3"); break;
+					case 5:		LCD_StringLine(INFOBAR_1_X, INFOBAR_1_Y +(6*CHARWIDTH), "D4"); break;
+				}
 		}
 
 		// Update internal values
@@ -715,14 +770,14 @@ void MenuDrawInfo2 (uint8_t redraw) {
 
 			case INFO_BPM: 	
 				LCD_StringLine(INFOBAR_2_X, INFOBAR_2_Y, "BPM"); 
-				LCD_StringInt(INFOBAR_2_X, INFOBAR_2_Y + (3*18), value, 1);
+				LCD_StringInt(INFOBAR_2_X, INFOBAR_2_Y + (3*CHARWIDTH), value, 1);
 				break;
 
 			case INFO_PLAY_STATUS:
 				if (value)
-					LCD_StringLine(INFOBAR_2_X, INFOBAR_2_X, "Playing");
+					LCD_StringLine(INFOBAR_2_X, INFOBAR_2_Y, "Playing");
 				else
-					LCD_StringLine(INFOBAR_2_X, INFOBAR_2_X, "Paused");
+					LCD_StringLine(INFOBAR_2_X, INFOBAR_2_Y, "Paused");
 				break;
 
 			case INFO_PATT_LIVE_MODE:
@@ -734,12 +789,12 @@ void MenuDrawInfo2 (uint8_t redraw) {
 
 			case INFO_PATTERN_ID:
 				LCD_StringLine(INFOBAR_2_X, INFOBAR_2_Y, "Patt");
-				LCD_StringInt(INFOBAR_2_X, INFOBAR_2_Y + (7*18), value, 0);
+				LCD_StringInt(INFOBAR_2_X, INFOBAR_2_Y + (7*CHARWIDTH), value, 0);
 				break;	
 
 			case INFO_MIDI_CHANNEL:
 				LCD_StringLine(INFOBAR_2_X, INFOBAR_2_Y, "Ch");
-				LCD_StringInt(INFOBAR_2_X, INFOBAR_2_Y + (3*18), value, 1);
+				LCD_StringInt(INFOBAR_2_X, INFOBAR_2_Y + (3*CHARWIDTH), value, 1);
 				break;
 
 			case INFO_MIDI_MASTER_SLAVE:
@@ -751,10 +806,21 @@ void MenuDrawInfo2 (uint8_t redraw) {
 
 			case INFO_MIDI_SYNC:
 				if (value == MIDI_SYNC_ON)
-					LCD_StringLine(INFOBAR_2_X, INFOBAR_2_Y, "Sync On ");
+					LCD_StringLine(INFOBAR_2_X, INFOBAR_2_Y, "Sync on ");
 				else
-					LCD_StringLine(INFOBAR_2_X, INFOBAR_2_Y, "Sync Off");
+					LCD_StringLine(INFOBAR_2_X, INFOBAR_2_Y, "Sync off");
 				break;
+
+			case INFO_INSTRUMENT:
+				LCD_StringLine(INFOBAR_2_X, INFOBAR_2_Y, "Instr");
+				switch (sequencer.instrID) {
+					case 0:		LCD_StringLine(INFOBAR_2_X, INFOBAR_2_Y +(6*CHARWIDTH), "A1"); break;
+					case 1:		LCD_StringLine(INFOBAR_2_X, INFOBAR_2_Y +(6*CHARWIDTH), "A2"); break;
+					case 2:		LCD_StringLine(INFOBAR_2_X, INFOBAR_2_Y +(6*CHARWIDTH), "D1"); break;
+					case 3:		LCD_StringLine(INFOBAR_2_X, INFOBAR_2_Y +(6*CHARWIDTH), "D2"); break;
+					case 4:		LCD_StringLine(INFOBAR_2_X, INFOBAR_2_Y +(6*CHARWIDTH), "D3"); break;
+					case 5:		LCD_StringLine(INFOBAR_2_X, INFOBAR_2_Y +(6*CHARWIDTH), "D4"); break;
+				}
 		}
 
 		// Update internal values

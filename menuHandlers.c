@@ -100,13 +100,16 @@ void Menu_Main_handler(void) {
 		if (MenuCompareSelected(TITLE_MIDI))
 			Menu_MIDI();
 
-		if (MenuCompareSelected(TITLE_SEQ))
+		else if (MenuCompareSelected(TITLE_SEQ))
 			Menu_SEQ();
 
-		if (MenuCompareSelected(TITLE_FILE))
+		else if (MenuCompareSelected(TITLE_FILE))
 			Menu_File();
 
-		if (MenuCompareSelected(TITLE_UI))
+		else if (MenuCompareSelected(TITLE_FILTERBOOKMARK))
+			Menu_Filter_Bookmark();
+
+		else if (MenuCompareSelected(TITLE_UI))
 			Menu_UI();
 	}
 }
@@ -121,10 +124,10 @@ void Menu_MIDI_handler (void) {
 		if (MenuCompareSelected("Channel"))
 			Menu_MIDI_Channel();
 
-		if (MenuCompareSelected("Master / slave"))
+		else if (MenuCompareSelected("Master / slave"))
 			Menu_MIDI_Master_Slave();
 
-		if (MenuCompareSelected("Sync"))
+		else if (MenuCompareSelected("Sync"))
 			Menu_MIDI_Sync();
 	}
 }
@@ -164,7 +167,7 @@ void Menu_MIDI_Master_Slave_handler(void) {
 		}
 
 
-		if (MenuCompareSelected("Slave")) {
+		else if (MenuCompareSelected("Slave")) {
 			settings.midi.master_slave = MIDI_SLAVE;
 			LCD_StringLine(SCREENLINE6, SCREENINFOSTART, "MIDI SLAVE ");
 		}
@@ -181,7 +184,7 @@ void Menu_MIDI_Sync_handler (void) {
 			LCD_StringLine(SCREENLINE6, SCREENINFOSTART, "Sync is ON ");
 		}
 
-		if (MenuCompareSelected("Sync off")) {
+		else if (MenuCompareSelected("Sync off")) {
 			settings.midi.sync = MIDI_SYNC_OFF;
 
 			LCD_StringLine(SCREENLINE6, SCREENINFOSTART, "Sync is OFF");
@@ -199,7 +202,7 @@ void Menu_SEQ_handler (void) {
 		if (MenuCompareSelected("BPM"))
 			Menu_SEQ_BPM();
 
-		if (MenuCompareSelected("Pattern / live"))
+		else if (MenuCompareSelected("Pattern / live"))
 			Menu_SEQ_Patt_Live_Mode();
 	}
 }
@@ -235,7 +238,7 @@ void Menu_SEQ_Patt_Live_Mode_handler (void) {
 			LCD_StringLine(SCREENLINE6, SCREENINFOSTART, "Patt. selected");
 		}
 
-		if (MenuCompareSelected("Live")) {
+		else if (MenuCompareSelected("Live")) {
 			sequencer.patt_live_mode = SEQ_LIVE_MODE;
 			LCD_StringLine(SCREENLINE6, SCREENINFOSTART, "Live selected ");
 		}
@@ -252,23 +255,23 @@ void Menu_File_handler (void) {
 		if (MenuCompareSelected("Select pattern"))
 			Menu_File_Sample_Select();
 
-		if (MenuCompareSelected("Save pattern"))
+		else if (MenuCompareSelected("Save pattern"))
 			Menu_File_Save_Pattern();
 
-		if (MenuCompareSelected("Load pattern"))
+		else if (MenuCompareSelected("Load pattern"))
 			Menu_File_Save_Pattern();
 	}
 }
 
-void Menu_File_Sample_Select_handler (void) {
+void Menu_File_Sample_Select_handler (void) { // ToDo
 
 }
 
-void Menu_File_Save_Pattern_handler (void) {
+void Menu_File_Save_Pattern_handler (void) { // ToDo
 
 }
 
-void Menu_File_Load_Pattern_handler (void) {
+void Menu_File_Load_Pattern_handler (void) { // ToDo
 
 }
 
@@ -282,24 +285,32 @@ void Menu_Filter_Bookmark_handler (void) {
 		if (MenuCompareSelected("Bookmark 1"))
 			Menu_Filter_Bookmark_1();
 
-		if (MenuCompareSelected("Bookmark 2"))
+		else if (MenuCompareSelected("Bookmark 2"))
 			Menu_Filter_Bookmark_2();
 	}
 }
 
 void Menu_Filter_Bookmark_1_handler (void) {
-
+	MenuUpdateSelectedItem();
 }
 
 void Menu_Filter_Bookmark_2_handler (void) {
-
+	MenuUpdateSelectedItem();
 }
 
 ////////
 // UI //
 ////////
 void Menu_UI_handler (void) {
+	MenuUpdateSelectedItem();
 
+	if (MenuOKpressed(1)) {
+		if (MenuCompareSelected("Colours"))
+			Menu_UI_colours();
+
+		else if (MenuCompareSelected("Info"))
+			Menu_UI_info();
+	}
 }
 
 void Menu_UI_colours_handler(void) {
@@ -309,16 +320,16 @@ void Menu_UI_colours_handler(void) {
 		if (MenuCompareSelected("Back colour"))
 			Menu_UI_backcolour();
 
-		if (MenuCompareSelected("Text colour"))
+		else if (MenuCompareSelected("Text colour"))
 			Menu_UI_textcolour();
 
-		if (MenuCompareSelected("Level colour"))
+		else if (MenuCompareSelected("Level colour"))
 			Menu_UI_levelbarcolour();
 
-		if (MenuCompareSelected("Tone + colour"))
+		else if (MenuCompareSelected("Tone + colour"))
 			Menu_UI_toneposbarcolour();
 
-		if (MenuCompareSelected("Tone - colour"))
+		else if (MenuCompareSelected("Tone - colour"))
 			Menu_UI_tonenegbarcolour();
 	}
 }
@@ -331,39 +342,39 @@ void Menu_UI_backcolour_handler(void) {
 			gui.colours.background = White;
 			MenuRedrawScreen();
 		}
-		if(MenuCompareSelected("Black")) {
+		else if(MenuCompareSelected("Black")) {
 			gui.colours.background = Black;
 			MenuRedrawScreen();
 		}
-		if(MenuCompareSelected("Red")) {
+		else if(MenuCompareSelected("Red")) {
 			gui.colours.background = Red;
 			MenuRedrawScreen();
 		}
-		if(MenuCompareSelected("Green")) {
+		else if(MenuCompareSelected("Green")) {
 			gui.colours.background = Green;
 			MenuRedrawScreen();
 		}
-		if(MenuCompareSelected("Blue")) {
+		else if(MenuCompareSelected("Blue")) {
 			gui.colours.background = Blue;
 			MenuRedrawScreen();
 		}
-		if(MenuCompareSelected("Yellow")) {
+		else if(MenuCompareSelected("Yellow")) {
 			gui.colours.background = Yellow;
 			MenuRedrawScreen();
 		}
-		if(MenuCompareSelected("Cyan")) {
+		else if(MenuCompareSelected("Cyan")) {
 			gui.colours.background = Cyan;
 			MenuRedrawScreen();
 		}
-		if(MenuCompareSelected("Magenta")) {
+		else if(MenuCompareSelected("Magenta")) {
 			gui.colours.background = Magenta;
 			MenuRedrawScreen();
 		}
-		if(MenuCompareSelected("Grey")) {
+		else if(MenuCompareSelected("Grey")) {
 			gui.colours.background = Grey;
 			MenuRedrawScreen();
 		}
-		if(MenuCompareSelected("Blue - 2")) {
+		else if(MenuCompareSelected("Blue - 2")) {
 			gui.colours.background = Blue2;
 			MenuRedrawScreen();
 		}
@@ -378,39 +389,39 @@ void Menu_UI_textcolour_handler(void) {
 			gui.colours.text = White;
 			MenuRedrawScreen();
 		}
-		if(MenuCompareSelected("Black")) {
+		else if(MenuCompareSelected("Black")) {
 			gui.colours.text = Black;
 			MenuRedrawScreen();
 		}
-		if(MenuCompareSelected("Red")) {
+		else if(MenuCompareSelected("Red")) {
 			gui.colours.text = Red;
 			MenuRedrawScreen();
 		}
-		if(MenuCompareSelected("Green")) {
+		else if(MenuCompareSelected("Green")) {
 			gui.colours.text = Green;
 			MenuRedrawScreen();
 		}
-		if(MenuCompareSelected("Blue")) {
+		else if(MenuCompareSelected("Blue")) {
 			gui.colours.text = Blue;
 			MenuRedrawScreen();
 		}
-		if(MenuCompareSelected("Yellow")) {
+		else if(MenuCompareSelected("Yellow")) {
 			gui.colours.text = Yellow;
 			MenuRedrawScreen();
 		}
-		if(MenuCompareSelected("Cyan")) {
+		else if(MenuCompareSelected("Cyan")) {
 			gui.colours.text = Cyan;
 			MenuRedrawScreen();
 		}
-		if(MenuCompareSelected("Magenta")) {
+		else if(MenuCompareSelected("Magenta")) {
 			gui.colours.text = Magenta;
 			MenuRedrawScreen();
 		}
-		if(MenuCompareSelected("Grey")) {
+		else if(MenuCompareSelected("Grey")) {
 			gui.colours.text = Grey;
 			MenuRedrawScreen();
 		}
-		if(MenuCompareSelected("Blue - 2")) {
+		else if(MenuCompareSelected("Blue - 2")) {
 			gui.colours.text = Blue2;
 			MenuRedrawScreen();
 		}
@@ -425,39 +436,39 @@ void Menu_UI_levelbarcolour_handler(void) {
 			gui.colours.levelBar = White;
 			MenuRedrawScreen();
 		}
-		if(MenuCompareSelected("Black")) {
+		else if(MenuCompareSelected("Black")) {
 			gui.colours.levelBar = Black;
 			MenuRedrawScreen();
 		}
-		if(MenuCompareSelected("Red")) {
+		else if(MenuCompareSelected("Red")) {
 			gui.colours.levelBar = Red;
 			MenuRedrawScreen();
 		}
-		if(MenuCompareSelected("Green")) {
+		else if(MenuCompareSelected("Green")) {
 			gui.colours.levelBar = Green;
 			MenuRedrawScreen();
 		}
-		if(MenuCompareSelected("Blue")) {
+		else if(MenuCompareSelected("Blue")) {
 			gui.colours.levelBar = Blue;
 			MenuRedrawScreen();
 		}
-		if(MenuCompareSelected("Yellow")) {
+		else if(MenuCompareSelected("Yellow")) {
 			gui.colours.levelBar = Yellow;
 			MenuRedrawScreen();
 		}
-		if(MenuCompareSelected("Cyan")) {
+		else if(MenuCompareSelected("Cyan")) {
 			gui.colours.levelBar = Cyan;
 			MenuRedrawScreen();
 		}
-		if(MenuCompareSelected("Magenta")) {
+		else if(MenuCompareSelected("Magenta")) {
 			gui.colours.levelBar = Magenta;
 			MenuRedrawScreen();
 		}
-		if(MenuCompareSelected("Grey")) {
+		else if(MenuCompareSelected("Grey")) {
 			gui.colours.levelBar = Grey;
 			MenuRedrawScreen();
 		}
-		if(MenuCompareSelected("Blue - 2")) {
+		else if(MenuCompareSelected("Blue - 2")) {
 			gui.colours.levelBar = Blue2;
 			MenuRedrawScreen();
 		}
@@ -472,39 +483,39 @@ void Menu_UI_toneposbarcolour_handler(void) {
 			gui.colours.tonePosBar = White;
 			MenuRedrawScreen();
 		}
-		if(MenuCompareSelected("Black")) {
+		else if(MenuCompareSelected("Black")) {
 			gui.colours.tonePosBar = Black;
 			MenuRedrawScreen();
 		}
-		if(MenuCompareSelected("Red")) {
+		else if(MenuCompareSelected("Red")) {
 			gui.colours.tonePosBar = Red;
 			MenuRedrawScreen();
 		}
-		if(MenuCompareSelected("Green")) {
+		else if(MenuCompareSelected("Green")) {
 			gui.colours.tonePosBar = Green;
 			MenuRedrawScreen();
 		}
-		if(MenuCompareSelected("Blue")) {
+		else if(MenuCompareSelected("Blue")) {
 			gui.colours.tonePosBar = Blue;
 			MenuRedrawScreen();
 		}
-		if(MenuCompareSelected("Yellow")) {
+		else if(MenuCompareSelected("Yellow")) {
 			gui.colours.tonePosBar = Yellow;
 			MenuRedrawScreen();
 		}
-		if(MenuCompareSelected("Cyan")) {
+		else if(MenuCompareSelected("Cyan")) {
 			gui.colours.tonePosBar = Cyan;
 			MenuRedrawScreen();
 		}
-		if(MenuCompareSelected("Magenta")) {
+		else if(MenuCompareSelected("Magenta")) {
 			gui.colours.tonePosBar = Magenta;
 			MenuRedrawScreen();
 		}
-		if(MenuCompareSelected("Grey")) {
+		else if(MenuCompareSelected("Grey")) {
 			gui.colours.tonePosBar = Grey;
 			MenuRedrawScreen();
 		}
-		if(MenuCompareSelected("Blue - 2")) {
+		else if(MenuCompareSelected("Blue - 2")) {
 			gui.colours.tonePosBar = Blue2;
 			MenuRedrawScreen();
 		}
@@ -519,39 +530,39 @@ void Menu_UI_tonenegbarcolour_handler(void) {
 			gui.colours.toneNegBar = White;
 			MenuRedrawScreen();
 		}
-		if(MenuCompareSelected("Black")) {
+		else if(MenuCompareSelected("Black")) {
 			gui.colours.toneNegBar = Black;
 			MenuRedrawScreen();
 		}
-		if(MenuCompareSelected("Red")) {
+		else if(MenuCompareSelected("Red")) {
 			gui.colours.toneNegBar = Red;
 			MenuRedrawScreen();
 		}
-		if(MenuCompareSelected("Green")) {
+		else if(MenuCompareSelected("Green")) {
 			gui.colours.toneNegBar = Green;
 			MenuRedrawScreen();
 		}
-		if(MenuCompareSelected("Blue")) {
+		else if(MenuCompareSelected("Blue")) {
 			gui.colours.toneNegBar = Blue;
 			MenuRedrawScreen();
 		}
-		if(MenuCompareSelected("Yellow")) {
+		else if(MenuCompareSelected("Yellow")) {
 			gui.colours.toneNegBar = Yellow;
 			MenuRedrawScreen();
 		}
-		if(MenuCompareSelected("Cyan")) {
+		else if(MenuCompareSelected("Cyan")) {
 			gui.colours.toneNegBar = Cyan;
 			MenuRedrawScreen();
 		}
-		if(MenuCompareSelected("Magenta")) {
+		else if(MenuCompareSelected("Magenta")) {
 			gui.colours.toneNegBar = Magenta;
 			MenuRedrawScreen();
 		}
-		if(MenuCompareSelected("Grey")) {
+		else if(MenuCompareSelected("Grey")) {
 			gui.colours.toneNegBar = Grey;
 			MenuRedrawScreen();
 		}
-		if(MenuCompareSelected("Blue - 2")) {
+		else if(MenuCompareSelected("Blue - 2")) {
 			gui.colours.toneNegBar = Blue2;
 			MenuRedrawScreen();
 		}
@@ -562,18 +573,80 @@ void Menu_UI_info_handler (void) {
 	MenuUpdateSelectedItem();
 
 	if (MenuOKpressed(1)) {
-		if (MenuCompareSelected("Colours"))
-			Menu_UI_colours();
+		if (MenuCompareSelected("Infobar 1"))
+			Menu_UI_info_1();
 
-		if (MenuCompareSelected("Info"))
-			Menu_UI_info();
+		else if (MenuCompareSelected("Infobar 2"))
+			Menu_UI_info_2();
 	}
 }
 
 void Menu_UI_info_1_handler (void) {
+	MenuUpdateSelectedItem();
 
+	if (MenuOKpressed(1)) {
+		if (MenuCompareSelected("NONE"))
+			gui.infobars.info1.setting = INFO_NONE;
+
+		else if (MenuCompareSelected("BPM"))
+			gui.infobars.info1.setting = INFO_BPM;
+
+		else if (MenuCompareSelected("Instrument"))
+			gui.infobars.info1.setting = INFO_INSTRUMENT;
+
+		else if (MenuCompareSelected("Patt/Live mode"))
+			gui.infobars.info1.setting = INFO_PATT_LIVE_MODE;
+
+		else if (MenuCompareSelected("Pattern ID"))
+			gui.infobars.info1.setting = INFO_PATTERN_ID;
+
+		else if (MenuCompareSelected("MIDI Channel"))
+			gui.infobars.info1.setting = INFO_MIDI_CHANNEL;
+
+		else if (MenuCompareSelected("MIDI M/S"))
+			gui.infobars.info1.setting = INFO_MIDI_MASTER_SLAVE;
+
+		else if (MenuCompareSelected("MIDI Sync"))
+			gui.infobars.info1.setting = INFO_MIDI_SYNC;
+
+		else if (MenuCompareSelected("Play status"))
+			gui.infobars.info1.setting = INFO_PLAY_STATUS;
+
+//		Menu_GotoParent();
+	}
 }
 
 void Menu_UI_info_2_handler (void) {
-	
+	MenuUpdateSelectedItem();
+
+	if (MenuOKpressed(1)) {
+		if (MenuCompareSelected("NONE"))
+			gui.infobars.info2.setting = INFO_NONE;
+
+		else if (MenuCompareSelected("BPM"))
+			gui.infobars.info2.setting = INFO_BPM;
+
+		else if (MenuCompareSelected("Instrument"))
+			gui.infobars.info2.setting = INFO_INSTRUMENT;
+
+		else if (MenuCompareSelected("Patt/Live mode"))
+			gui.infobars.info2.setting = INFO_PATT_LIVE_MODE;
+
+		else if (MenuCompareSelected("Pattern ID"))
+			gui.infobars.info2.setting = INFO_PATTERN_ID;
+
+		else if (MenuCompareSelected("MIDI Channel"))
+			gui.infobars.info2.setting = INFO_MIDI_CHANNEL;
+
+		else if (MenuCompareSelected("MIDI M/S"))
+			gui.infobars.info2.setting = INFO_MIDI_MASTER_SLAVE;
+
+		else if (MenuCompareSelected("MIDI Sync"))
+			gui.infobars.info2.setting = INFO_MIDI_SYNC;
+
+		else if (MenuCompareSelected("Play status"))
+			gui.infobars.info2.setting = INFO_PLAY_STATUS;
+
+//		Menu_GotoParent();
+	}
 }
