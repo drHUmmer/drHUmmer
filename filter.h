@@ -30,6 +30,20 @@
 #define DS 		0x03	//down sampler
 #define NONE 	0x04
 
+// FILTER RANGES
+#define LPF_LOW		50
+#define LPF_HIGH	20000
+#define HPF_LOW		50
+#define HPF_HIGH	20000
+#define BC_LOW		1
+#define BC_HIGH		11
+#define DS_LOW		50
+#define DS_HIGH		20000
+#define LPF_STEP	50
+#define HPF_STEP	50
+#define DS_STEP		50
+#define BC_STEP		1
+
 #define SAMPLE_RATE 44100					//sample frequency
 #define MAX_FILT_FREQ ((SAMPLE_RATE/2)-100)	//sets max fcut to 100 Hz under fs/2
 

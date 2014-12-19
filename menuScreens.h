@@ -39,9 +39,17 @@ void Menu_File_Save_Pattern		(void);
 void Menu_File_Load_Pattern		(void);
 
 // Filter bookmarks
-void Menu_Filter_Bookmark		(void);
-void Menu_Filter_Bookmark_1		(void);
-void Menu_Filter_Bookmark_2		(void);
+void Menu_Filter_Bookmark					(void);
+void Menu_Filter_Bookmark_1					(void);
+void Menu_Filter_Bookmark_1_Set_Filter_1	(void);
+void Menu_Filter_Bookmark_1_Set_Filter_2	(void);
+void Menu_Filter_Bookmark_1_Set_Value_1		(void);
+void Menu_Filter_Bookmark_1_Set_Value_2		(void);
+void Menu_Filter_Bookmark_2					(void);
+void Menu_Filter_Bookmark_2_Set_Filter_1	(void);
+void Menu_Filter_Bookmark_2_Set_Filter_2	(void);
+void Menu_Filter_Bookmark_2_Set_Value_1		(void);
+void Menu_Filter_Bookmark_2_Set_Value_2		(void);
 
 // UI
 void Menu_UI					(void);

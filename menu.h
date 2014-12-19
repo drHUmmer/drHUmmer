@@ -48,6 +48,14 @@ typedef struct {
 #define TITLE_FILTERBOOKMARK		"Filter bookmarks"
 #define TITLE_FILTERBOOKMARK_1		"Set bookmark 1"
 #define TITLE_FILTERBOOKMARK_2		"Set bookmark 2"
+#define TITLE_FILTERBOOKMARK_1_F_1	"BM 1 - Filter 1"
+#define TITLE_FILTERBOOKMARK_1_F_2	"BM 1 - Filter 2"
+#define TITLE_FILTERBOOKMARK_1_V_1	"BM 1 - Value 1"
+#define TITLE_FILTERBOOKMARK_1_V_2	"BM 1 - Value 2"
+#define TITLE_FILTERBOOKMARK_2_F_1	"BM 2 - Filter 1"
+#define TITLE_FILTERBOOKMARK_2_F_2	"BM 2 - Filter 2"
+#define TITLE_FILTERBOOKMARK_2_V_1	"BM 2 - Value 1"
+#define TITLE_FILTERBOOKMARK_2_V_2	"BM 2 - Value 2"
 
 // UI
 #define TITLE_UI					"UI"
@@ -132,7 +140,15 @@ typedef struct {
 	// Filter
 	Menu_Typedef			filter_bookmark;
 	Menu_Typedef			filter_bookmark_1;
+	Menu_Typedef			filter_bookmark_1_set_filter_1;
+	Menu_Typedef			filter_bookmark_1_set_filter_2;
+	Menu_Typedef			filter_bookmark_1_set_value_1;
+	Menu_Typedef			filter_bookmark_1_set_value_2;
 	Menu_Typedef			filter_bookmark_2;
+	Menu_Typedef			filter_bookmark_2_set_filter_1;
+	Menu_Typedef			filter_bookmark_2_set_filter_2;
+	Menu_Typedef			filter_bookmark_2_set_value_1;
+	Menu_Typedef			filter_bookmark_2_set_value_2;
 
 	// UI
 	Menu_Typedef			ui;

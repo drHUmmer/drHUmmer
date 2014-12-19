@@ -216,7 +216,7 @@ void MenuSetup() {
 	gui.menus.filter_bookmark_1.nrOfOptions					= 3;
 	gui.menus.filter_bookmark_1.showCursor					= 1;
 	gui.menus.filter_bookmark_1.handler						= Menu_Filter_Bookmark_1_handler;
-	gui.menus.filter_bookmark_1.parent						= Menu_Main;
+	gui.menus.filter_bookmark_1.parent						= Menu_Filter_Bookmark;
 	strcpy(gui.menus.filter_bookmark_1.menuTitle			, TITLE_FILTERBOOKMARK_1);
 	strcpy(gui.menus.filter_bookmark_1.menuOptions	[0]		, BACKSTRING);
 	strcpy(gui.menus.filter_bookmark_1.menuOptions	[1]		, "Set fx 1");
@@ -227,11 +227,91 @@ void MenuSetup() {
 	gui.menus.filter_bookmark_2.nrOfOptions					= 3;
 	gui.menus.filter_bookmark_2.showCursor					= 1;
 	gui.menus.filter_bookmark_2.handler						= Menu_Filter_Bookmark_2_handler;
-	gui.menus.filter_bookmark_2.parent						= Menu_Main;
+	gui.menus.filter_bookmark_2.parent						= Menu_Filter_Bookmark;
 	strcpy(gui.menus.filter_bookmark_2.menuTitle			, TITLE_FILTERBOOKMARK_2);
 	strcpy(gui.menus.filter_bookmark_2.menuOptions	[0]		, BACKSTRING);
 	strcpy(gui.menus.filter_bookmark_2.menuOptions	[1]		, "Set fx 1");
 	strcpy(gui.menus.filter_bookmark_2.menuOptions	[2]		, "Set fx 2");
+
+	gui.menus.filter_bookmark_1_set_filter_1.selectedOption				= 1;
+	gui.menus.filter_bookmark_1_set_filter_1.nrOfOptions				= 6;
+	gui.menus.filter_bookmark_1_set_filter_1.showCursor					= 1;
+	gui.menus.filter_bookmark_1_set_filter_1.handler					= Menu_Filter_Bookmark_1_Set_Filter_1_handler;
+	gui.menus.filter_bookmark_1_set_filter_1.parent						= Menu_Filter_Bookmark_1;
+	strcpy(gui.menus.filter_bookmark_1_set_filter_1.menuTitle			, TITLE_FILTERBOOKMARK_1_F_1);
+	strcpy(gui.menus.filter_bookmark_1_set_filter_1.menuOptions	[0]		, BACKSTRING);
+	strcpy(gui.menus.filter_bookmark_1_set_filter_1.menuOptions	[1]		, "NONE");
+	strcpy(gui.menus.filter_bookmark_1_set_filter_1.menuOptions	[2]		, "LPF");
+	strcpy(gui.menus.filter_bookmark_1_set_filter_1.menuOptions	[3]		, "HPF");
+	strcpy(gui.menus.filter_bookmark_1_set_filter_1.menuOptions	[4]		, "DS");
+	strcpy(gui.menus.filter_bookmark_1_set_filter_1.menuOptions	[5]		, "BC");
+
+	gui.menus.filter_bookmark_1_set_filter_2.selectedOption				= 1;
+	gui.menus.filter_bookmark_1_set_filter_2.nrOfOptions				= 6;
+	gui.menus.filter_bookmark_1_set_filter_2.showCursor					= 1;
+	gui.menus.filter_bookmark_1_set_filter_2.handler					= Menu_Filter_Bookmark_1_Set_Filter_2_handler;
+	gui.menus.filter_bookmark_1_set_filter_2.parent						= Menu_Filter_Bookmark_1;
+	strcpy(gui.menus.filter_bookmark_1_set_filter_2.menuTitle			, TITLE_FILTERBOOKMARK_1_F_2);
+	strcpy(gui.menus.filter_bookmark_1_set_filter_2.menuOptions	[0]		, BACKSTRING);
+	strcpy(gui.menus.filter_bookmark_1_set_filter_2.menuOptions	[1]		, "NONE");
+	strcpy(gui.menus.filter_bookmark_1_set_filter_2.menuOptions	[2]		, "LPF");
+	strcpy(gui.menus.filter_bookmark_1_set_filter_2.menuOptions	[3]		, "HPF");
+	strcpy(gui.menus.filter_bookmark_1_set_filter_2.menuOptions	[4]		, "DS");
+	strcpy(gui.menus.filter_bookmark_1_set_filter_2.menuOptions	[5]		, "BC");
+
+	gui.menus.filter_bookmark_1_set_value_1.selectedOption				= 0;
+	gui.menus.filter_bookmark_1_set_value_1.nrOfOptions					= 0;
+	gui.menus.filter_bookmark_1_set_value_1.showCursor					= 0;
+	gui.menus.filter_bookmark_1_set_value_1.handler						= Menu_Filter_Bookmark_1_Set_Value_1_handler;
+	gui.menus.filter_bookmark_1_set_value_1.parent						= Menu_Filter_Bookmark_1;
+	strcpy(gui.menus.filter_bookmark_1_set_value_1.menuTitle			, TITLE_FILTERBOOKMARK_1_V_1);
+
+	gui.menus.filter_bookmark_1_set_value_2.selectedOption				= 0;
+	gui.menus.filter_bookmark_1_set_value_2.nrOfOptions					= 0;
+	gui.menus.filter_bookmark_1_set_value_2.showCursor					= 0;
+	gui.menus.filter_bookmark_1_set_value_2.handler						= Menu_Filter_Bookmark_1_Set_Value_2_handler;
+	gui.menus.filter_bookmark_1_set_value_2.parent						= Menu_Filter_Bookmark_1;
+	strcpy(gui.menus.filter_bookmark_1_set_value_2.menuTitle			, TITLE_FILTERBOOKMARK_1_V_2);
+
+	gui.menus.filter_bookmark_2_set_filter_1.selectedOption				= 1;
+	gui.menus.filter_bookmark_2_set_filter_1.nrOfOptions				= 6;
+	gui.menus.filter_bookmark_2_set_filter_1.showCursor					= 1;
+	gui.menus.filter_bookmark_2_set_filter_1.handler					= Menu_Filter_Bookmark_2_Set_Filter_1_handler;
+	gui.menus.filter_bookmark_2_set_filter_1.parent						= Menu_Filter_Bookmark_2;
+	strcpy(gui.menus.filter_bookmark_2_set_filter_1.menuTitle			, TITLE_FILTERBOOKMARK_2_F_1);
+	strcpy(gui.menus.filter_bookmark_2_set_filter_1.menuOptions	[0]		, BACKSTRING);
+	strcpy(gui.menus.filter_bookmark_2_set_filter_1.menuOptions	[1]		, "NONE");
+	strcpy(gui.menus.filter_bookmark_2_set_filter_1.menuOptions	[2]		, "LPF");
+	strcpy(gui.menus.filter_bookmark_2_set_filter_1.menuOptions	[3]		, "HPF");
+	strcpy(gui.menus.filter_bookmark_2_set_filter_1.menuOptions	[4]		, "DS");
+	strcpy(gui.menus.filter_bookmark_2_set_filter_1.menuOptions	[5]		, "BC");
+
+	gui.menus.filter_bookmark_2_set_filter_2.selectedOption				= 1;
+	gui.menus.filter_bookmark_2_set_filter_2.nrOfOptions				= 6;
+	gui.menus.filter_bookmark_2_set_filter_2.showCursor					= 1;
+	gui.menus.filter_bookmark_2_set_filter_2.handler					= Menu_Filter_Bookmark_2_Set_Filter_2_handler;
+	gui.menus.filter_bookmark_2_set_filter_2.parent						= Menu_Filter_Bookmark_2;
+	strcpy(gui.menus.filter_bookmark_2_set_filter_2.menuTitle			, TITLE_FILTERBOOKMARK_2_F_2);
+	strcpy(gui.menus.filter_bookmark_2_set_filter_2.menuOptions	[0]		, BACKSTRING);
+	strcpy(gui.menus.filter_bookmark_2_set_filter_2.menuOptions	[1]		, "NONE");
+	strcpy(gui.menus.filter_bookmark_2_set_filter_2.menuOptions	[2]		, "LPF");
+	strcpy(gui.menus.filter_bookmark_2_set_filter_2.menuOptions	[3]		, "HPF");
+	strcpy(gui.menus.filter_bookmark_2_set_filter_2.menuOptions	[4]		, "DS");
+	strcpy(gui.menus.filter_bookmark_2_set_filter_2.menuOptions	[5]		, "BC");
+
+	gui.menus.filter_bookmark_2_set_value_1.selectedOption				= 0;
+	gui.menus.filter_bookmark_2_set_value_1.nrOfOptions					= 0;
+	gui.menus.filter_bookmark_2_set_value_1.showCursor					= 0;
+	gui.menus.filter_bookmark_2_set_value_1.handler						= Menu_Filter_Bookmark_2_Set_Value_1_handler;
+	gui.menus.filter_bookmark_2_set_value_1.parent						= Menu_Filter_Bookmark_2;
+	strcpy(gui.menus.filter_bookmark_2_set_value_1.menuTitle			, TITLE_FILTERBOOKMARK_2_V_1);
+
+	gui.menus.filter_bookmark_2_set_value_2.selectedOption				= 0;
+	gui.menus.filter_bookmark_2_set_value_2.nrOfOptions					= 0;
+	gui.menus.filter_bookmark_2_set_value_2.showCursor					= 0;
+	gui.menus.filter_bookmark_2_set_value_2.handler						= Menu_Filter_Bookmark_2_Set_Value_2_handler;
+	gui.menus.filter_bookmark_2_set_value_2.parent						= Menu_Filter_Bookmark_2;
+	strcpy(gui.menus.filter_bookmark_2_set_value_2.menuTitle			, TITLE_FILTERBOOKMARK_2_V_2);
 
 ////////
 // UI //

@@ -292,10 +292,346 @@ void Menu_Filter_Bookmark_handler (void) {
 
 void Menu_Filter_Bookmark_1_handler (void) {
 	MenuUpdateSelectedItem();
+
+	if (MenuOKpressed(1)) {
+		if (MenuCompareSelected("Set fx 1"))
+			Menu_Filter_Bookmark_1_Set_Filter_1();
+
+		else if (MenuCompareSelected("Set fx 2"))
+			Menu_Filter_Bookmark_1_Set_Filter_2();
+	}
 }
 
 void Menu_Filter_Bookmark_2_handler (void) {
 	MenuUpdateSelectedItem();
+
+	if (MenuOKpressed(1)) {
+		if (MenuCompareSelected("Set fx 1"))
+			Menu_Filter_Bookmark_2_Set_Filter_1();
+
+		else if (MenuCompareSelected("Set fx 2"))
+			Menu_Filter_Bookmark_2_Set_Filter_2();
+	}
+}
+
+void Menu_Filter_Bookmark_1_Set_Filter_1_handler (void) {
+	MenuUpdateSelectedItem();
+
+	if (MenuOKpressed(1)) {
+		if (MenuCompareSelected("NONE")) {
+			settings.filterbookmarks.bookmark1.fx1_filter 	= NONE;
+			settings.filterbookmarks.bookmark1.fx1_value	= 0;
+			Menu_GotoParent();
+		}
+		else if (MenuCompareSelected("LPF")) {
+			settings.filterbookmarks.bookmark1.fx1_filter 	= LPF;
+			settings.filterbookmarks.bookmark1.fx1_value	= LPF_HIGH / 2;
+			Menu_Filter_Bookmark_1_Set_Value_1();
+		}
+		else if (MenuCompareSelected("HPF")) {
+			settings.filterbookmarks.bookmark1.fx1_filter 	= HPF;
+			settings.filterbookmarks.bookmark1.fx1_value	= HPF_HIGH / 2;
+			Menu_Filter_Bookmark_1_Set_Value_1();
+		}
+		else if (MenuCompareSelected("BC")) {
+			settings.filterbookmarks.bookmark1.fx1_filter 	= BC;
+			settings.filterbookmarks.bookmark1.fx1_value	= BC_HIGH / 2;
+
+			Menu_Filter_Bookmark_1_Set_Value_1();
+		}
+		else if (MenuCompareSelected("DS")) {
+			settings.filterbookmarks.bookmark1.fx1_filter 	= DS;
+			settings.filterbookmarks.bookmark1.fx1_value	= DS_HIGH / 2;
+
+			Menu_Filter_Bookmark_1_Set_Value_1();
+		}
+	}
+}
+
+void Menu_Filter_Bookmark_1_Set_Filter_2_handler (void) {
+	MenuUpdateSelectedItem();
+
+	if (MenuOKpressed(1)) {
+		if (MenuCompareSelected("NONE")) {
+			settings.filterbookmarks.bookmark1.fx2_filter 	= NONE;
+			settings.filterbookmarks.bookmark1.fx2_value	= 0;
+			Menu_GotoParent();
+		}
+		else if (MenuCompareSelected("LPF")) {
+			settings.filterbookmarks.bookmark1.fx2_filter 	= LPF;
+			settings.filterbookmarks.bookmark1.fx2_value	= LPF_HIGH / 2;
+			Menu_Filter_Bookmark_1_Set_Value_1();
+		}
+		else if (MenuCompareSelected("HPF")) {
+			settings.filterbookmarks.bookmark1.fx2_filter 	= HPF;
+			settings.filterbookmarks.bookmark1.fx2_value	= HPF_HIGH / 2;
+			Menu_Filter_Bookmark_1_Set_Value_1();
+		}
+		else if (MenuCompareSelected("BC")) {
+			settings.filterbookmarks.bookmark1.fx2_filter 	= BC;
+			settings.filterbookmarks.bookmark1.fx2_value	= BC_HIGH / 2;
+
+			Menu_Filter_Bookmark_1_Set_Value_1();
+		}
+		else if (MenuCompareSelected("DS")) {
+			settings.filterbookmarks.bookmark1.fx2_filter 	= DS;
+			settings.filterbookmarks.bookmark1.fx2_value	= DS_HIGH / 2;
+
+			Menu_Filter_Bookmark_1_Set_Value_1();
+		}
+	}
+}
+
+void Menu_Filter_Bookmark_1_Set_Value_1_handler (void) {
+int8_t rotaryValue = MenuRotaryRead(1);
+	uint8_t fxFilter	= settings.filterbookmarks.bookmark1.fx1_filter;
+	int16_t fxValue 	= settings.filterbookmarks.bookmark1.fx1_value;
+
+	if (MenuOKpressed(1)) {
+		Menu_GotoParent();
+	}
+
+	if (rotaryValue) {
+		switch (fxFilter) {
+			case LPF:
+				fxValue += (rotaryValue * LPF_STEP);
+				if (fxValue < LPF_LOW)
+					fxValue = LPF_LOW;
+				if (fxValue > LPF_HIGH)
+					fxValue = LPF_HIGH;
+				break;
+			case HPF:
+				fxValue += (rotaryValue * HPF_STEP);
+				if (fxValue < HPF_LOW)
+					fxValue = HPF_LOW;
+				if (fxValue > HPF_HIGH)
+					fxValue = HPF_HIGH;
+				break;
+			case DS:
+				fxValue += (rotaryValue * DS_STEP);
+				if (fxValue < DS_LOW)
+					fxValue = DS_LOW;
+				if (fxValue > DS_HIGH)
+					fxValue = DS_HIGH;
+				break;
+			case BC:
+				fxValue += (rotaryValue * BC_STEP);
+				if (fxValue < BC_LOW)
+					fxValue = BC_LOW;
+				if (fxValue > BC_HIGH)
+					fxValue = BC_HIGH;
+				break;
+		}
+
+		LCD_StringInt (SCREENLINE3, SCREENSTART + (CHARWIDTH * 10), fxValue, 1);
+		settings.filterbookmarks.bookmark1.fx1_value = fxValue;
+	}
+}
+
+void Menu_Filter_Bookmark_1_Set_Value_2_handler (void) {
+int8_t rotaryValue = MenuRotaryRead(1);
+	uint8_t fxFilter	= settings.filterbookmarks.bookmark1.fx2_filter;
+	int16_t fxValue 	= settings.filterbookmarks.bookmark1.fx2_value;
+
+	if (MenuOKpressed(1)) {
+		Menu_GotoParent();
+	}
+
+	if (rotaryValue) {
+		switch (fxFilter) {
+			case LPF:
+				fxValue += (rotaryValue * LPF_STEP);
+				if (fxValue < LPF_LOW)
+					fxValue = LPF_LOW;
+				if (fxValue > LPF_HIGH)
+					fxValue = LPF_HIGH;
+				break;
+			case HPF:
+				fxValue += (rotaryValue * HPF_STEP);
+				if (fxValue < HPF_LOW)
+					fxValue = HPF_LOW;
+				if (fxValue > HPF_HIGH)
+					fxValue = HPF_HIGH;
+				break;
+			case DS:
+				fxValue += (rotaryValue * DS_STEP);
+				if (fxValue < DS_LOW)
+					fxValue = DS_LOW;
+				if (fxValue > DS_HIGH)
+					fxValue = DS_HIGH;
+				break;
+			case BC:
+				fxValue += (rotaryValue * BC_STEP);
+				if (fxValue < BC_LOW)
+					fxValue = BC_LOW;
+				if (fxValue > BC_HIGH)
+					fxValue = BC_HIGH;
+				break;
+		}
+
+		LCD_StringInt (SCREENLINE3, SCREENSTART + (CHARWIDTH * 10), fxValue, 1);
+		settings.filterbookmarks.bookmark1.fx2_value = fxValue;
+	}
+}
+
+void Menu_Filter_Bookmark_2_Set_Filter_1_handler (void) {
+	MenuUpdateSelectedItem();
+
+	if (MenuOKpressed(1)) {
+		if (MenuCompareSelected("NONE")) {
+			settings.filterbookmarks.bookmark2.fx1_filter 	= NONE;
+			settings.filterbookmarks.bookmark2.fx1_value	= 0;
+			Menu_GotoParent();
+		}
+		else if (MenuCompareSelected("LPF")) {
+			settings.filterbookmarks.bookmark2.fx1_filter 	= LPF;
+			settings.filterbookmarks.bookmark2.fx1_value	= LPF_HIGH / 2;
+			Menu_Filter_Bookmark_1_Set_Value_1();
+		}
+		else if (MenuCompareSelected("HPF")) {
+			settings.filterbookmarks.bookmark2.fx1_filter 	= HPF;
+			settings.filterbookmarks.bookmark2.fx1_value	= HPF_HIGH / 2;
+			Menu_Filter_Bookmark_1_Set_Value_1();
+		}
+		else if (MenuCompareSelected("BC")) {
+			settings.filterbookmarks.bookmark2.fx1_filter 	= BC;
+			settings.filterbookmarks.bookmark2.fx1_value	= BC_HIGH / 2;
+
+			Menu_Filter_Bookmark_1_Set_Value_1();
+		}
+		else if (MenuCompareSelected("DS")) {
+			settings.filterbookmarks.bookmark2.fx1_filter 	= DS;
+			settings.filterbookmarks.bookmark2.fx1_value	= DS_HIGH / 2;
+
+			Menu_Filter_Bookmark_1_Set_Value_1();
+		}
+	}
+}
+
+void Menu_Filter_Bookmark_2_Set_Filter_2_handler (void) {
+	MenuUpdateSelectedItem();
+
+	if (MenuOKpressed(1)) {
+		if (MenuCompareSelected("NONE")) {
+			settings.filterbookmarks.bookmark2.fx2_filter 	= NONE;
+			settings.filterbookmarks.bookmark2.fx2_value	= 0;
+			Menu_GotoParent();
+		}
+		else if (MenuCompareSelected("LPF")) {
+			settings.filterbookmarks.bookmark2.fx2_filter 	= LPF;
+			settings.filterbookmarks.bookmark2.fx2_value	= LPF_HIGH / 2;
+			Menu_Filter_Bookmark_1_Set_Value_1();
+		}
+		else if (MenuCompareSelected("HPF")) {
+			settings.filterbookmarks.bookmark2.fx2_filter 	= HPF;
+			settings.filterbookmarks.bookmark2.fx2_value	= HPF_HIGH / 2;
+			Menu_Filter_Bookmark_1_Set_Value_1();
+		}
+		else if (MenuCompareSelected("BC")) {
+			settings.filterbookmarks.bookmark2.fx2_filter 	= BC;
+			settings.filterbookmarks.bookmark2.fx2_value	= BC_HIGH / 2;
+
+			Menu_Filter_Bookmark_1_Set_Value_1();
+		}
+		else if (MenuCompareSelected("DS")) {
+			settings.filterbookmarks.bookmark2.fx2_filter 	= DS;
+			settings.filterbookmarks.bookmark2.fx2_value	= DS_HIGH / 2;
+
+			Menu_Filter_Bookmark_1_Set_Value_1();
+		}
+	}
+}
+
+void Menu_Filter_Bookmark_2_Set_Value_1_handler (void) {
+int8_t rotaryValue = MenuRotaryRead(1);
+	uint8_t fxFilter	= settings.filterbookmarks.bookmark2.fx1_filter;
+	int16_t fxValue 	= settings.filterbookmarks.bookmark2.fx1_value;
+
+	if (MenuOKpressed(1)) {
+		Menu_GotoParent();
+	}
+
+	if (rotaryValue) {
+		switch (fxFilter) {
+			case LPF:
+				fxValue += (rotaryValue * LPF_STEP);
+				if (fxValue < LPF_LOW)
+					fxValue = LPF_LOW;
+				if (fxValue > LPF_HIGH)
+					fxValue = LPF_HIGH;
+				break;
+			case HPF:
+				fxValue += (rotaryValue * HPF_STEP);
+				if (fxValue < HPF_LOW)
+					fxValue = HPF_LOW;
+				if (fxValue > HPF_HIGH)
+					fxValue = HPF_HIGH;
+				break;
+			case DS:
+				fxValue += (rotaryValue * DS_STEP);
+				if (fxValue < DS_LOW)
+					fxValue = DS_LOW;
+				if (fxValue > DS_HIGH)
+					fxValue = DS_HIGH;
+				break;
+			case BC:
+				fxValue += (rotaryValue * BC_STEP);
+				if (fxValue < BC_LOW)
+					fxValue = BC_LOW;
+				if (fxValue > BC_HIGH)
+					fxValue = BC_HIGH;
+				break;
+		}
+
+		LCD_StringInt (SCREENLINE3, SCREENSTART + (CHARWIDTH * 10), fxValue, 1);
+		settings.filterbookmarks.bookmark2.fx1_value = fxValue;
+	}
+}
+
+void Menu_Filter_Bookmark_2_Set_Value_2_handler (void) {
+	int8_t rotaryValue = MenuRotaryRead(1);
+	uint8_t fxFilter	= settings.filterbookmarks.bookmark2.fx2_filter;
+	int16_t fxValue 	= settings.filterbookmarks.bookmark2.fx2_value;
+
+	if (MenuOKpressed(1)) {
+		Menu_GotoParent();
+	}
+
+	if (rotaryValue) {
+		switch (fxFilter) {
+			case LPF:
+				fxValue += (rotaryValue * LPF_STEP);
+				if (fxValue < LPF_LOW)
+					fxValue = LPF_LOW;
+				if (fxValue > LPF_HIGH)
+					fxValue = LPF_HIGH;
+				break;
+			case HPF:
+				fxValue += (rotaryValue * HPF_STEP);
+				if (fxValue < HPF_LOW)
+					fxValue = HPF_LOW;
+				if (fxValue > HPF_HIGH)
+					fxValue = HPF_HIGH;
+				break;
+			case DS:
+				fxValue += (rotaryValue * DS_STEP);
+				if (fxValue < DS_LOW)
+					fxValue = DS_LOW;
+				if (fxValue > DS_HIGH)
+					fxValue = DS_HIGH;
+				break;
+			case BC:
+				fxValue += (rotaryValue * BC_STEP);
+				if (fxValue < BC_LOW)
+					fxValue = BC_LOW;
+				if (fxValue > BC_HIGH)
+					fxValue = BC_HIGH;
+				break;
+		}
+
+		LCD_StringInt (SCREENLINE3, SCREENSTART + (CHARWIDTH * 10), fxValue, 1);
+		settings.filterbookmarks.bookmark2.fx2_value = fxValue;
+	}
 }
 
 ////////

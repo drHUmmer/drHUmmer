@@ -133,6 +133,16 @@ int main(void)
 	sequencer.instr2.tone 	= 1;
 	sequencer.instr3.tone 	= 1;
 
+	settings.filterbookmarks.bookmark1.fx1_filter 	= HPF;
+	settings.filterbookmarks.bookmark1.fx1_value 	= 12345;
+	settings.filterbookmarks.bookmark1.fx2_filter 	= LPF;
+	settings.filterbookmarks.bookmark1.fx2_value 	= 54321;
+
+	settings.filterbookmarks.bookmark2.fx1_filter 	= DS;
+	settings.filterbookmarks.bookmark2.fx1_value 	= 10101;
+	settings.filterbookmarks.bookmark2.fx2_filter 	= BC;
+	settings.filterbookmarks.bookmark2.fx2_value 	= 99;
+
 	MenuSetup();
 
 	uint16_t sequencerButtons 	= 0;

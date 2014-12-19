@@ -130,7 +130,70 @@ void Menu_Filter_Bookmark_1 (void) {
 	MenuRedrawScreen();
 
 	// ToDo: Draw current settings
+	uint8_t filter1 = settings.filterbookmarks.bookmark1.fx1_filter;
+	uint16_t value1 = settings.filterbookmarks.bookmark1.fx1_value;
 
+	uint8_t filter2 = settings.filterbookmarks.bookmark1.fx2_filter;
+	uint16_t value2 = settings.filterbookmarks.bookmark1.fx2_value;
+
+	uint8_t textFilterOffset	= SCREENSTART + (CHARWIDTH * 5);
+	uint8_t textValueOffset		= SCREENSTART + (CHARWIDTH * 9);
+
+
+	LCD_StringLine(SCREENLINE5, SCREENSTART + CHARWIDTH, "Fx1:");
+	LCD_StringLine(SCREENLINE6, SCREENSTART + CHARWIDTH, "Fx2:");
+
+	switch (filter1) {
+		case NONE:
+			LCD_StringLine(SCREENLINE5, textFilterOffset, "Not set");
+			break;
+
+		case LPF:
+			LCD_StringLine(SCREENLINE5, textFilterOffset, "LPF ");
+			LCD_StringInt(SCREENLINE5, textValueOffset, value1, 0);
+			break;
+
+		case HPF:
+			LCD_StringLine(SCREENLINE5, textFilterOffset, "HPF ");
+			LCD_StringInt(SCREENLINE5, textValueOffset, value1, 0);
+			break;
+
+		case BC:
+			LCD_StringLine(SCREENLINE5, textFilterOffset, "BC  ");
+			LCD_StringInt(SCREENLINE5, textValueOffset, value1, 0);
+			break;
+
+		case DS:
+			LCD_StringLine(SCREENLINE5, textFilterOffset, "DS  ");
+			LCD_StringInt(SCREENLINE5, textValueOffset, value1, 0);
+			break;
+	}
+
+	switch (filter2) {
+		case NONE:
+			LCD_StringLine(SCREENLINE6, textFilterOffset, "Not set");
+			break;
+
+		case LPF:
+			LCD_StringLine(SCREENLINE6, textFilterOffset, "LPF ");
+			LCD_StringInt(SCREENLINE6, textValueOffset, value2, 0);
+			break;
+
+		case HPF:
+			LCD_StringLine(SCREENLINE6, textFilterOffset, "HPF ");
+			LCD_StringInt(SCREENLINE6, textValueOffset, value2, 0);
+			break;
+
+		case BC:
+			LCD_StringLine(SCREENLINE6, textFilterOffset, "BC  ");
+			LCD_StringInt(SCREENLINE6, textValueOffset, value2, 0);
+			break;
+
+		case DS:
+			LCD_StringLine(SCREENLINE6, textFilterOffset, "DS  ");
+			LCD_StringInt(SCREENLINE6, textValueOffset, value2, 0);
+			break;
+	}
 }
 
 void Menu_Filter_Bookmark_2 (void) {
@@ -138,29 +201,194 @@ void Menu_Filter_Bookmark_2 (void) {
 	MenuRedrawScreen();
 
 	// ToDo: Draw current settings
-	uint8_t filter1 = settings.filter_bookmark_2.fx1_filter;
-	uint16_t value1 = settings.filter_bookmark_2.fx1_value;
+	uint8_t filter1 = settings.filterbookmarks.bookmark2.fx1_filter;
+	uint16_t value1 = settings.filterbookmarks.bookmark2.fx1_value;
 
-	uint8_t filter2 = settings.filter_bookmark_2.fx2_filter;
-	uint16_t value2 = settings.filter_bookmark_2.fx2_value;
+	uint8_t filter2 = settings.filterbookmarks.bookmark2.fx2_filter;
+	uint16_t value2 = settings.filterbookmarks.bookmark2.fx2_value;
 
 	uint8_t textFilterOffset	= SCREENSTART + (CHARWIDTH * 5);
-	uint8_t textValueOffset		= SCREENSTART + (CHARWIDTH * 11);
+	uint8_t textValueOffset		= SCREENSTART + (CHARWIDTH * 9);
 
 
-	LCD_StringLine(SCREENLINE5, SCREENSTART, "Fx1:");
-	LCD_StringLine(SCREENLINE6, SCREENSTART, "Fx2:");
+	LCD_StringLine(SCREENLINE5, SCREENSTART + CHARWIDTH, "Fx1:");
+	LCD_StringLine(SCREENLINE6, SCREENSTART + CHARWIDTH, "Fx2:");
 
-	switch (filter) {
-		case INFO_NONE:	
-			LCD_StringLine(SCREENLINE5, textFilterOffset, "NONE");
+	switch (filter1) {
+		case NONE:
+			LCD_StringLine(SCREENLINE5, textFilterOffset, "Not set");
 			break;
 
-		case INFO_BPM:	
-			LCD_StringLine(SCREENLINE5, textFilterOffset, "BPM ");
-			LCD_StringInt(SCREENLINE5, textValueOffset, value1, 0);
+		case LPF:
+			LCD_StringLine(SCREENLINE5, textFilterOffset, "LPF ");
+			LCD_StringInt(SCREENLINE5, textValueOffset, value1, 1);
+			break;
+
+		case HPF:
+			LCD_StringLine(SCREENLINE5, textFilterOffset, "HPF ");
+			LCD_StringInt(SCREENLINE5, textValueOffset, value1, 1);
+			break;
+
+		case BC:
+			LCD_StringLine(SCREENLINE5, textFilterOffset, "BC  ");
+			LCD_StringInt(SCREENLINE5, textValueOffset, value1, 1);
+			break;
+
+		case DS:
+			LCD_StringLine(SCREENLINE5, textFilterOffset, "DS  ");
+			LCD_StringInt(SCREENLINE5, textValueOffset, value1, 1);
 			break;
 	}
+
+	switch (filter2) {
+		case NONE:
+			LCD_StringLine(SCREENLINE6, textFilterOffset, "Not set");
+			break;
+
+		case LPF:
+			LCD_StringLine(SCREENLINE6, textFilterOffset, "LPF ");
+			LCD_StringInt(SCREENLINE6, textValueOffset, value2, 1);
+			break;
+
+		case HPF:
+			LCD_StringLine(SCREENLINE6, textFilterOffset, "HPF ");
+			LCD_StringInt(SCREENLINE6, textValueOffset, value2, 1);
+			break;
+
+		case BC:
+			LCD_StringLine(SCREENLINE6, textFilterOffset, "BC  ");
+			LCD_StringInt(SCREENLINE6, textValueOffset, value2, 1);
+			break;
+
+		case DS:
+			LCD_StringLine(SCREENLINE6, textFilterOffset, "DS  ");
+			LCD_StringInt(SCREENLINE6, textValueOffset, value2, 1);
+			break;
+	}
+}
+
+void Menu_Filter_Bookmark_1_Set_Filter_1 (void) {
+	gui.menus.current = &gui.menus.filter_bookmark_1_set_filter_1;
+	MenuRedrawScreen();
+}
+
+void Menu_Filter_Bookmark_1_Set_Filter_2 (void) {
+	gui.menus.current = &gui.menus.filter_bookmark_1_set_filter_2;
+	MenuRedrawScreen();
+}
+
+void Menu_Filter_Bookmark_1_Set_Value_1 (void) {
+	gui.menus.current = &gui.menus.filter_bookmark_1_set_value_1;
+	MenuRedrawScreen();
+
+	uint8_t filter = settings.filterbookmarks.bookmark1.fx1_filter;
+	uint16_t value = settings.filterbookmarks.bookmark1.fx1_value;
+
+	switch (filter) {
+		case LPF:
+			LCD_StringLine(SCREENLINE1, SCREENSTART + CHARWIDTH, "LPF");
+			break;
+		case HPF:
+			LCD_StringLine(SCREENLINE1, SCREENSTART + CHARWIDTH, "HPF");
+			break;
+		case DS:
+			LCD_StringLine(SCREENLINE1, SCREENSTART + CHARWIDTH, "DS");
+			break;
+		case BC:
+			LCD_StringLine(SCREENLINE1, SCREENSTART + CHARWIDTH, "BC");
+			break;
+	}
+
+	LCD_StringLine(SCREENLINE3, SCREENSTART + CHARWIDTH, "Current:");
+	LCD_StringInt (SCREENLINE3, SCREENSTART + (CHARWIDTH * 10), value, 1);
+}
+
+void Menu_Filter_Bookmark_1_Set_Value_2 (void) {
+	gui.menus.current = &gui.menus.filter_bookmark_1_set_value_2;
+	MenuRedrawScreen();
+
+	uint8_t filter = settings.filterbookmarks.bookmark1.fx2_filter;
+	uint16_t value = settings.filterbookmarks.bookmark1.fx2_value;
+
+	switch (filter) {
+		case LPF:
+			LCD_StringLine(SCREENLINE1, SCREENSTART + CHARWIDTH, "LPF");
+			break;
+		case HPF:
+			LCD_StringLine(SCREENLINE1, SCREENSTART + CHARWIDTH, "HPF");
+			break;
+		case DS:
+			LCD_StringLine(SCREENLINE1, SCREENSTART + CHARWIDTH, "DS");
+			break;
+		case BC:
+			LCD_StringLine(SCREENLINE1, SCREENSTART + CHARWIDTH, "BC");
+			break;
+	}
+
+	LCD_StringLine(SCREENLINE3, SCREENSTART + CHARWIDTH, "Current:");
+	LCD_StringInt (SCREENLINE3, SCREENSTART + (CHARWIDTH * 10), value, 1);
+}
+
+void Menu_Filter_Bookmark_2_Set_Filter_1 (void) {
+	gui.menus.current = &gui.menus.filter_bookmark_2_set_filter_1;
+	MenuRedrawScreen();
+}
+
+void Menu_Filter_Bookmark_2_Set_Filter_2 (void) {
+	gui.menus.current = &gui.menus.filter_bookmark_2_set_filter_2;
+	MenuRedrawScreen();
+}
+
+void Menu_Filter_Bookmark_2_Set_Value_1 (void) {
+	gui.menus.current = &gui.menus.filter_bookmark_2_set_value_1;
+	MenuRedrawScreen();
+
+	uint8_t filter = settings.filterbookmarks.bookmark2.fx1_filter;
+	uint16_t value = settings.filterbookmarks.bookmark2.fx1_value;
+
+	switch (filter) {
+		case LPF:
+			LCD_StringLine(SCREENLINE1, SCREENSTART + CHARWIDTH, "LPF");
+			break;
+		case HPF:
+			LCD_StringLine(SCREENLINE1, SCREENSTART + CHARWIDTH, "HPF");
+			break;
+		case DS:
+			LCD_StringLine(SCREENLINE1, SCREENSTART + CHARWIDTH, "DS");
+			break;
+		case BC:
+			LCD_StringLine(SCREENLINE1, SCREENSTART + CHARWIDTH, "BC");
+			break;
+	}
+
+	LCD_StringLine(SCREENLINE3, SCREENSTART + CHARWIDTH, "Current:");
+	LCD_StringInt (SCREENLINE3, SCREENSTART + (CHARWIDTH * 10), value, 1);
+}
+
+void Menu_Filter_Bookmark_2_Set_Value_2 (void) {
+	gui.menus.current = &gui.menus.filter_bookmark_2_set_value_2;
+	MenuRedrawScreen();
+
+	uint8_t filter = settings.filterbookmarks.bookmark2.fx2_filter;
+	uint16_t value = settings.filterbookmarks.bookmark2.fx2_value;
+
+	switch (filter) {
+		case LPF:
+			LCD_StringLine(SCREENLINE1, SCREENSTART + CHARWIDTH, "LPF");
+			break;
+		case HPF:
+			LCD_StringLine(SCREENLINE1, SCREENSTART + CHARWIDTH, "HPF");
+			break;
+		case DS:
+			LCD_StringLine(SCREENLINE1, SCREENSTART + CHARWIDTH, "DS");
+			break;
+		case BC:
+			LCD_StringLine(SCREENLINE1, SCREENSTART + CHARWIDTH, "BC");
+			break;
+	}
+
+	LCD_StringLine(SCREENLINE3, SCREENSTART + CHARWIDTH, "Current:");
+	LCD_StringInt (SCREENLINE3, SCREENSTART + (CHARWIDTH * 10), value, 1);
 }
 
 // UI
