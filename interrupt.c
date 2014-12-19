@@ -65,7 +65,7 @@ void TIM2_IRQHandler(void)
 		{
 			sequencer.instr3.triggerflag = 1;
 		}
-		GPIO_SetBits(GPIOD, GPIO_msk);
+		//GPIO_SetBits(GPIOD, GPIO_msk);
 
 		sequencer.submask = (sequencer.submask >> 1) | ((sequencer.submask & 0x1) << 5);	//rotate right
 
@@ -75,7 +75,7 @@ void TIM2_IRQHandler(void)
 		TIM_ClearITPendingBit(TIM2, TIM_IT_CC1);
 		if(!(sequencer.timerflag) || ((sequencer.timerflag == 1) && (sequencer.beatclk == 1)))
 		{
-			GPIO_ResetBits(GPIOD, (GPIO_Pin_12 | GPIO_Pin_13 | GPIO_Pin_14 | GPIO_Pin_15));
+			//GPIO_ResetBits(GPIOD, (GPIO_Pin_12 | GPIO_Pin_13 | GPIO_Pin_14 | GPIO_Pin_15));
 		}
 	}
 }
@@ -123,6 +123,7 @@ void TIM5_IRQHandler(void)
 				bufFlag = BUFF_B;
 				bufFillFlag = BUFFF_NF;
 			}
+			GPIO_ToggleBits(GPIOD,(GPIO_Pin_14 | GPIO_Pin_15));
 		}else {
 			if(!bufBBusy){
 				dacPut(wavBufA[SDCnt]);
@@ -134,7 +135,7 @@ void TIM5_IRQHandler(void)
 				bufFlag = BUFF_A;
 				bufFillFlag = BUFFF_NF;
 			}
-
+			GPIO_ToggleBits(GPIOD,(GPIO_Pin_14 | GPIO_Pin_15));
 		}
 
 		/*

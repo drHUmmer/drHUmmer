@@ -58,7 +58,7 @@ int main(void)
 int main(void)
 {
 	PLLInit();
-	sequencerInit();
+//	sequencerInit();
 	//SPI3_Init();
 
 /*****************
@@ -120,7 +120,10 @@ int main(void)
 
 	Timer5Init();
 
-	uint32_t i;
+	GPIO_SetBits(GPIOD, (GPIO_Pin_15 | GPIO_Pin_13));
+	GPIO_ResetBits(GPIOD, (GPIO_Pin_14 | GPIO_Pin_12));
+
+	uint32_t i=44;
 	while(1){
 		if (bufFillFlag == BUFFF_NF){
 
@@ -133,6 +136,8 @@ int main(void)
 				bufABusy = FALSE;
 				bufFillFlag = BUFFF_F;
 
+				GPIO_ToggleBits(GPIOD, (GPIO_Pin_12 | GPIO_Pin_13));
+
 			}else {
 				if((i+=(WAV_BUF_SIZE*2)) > 2070082){
 					i = 44;
@@ -141,6 +146,8 @@ int main(void)
 				SDGet512(wavBufB, fnames[0], (DWORD)i);
 				bufBBusy = FALSE;
 				bufFillFlag = BUFFF_F;
+
+				GPIO_ToggleBits(GPIOD, (GPIO_Pin_12 | GPIO_Pin_13));
 			}
 		}
 

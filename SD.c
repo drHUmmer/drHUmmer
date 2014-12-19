@@ -108,19 +108,19 @@ FRESULT SDGet512(uint16_t* buf16, TCHAR* fname, uint32_t clusterIdx){
 	}else return result;
 
 
-	int16_t offset = 1024;
-	int16_t bitConv = 32;
+	int16_t offset = 32767;	//1024;
+	int16_t bitConv = 4;	//32;
 
 	for (i=0; i<(WAV_BUF_SIZE*2); i+=2){
 		data16  = (buf8[i] | (buf8[i+1] << 8));
 		//data16  += 32767;
 		//data16  &= 0xFFF0;
 
-
-
-		data16  /= bitConv; // 16 to 12 bit
-
 		data16 += offset; // DC comp
+
+		data16  >>= bitConv; //	/= bitConv;		// 16 to 12 bit
+
+
 
 		//data16 &= 0x0FFF; // mask
 
