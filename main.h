@@ -15,6 +15,7 @@
 #include "sequencer.h"
 #include "UI.h"
 #include "filter.h"
+#include "midi.h"
 
 int main(void);
 

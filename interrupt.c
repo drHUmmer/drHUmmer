@@ -5,8 +5,10 @@
 #include "cymbal.h"
 #include "filter.h"
 #include "DAC.h"
+#include "midi.h"
 
 extern IIRfilter_t testFilter;
+extern uint16_t midiStatus;
 
 #ifdef FILTER_DEMO
 extern uint8_t filterDemo;
@@ -14,7 +16,7 @@ extern uint8_t filterDemo;
 
 //float wavCnt = 0;
 
-void TIM2_IRQHandler(void)
+void TIM2_IRQHandler(void)	//sequencer time tick
 {
 	uint16_t GPIO_msk = 0;
 
@@ -22,7 +24,10 @@ void TIM2_IRQHandler(void)
 	{
 		TIM_ClearITPendingBit(TIM2, TIM_IT_Update);
 
-		if(++sequencer.beatclk >= 6)
+		if(!(midiStatus & MIDI_MODE))
+			MidiClock();
+
+		if(++sequencer.beatclk >= 6)	//check if enough substeps were made to increase step count
 		{
 			sequencer.beatclk = 0;
 			if(++sequencer.stepcnt >= 16)
@@ -33,37 +38,110 @@ void TIM2_IRQHandler(void)
 			sequencer.beatmask = (sequencer.beatmask >> 1) | (sequencer.beatmask << ((sizeof(sequencer.beatmask)*8) - 1));	//rotate right
 		}
 
+		//triggering sounds and resetting sample counters happens below
 		if((sequencer.snaredrum.sequence &  sequencer.beatmask) && \
 				(sequencer.snaredrum.substeps[sequencer.stepcnt] &  sequencer.submask))
 		{
 			GPIO_msk |= GPIO_Pin_12;				//red
+			if(!(midiStatus & MIDI_MODE))
+			{
+				if(midiStatus & MIDI_INS2_TRIG)
+				{
+					MidiNoteOn(MIDI_ASD, MIDI_CH1, 0x7F);
+					midiStatus &= ~(MIDI_INS2_TRIG);
+				}
+				else
+				{
+					MidiNoteOff(MIDI_ASD, MIDI_CH1, 0x7F);
+				}
+			}
 		}
 		if((sequencer.bassdrum.sequence &  sequencer.beatmask) && \
 				  (sequencer.bassdrum.substeps[sequencer.stepcnt] &  sequencer.submask))
 		{
 			GPIO_msk |= GPIO_Pin_13;				//orange
+			if(!(midiStatus & MIDI_MODE))
+			{
+				if(midiStatus & MIDI_INS1_TRIG)
+				{
+					MidiNoteOn(MIDI_ABD, MIDI_CH1, 0x7F);
+					midiStatus &= ~(MIDI_INS1_TRIG);
+				}
+				else
+				{
+					MidiNoteOff(MIDI_ABD, MIDI_CH1, 0x7F);
+				}
+			}
 		}
 		if((sequencer.instr0.sequence &  sequencer.beatmask) && \
 				  (sequencer.instr0.substeps[sequencer.stepcnt] &  sequencer.submask))
 		{
 			GPIO_msk |= GPIO_Pin_14;				//green
 			sequencer.instr0.triggerflag = 1;
+			if(!(midiStatus & MIDI_MODE))
+			{
+				if(midiStatus & MIDI_INS3_TRIG)
+				{
+					MidiNoteOn(MIDI_IN0, MIDI_CH1, 0x7F);
+					midiStatus &= ~(MIDI_INS3_TRIG);
+				}
+				else
+				{
+					MidiNoteOff(MIDI_IN0, MIDI_CH1, 0x7F);
+				}
+			}
 		}
 		if((sequencer.instr1.sequence &  sequencer.beatmask) && \
 				  (sequencer.instr1.substeps[sequencer.stepcnt] &  sequencer.submask))
 		{
 			GPIO_msk |= GPIO_Pin_15;				//blu
 			sequencer.instr1.triggerflag = 1;
+			if(!(midiStatus & MIDI_MODE))
+			{
+				if(midiStatus & MIDI_INS4_TRIG)
+				{
+					MidiNoteOn(MIDI_IN1, MIDI_CH1, 0x7F);
+					midiStatus &= ~(MIDI_INS4_TRIG);
+				}
+				else
+				{
+					MidiNoteOff(MIDI_IN1, MIDI_CH1, 0x7F);
+				}
+			}
 		}
 		if((sequencer.instr2.sequence &  sequencer.beatmask) && \
 				  (sequencer.instr2.substeps[sequencer.stepcnt] &  sequencer.submask))
 		{
 			sequencer.instr2.triggerflag = 1;
+			if(!(midiStatus & MIDI_MODE))
+			{
+				if(midiStatus & MIDI_INS5_TRIG)
+				{
+					MidiNoteOn(MIDI_IN2, MIDI_CH1, 0x7F);
+					midiStatus &= ~(MIDI_INS5_TRIG);
+				}
+				else
+				{
+					MidiNoteOff(MIDI_IN2, MIDI_CH1, 0x7F);
+				}
+			}
 		}
 		if((sequencer.instr3.sequence &  sequencer.beatmask) && \
 				  (sequencer.instr3.substeps[sequencer.stepcnt] &  sequencer.submask))
 		{
 			sequencer.instr3.triggerflag = 1;
+			if(!(midiStatus & MIDI_MODE))
+			{
+				if(midiStatus & MIDI_INS6_TRIG)
+				{
+					MidiNoteOn(MIDI_IN3, MIDI_CH1, 0x7F);
+					midiStatus &= ~(MIDI_INS6_TRIG);
+				}
+				else
+				{
+					MidiNoteOff(MIDI_IN3, MIDI_CH1, 0x7F);
+				}
+			}
 		}
 		GPIO_SetBits(GPIOD, GPIO_msk);
 

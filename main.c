@@ -42,6 +42,7 @@ int main(void)
 	NVICTimer5Init();
 	Timer2Init();
 	Timer5Init();
+	MidiInit(MIDI_OUT);
 
 	BPMUpdate(sequencer.BPM);
 

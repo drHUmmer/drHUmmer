@@ -45,13 +45,26 @@
 #define MIDI_INS4_TRIG	(1<<3)
 #define MIDI_INS5_TRIG	(1<<4)
 #define MIDI_INS6_TRIG	(1<<5)
-#define MIDI_MODE		(1<<6)
-#define MIDI_ENABLE		(1<<7)
-#define MIDI_CHAN		(0xF<<8)
+#define MIDI_MODE		(1<<6)	//set for MIDI in, clear for MIDI out
+#define MIDI_ENABLE		(1<<7)	//set to enable MIDI
+#define MIDI_CHAN		(0xF<<8)//enter MIDI channel number
 #define MIDI_CONT_FLAG	(1<<12)
 #define MIDI_STOP_FLAG	(1<<13)
 #define MIDI_START_FLAG	(1<<14)
 #define MIDI_PB_FLAG	(1<<15)
+
+//MIDI note instrument triggers
+#define MIDI_ASD	0x48
+#define MIDI_ABD	0x49
+#define MIDI_IN0	0x4A
+#define MIDI_IN1	0x4B
+#define MIDI_IN2	0x4C
+#define MIDI_IN3	0x4D
+
+//MIDI modes
+#define MIDI_OUT	0x00
+#define MIDI_IN	 	0x01
+
 
 typedef struct
 {
@@ -80,9 +93,10 @@ extern MIDImsg_t midiTest;
 
 /*FUNCTION PROTOTYPES*/
 uint8_t MidiInit(uint8_t mode);
+uint8_t MidiChMod(uint8_t mode);
 uint8_t MidiSend(MIDImsg_t *msg, uint8_t ch);
-uint8_t MidiNoteOn(notes note, uint8_t ch, uint8_t vel);
-uint8_t MidiNoteOff(notes note, uint8_t ch, uint8_t vel);
+uint8_t MidiNoteOn(enum notes note, uint8_t ch, uint8_t vel);
+uint8_t MidiNoteOff(enum notes note, uint8_t ch, uint8_t vel);
 uint8_t MidiClock(void);
 uint8_t MidiStart(void);
 uint8_t MidiStop(void);

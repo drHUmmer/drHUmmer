@@ -33,6 +33,27 @@ uint8_t MidiInit(uint8_t mode)
 	return mode;
 }
 
+/* MidiChMod()
+ * Changes MIDI mode
+ *
+ * Usage:
+ * MidiChMod(mode);
+ */
+uint8_t MidiChMod(uint8_t mode)
+{
+	if(mode)					//set mode to either input or output
+	{
+		midiStatus |= MIDI_MODE;
+	}
+	else
+	{
+		midiStatus &= ~(MIDI_MODE);
+	}
+
+	return mode;
+}
+
+
 /* MidiSend()
  * Sends a midi command
  *
@@ -60,11 +81,11 @@ uint8_t MidiSend(MIDImsg_t *msg, uint8_t ch)
  * Usage:
  * MidiNoteOn(note, channel, velocity);
  */
-uint8_t MidiNoteOn(notes note, uint8_t ch, uint8_t vel)
+uint8_t MidiNoteOn(enum notes note, uint8_t ch, uint8_t vel)
 {
 	MIDImsg_t midiMsg;
 
-	midiMsg.head = (NOTE_ON|ch);
+	midiMsg.head = (MIDI_NOTE_ON|ch);
 	midiMsg.msg1 = note;
 	midiMsg.msg2 = vel;
 
@@ -79,11 +100,11 @@ uint8_t MidiNoteOn(notes note, uint8_t ch, uint8_t vel)
  * Usage:
  * MidiNoteOff(note, channel, velocity);
  */
-uint8_t MidiNoteOff(notes note, uint8_t ch, uint8_t vel)
+uint8_t MidiNoteOff(enum notes note, uint8_t ch, uint8_t vel)
 {
 	MIDImsg_t midiMsg;
 
-	midiMsg.head = (NOTE_OFF|ch);
+	midiMsg.head = (MIDI_NOTE_OFF|ch);
 	midiMsg.msg1 = note;
 	midiMsg.msg2 = vel;
 
