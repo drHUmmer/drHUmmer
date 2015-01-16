@@ -120,8 +120,6 @@ FRESULT SDGet512(uint16_t* buf16, TCHAR* fname, uint32_t clusterIdx){
 
 		data16  >>= bitConv; //	/= bitConv;		// 16 to 12 bit
 
-
-
 		//data16 &= 0x0FFF; // mask
 
 		buf16[i/2] = (uint16_t) data16;
@@ -129,6 +127,17 @@ FRESULT SDGet512(uint16_t* buf16, TCHAR* fname, uint32_t clusterIdx){
 
 	return FR_OK;
 }
+
+uint32_t getFileSize(TCHAR* fname)
+{
+	uint32_t size;
+	f_open(&fil, &*(fname),FA_READ);
+	size = f_size(&fil);
+	f_close(&fil);
+
+	return size;
+}
+
 
 void SDPut16(TCHAR* fname, uint16_t data){
 

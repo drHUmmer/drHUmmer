@@ -72,7 +72,13 @@ void TM_SPI_WriteMulti(SPI_TypeDef* SPIx, uint8_t* dataOut, uint16_t count) {
 
 void TM_SPI_ReadMulti(SPI_TypeDef* SPIx, uint8_t* dataIn, uint8_t dummy, uint16_t count) {
 	uint16_t i;
-	for (i = 0; i < count; i++) {
+	//for (i = 0; i < count; i++) {
+	for (i = 0; i < 512; i++) {
+		if(count > 512){
+			//GO_FUCKING_APESHIT//
+			//GPIO_ToggleBits(GPIOD,(GPIO_Pin_12 | GPIO_Pin_13 | GPIO_Pin_14 | GPIO_Pin_15));
+			count = 512;
+		}
 		dataIn[i] = TM_SPI_Send(SPIx, dummy);
 	}
 }

@@ -108,6 +108,10 @@ int main(void)
 
 //	SysTick_Init();
 
+	uint32_t filesize;
+
+#define FILENR 0
+
 
 	if( SDInit() == FR_OK ){
 		SDGetNames("/"); 		// root directory
@@ -115,8 +119,10 @@ int main(void)
 
 
 	bufFlag = BUFF_A;
-	SDGet512(wavBufA, fnames[0] ,44);
+	SDGet512(wavBufA, fnames[FILENR] ,44);
 	bufFlag = BUFF_B;
+
+	filesize = getFileSize(fnames[FILENR]);
 
 	Timer5Init();
 
@@ -128,22 +134,22 @@ int main(void)
 		if (bufFillFlag == BUFFF_NF){
 
 			if(bufFlag == BUFF_A){
-				if((i+=(WAV_BUF_SIZE*2)) > 2070082){
+				if((i+=(WAV_BUF_SIZE*2)) > filesize){
 					i = 44;
 				}
 				bufABusy = TRUE;
-				SDGet512(wavBufA, fnames[0], (DWORD)i);
+				SDGet512(wavBufA, fnames[FILENR], (DWORD)i);
 				bufABusy = FALSE;
 				bufFillFlag = BUFFF_F;
 
 				GPIO_ToggleBits(GPIOD, (GPIO_Pin_12 | GPIO_Pin_13));
 
 			}else {
-				if((i+=(WAV_BUF_SIZE*2)) > 2070082){
+				if((i+=(WAV_BUF_SIZE*2)) > filesize){
 					i = 44;
 				}
 				bufBBusy = TRUE;
-				SDGet512(wavBufB, fnames[0], (DWORD)i);
+				SDGet512(wavBufB, fnames[FILENR], (DWORD)i);
 				bufBBusy = FALSE;
 				bufFillFlag = BUFFF_F;
 

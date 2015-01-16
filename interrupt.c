@@ -113,8 +113,15 @@ void TIM5_IRQHandler(void)
 			sequencer.instr3.triggerflag = 0;
 		}
 
+		uint16_t SDData;
+		int16_t offset = 2048;
+
 		if(bufFlag == BUFF_A){
-			if(!bufABusy){
+			if(!bufBBusy){
+				/*SDData = wavBufB[SDCnt];
+				SDData /= 16;
+				SDData += offset;
+				SDData &= 0x0FFF;*/
 				dacPut(wavBufB[SDCnt]);
 				SDCnt++;
 				SDCnt = SDCnt % WAV_BUF_SIZE;
@@ -125,7 +132,11 @@ void TIM5_IRQHandler(void)
 			}
 			GPIO_ToggleBits(GPIOD,(GPIO_Pin_14 | GPIO_Pin_15));
 		}else {
-			if(!bufBBusy){
+			if(!bufABusy){
+				/*SDData = wavBufB[SDCnt];
+				SDData /= 16;
+				SDData += offset;
+				SDData &= 0x0FFF;*/
 				dacPut(wavBufA[SDCnt]);
 				SDCnt++;
 				SDCnt = SDCnt % WAV_BUF_SIZE;
@@ -153,7 +164,7 @@ void TIM5_IRQHandler(void)
 
 
 
-/*		uint16_t SDData = SDGet16(&(fnames[3]),SDCnt);
+/*		uint16_t SDData = SDGet16(&(fnames[0]),SDCnt);
 		int16_t offset = 2048;
 
 		SDData /= 16;
@@ -164,8 +175,8 @@ void TIM5_IRQHandler(void)
 
 		dacPut(SDData);
 		if (SDCnt >= 45368) SDCnt=22;
-		else SDCnt++;
-*/
+		else SDCnt++;*/
+
 
 
 
