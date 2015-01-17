@@ -728,8 +728,8 @@ int8_t MenuRotaryRead(uint8_t reset) {
 }
 
 void MenuDrawEffect1 (uint8_t redraw) {
-	static uint8_t 	int_filter 	= 0;
-	static uint16_t	int_value 	= 0;
+	static uint8_t 	int_filter 	= -1;
+	static uint16_t	int_value 	= -1;
 
 	uint8_t filter = gui.infobars.fx1.setting;
 	uint8_t value = gui.infobars.fx1.value;
@@ -745,8 +745,8 @@ void MenuDrawEffect1 (uint8_t redraw) {
 }
 
 void MenuDrawEffect2 (uint8_t redraw) {
-	static uint8_t 	int_filter 	= 0;
-	static uint16_t	int_value 	= 0;
+	static uint8_t 	int_filter 	= -1;
+	static uint16_t	int_value 	= -1;
 
 	uint8_t filter = gui.infobars.fx2.setting;
 	uint8_t value = gui.infobars.fx2.value;
@@ -763,8 +763,8 @@ void MenuDrawEffect2 (uint8_t redraw) {
 }
 
 void MenuDrawInfo1 (uint8_t redraw) {
-	static uint8_t	int_filter 	= 0;
-	static uint16_t int_value 	= 0;
+	static uint8_t	int_filter 	= -1;
+	static uint16_t int_value 	= -1;
 
 	uint8_t filter 	= gui.infobars.info1.setting;
 	uint16_t value 	= gui.infobars.info1.value;
@@ -774,7 +774,7 @@ void MenuDrawInfo1 (uint8_t redraw) {
 
 		switch (filter) {
 			case INFO_NONE: 
-//				LCD_StringLine(INFOBAR_1_X, INFOBAR_1_Y, "Info nr1");
+				LCD_StringLine(INFOBAR_1_X, INFOBAR_1_Y, "Info nr1");
 				break;
 
 			case INFO_BPM: 	
@@ -839,8 +839,8 @@ void MenuDrawInfo1 (uint8_t redraw) {
 }
 
 void MenuDrawInfo2 (uint8_t redraw) {
-	static uint8_t	int_filter 	= 0;
-	static uint16_t int_value 	= 0;
+	static uint8_t	int_filter 	= -1;
+	static uint16_t int_value 	= -1;
 
 	uint8_t filter 	= gui.infobars.info2.setting;
 	uint16_t value 	= gui.infobars.info2.value;
@@ -850,7 +850,7 @@ void MenuDrawInfo2 (uint8_t redraw) {
 
 		switch (filter) {
 			case INFO_NONE: 
-//				LCD_StringLine(INFOBAR_2_X, INFOBAR_2_Y, "Info nr2");
+				LCD_StringLine(INFOBAR_2_X, INFOBAR_2_Y, "Info nr2");
 				break;
 
 			case INFO_BPM: 	

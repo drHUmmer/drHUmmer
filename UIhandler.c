@@ -1,5 +1,59 @@
 #include "UIhandler.h"
 
+//////////////////
+// Main Handler //
+//////////////////
+void UIhandler() {
+	// Sequencer
+	UIhandler_Sequencer();
+
+	// FX
+	UIhandler_FX_IO();
+	UIhandler_FX_ROT();
+	UIhandler_FX_SWTICH();
+
+	// Menu
+	// Functions called in menu.c
+
+	// Drums
+	UIhandler_Drum_Levels();
+
+	// Pattern buttons
+	// todo: pattern length
+	// todo: pattern select
+
+	// Play Button
+	UIhandler_PlayButton();
+}
+
+///////////////
+// Sequencer //
+///////////////
+void UIhandler_Sequencer (void) {
+	uint32_t sequencerButtons = uiInput.buttons & 0xFFFF;
+
+	switch (sequencer.instrID) {
+	case 0: sequencer.bassdrum.sequence 	^= sequencerButtons; 	break;	// A1
+	case 1: sequencer.snaredrum.sequence 	^= sequencerButtons;	break;	// A2
+	case 2: sequencer.instr0.sequence 		^= sequencerButtons;	break;	// D1
+	case 3: sequencer.instr1.sequence 		^= sequencerButtons;	break;	// D2
+	case 4: sequencer.instr2.sequence 		^= sequencerButtons;	break;	// D3
+	case 5: sequencer.instr3.sequence 		^= sequencerButtons;	break;	// D4
+	}
+
+	switch (sequencer.instrID) {
+	case 0: SPI_LED_Send(sequencer.bassdrum.sequence);				break;	// A1
+	case 1: SPI_LED_Send(sequencer.snaredrum.sequence);				break;	// A2
+	case 2: SPI_LED_Send(sequencer.instr0.sequence);				break;	// D1
+	case 3: SPI_LED_Send(sequencer.instr1.sequence);				break;	// D2
+	case 4: SPI_LED_Send(sequencer.instr2.sequence);				break;	// D3
+	case 5: SPI_LED_Send(sequencer.instr3.sequence);				break;	// D4
+	}
+
+	// Reset sequencer button values
+	uiInput.buttons &= ~0xFFFF;
+}
+
 //////////
 // MENU //
 //////////
@@ -130,7 +184,7 @@ void UIhandler_FX_ROT (void) {
 ///////////
 // DRUMS //
 ///////////
-static void UIhandler_Drums_Levels_Single (Instrument_TypeDef* instr, int8_t* rotaryLevel, int8_t* rotaryTone) {
+static void UIhandler_Drum_Levels_Single (Instrument_TypeDef* instr, int8_t* rotaryLevel, int8_t* rotaryTone) {
 	// Level
 	int8_t temp;
 
@@ -157,4 +211,15 @@ void UIhandler_Drum_Levels (void) {
 	UIhandler_Drum_Levels_Single (&sequencer.instr1, &ROTARY_DRUM_LEVEL_2, &ROTARY_DRUM_TONE_2);
 	UIhandler_Drum_Levels_Single (&sequencer.instr2, &ROTARY_DRUM_LEVEL_3, &ROTARY_DRUM_TONE_3);
 	UIhandler_Drum_Levels_Single (&sequencer.instr3, &ROTARY_DRUM_LEVEL_4, &ROTARY_DRUM_TONE_4);
+}
+
+/////////////////
+// Play Button //
+/////////////////
+void UIhandler_PlayButton (void) {
+	if (BUTTON_PLAY) {
+		sequencer.playing = (sequencer.playing == 1 ? 0 : 1);
+
+		uiInput.buttons &= ~BUTTON_PLAY;		// Reset input value
+	}
 }

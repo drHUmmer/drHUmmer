@@ -15,6 +15,8 @@
 #include "UART.h"
 #include "interrupt.h"
 #include "timers.h"
+#include "UI.h"
+#include "UIhandler.h"
 
 
 #include "ILI9325.h"

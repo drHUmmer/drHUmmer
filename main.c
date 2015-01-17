@@ -101,8 +101,8 @@ int main(void)
 	RingBufferInit();
 
 #ifndef USE_OS
-	uint16_t i=0x00FF;
-	int8_t	debug;
+//	uint16_t i=0x00FF;
+//	int8_t	debug;
 //		uint16_t i;
 //		uint16_t bpm = 60;
 
@@ -145,8 +145,6 @@ int main(void)
 
 	MenuSetup();
 
-	uint16_t sequencerButtons 	= 0;
-
 	settings.midi.channel 		= 0;
 
 	gui.infobars.info1.setting = INFO_PATT_LIVE_MODE;
@@ -155,7 +153,34 @@ int main(void)
 	FXsettings.fx1				= LPF;
 	FXsettings.fx2				= BC;
 
+	uint8_t rotaryNr			= 1;
+	uint8_t runs				= 0;
 	while (1) {
+
+		if (runs % 2 == 0) {			// RUNS (20 ms) * 15 = 300 ms total
+			if (rotaryNr < 12) {			// 1 2 3 ... 9 10 11
+				UIUpdateRotary(rotaryNr);
+			} else if (rotaryNr < 16) {		// 12 13 14 15
+				UIUpdateButton(rotaryNr - 11);
+			} else {						// 16 17 .. 255
+				rotaryNr = 1;
+			}
+		}
+
+		if (runs % 5 == 0) {			// RUNS (50 ms)
+			UIhandler();
+			Menu_Update_handler();
+		}
+
+		delay_nms(10);
+
+		runs ++;
+		if (runs >= 200)
+			runs = 0;
+
+
+//	!!!	[ LOT OF GARBAGE DOWN BELOW ] [ JUST SAYING ] !!!
+//
 //		uint16_t buttonvalue = UIButtonRead();
 //		if (buttonvalue & 0x1000) {
 //			buttonz.buttonOK = 1;
@@ -176,46 +201,25 @@ int main(void)
 //			GPIO_SetBits(GPIOD, GPIO_Pin_15);
 //			buttonz.rotaryValue = -1;
 //		}
-
-		// BLUE BUTTON
+//
+//		 BLUE BUTTON
 //		if (GPIO_ReadInputDataBit(GPIOA, GPIO_Pin_0)) {
 //			sequencer.instrID ++;
 //			sequencer.instrID %= 6;
 //		}
-
-		// Rotary get
+//
+//		 Rotary get
 //		SPI_PIC_Send(PIC_GET_ROTARY, 0, PIC_ROTARY_1);
 //		delay_1ms();
 //		buttonz.rotaryValue = SPI_PIC_Receive();
-
-		// Button get
+//
+//		 Button get
 //		sequencerButtons = UIButtonRead();
-
+//
 //		buttonz.buttonOK = GPIO_ReadInputDataBit(GPIOE, GPIO_Pin_0);
 //		buttonz.buttonBack = 0;
-
-		switch (sequencer.instrID) {
-		case 0: sequencer.bassdrum.sequence ^= sequencerButtons; 	break;	// A1
-		case 1: sequencer.snaredrum.sequence ^= sequencerButtons;	break;	// A2
-		case 2: sequencer.instr0.sequence ^= sequencerButtons;		break;	// D1
-		case 3: sequencer.instr1.sequence ^= sequencerButtons;		break;	// D2
-		case 4: sequencer.instr2.sequence ^= sequencerButtons;		break;	// D3
-		case 5: sequencer.instr3.sequence ^= sequencerButtons;		break;	// D4
-		}
-
-		switch (sequencer.instrID) {
-		case 0: SPI_LED_Send(sequencer.bassdrum.sequence);			break;	// A1
-		case 1: SPI_LED_Send(sequencer.snaredrum.sequence);			break;	// A2
-		case 2: SPI_LED_Send(sequencer.instr0.sequence);			break;	// D1
-		case 3: SPI_LED_Send(sequencer.instr1.sequence);			break;	// D2
-		case 4: SPI_LED_Send(sequencer.instr2.sequence);			break;	// D3
-		case 5: SPI_LED_Send(sequencer.instr3.sequence);			break;	// D4
-		}
-
-		Menu_Update_handler();
-		delay_nms(100);
-
-		// TONE
+//
+//		 TONE
 //		sequencer.instr0.tone += 1;
 //		if (sequencer.instr0.tone > 200)
 //			sequencer.instr0.tone = 0;
@@ -241,18 +245,6 @@ int main(void)
 	}
 
 	while(1) {};
-
-	#ifdef FILTER_DEMO	//quick 'n dirty user button read, no debouncing
-			uint8_t userButt=0;
-
-			userButt = GPIO_ReadInputDataBit(GPIOA, GPIO_Pin_0);
-			if(userButt)
-			{
-				filterDemo++;
-			}
-	#endif
-
-	delay_nms(100);
 }
 
 #endif	/*	USE_OS	*/
