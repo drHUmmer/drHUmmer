@@ -87,7 +87,7 @@ int main(void)
 //	GPIO_InitStruct.GPIO_Mode = GPIO_Mode_IN;
 //	GPIO_Init(GPIOE, &GPIO_InitStruct);
 
-	UIInit();
+//	UIInit();
 
 	dacInit();
 //	adcInit();
@@ -178,21 +178,21 @@ int main(void)
 //		}
 
 		// BLUE BUTTON
-		if (GPIO_ReadInputDataBit(GPIOA, GPIO_Pin_0)) {
-			sequencer.instrID ++;
-			sequencer.instrID %= 6;
-		}
+//		if (GPIO_ReadInputDataBit(GPIOA, GPIO_Pin_0)) {
+//			sequencer.instrID ++;
+//			sequencer.instrID %= 6;
+//		}
 
 		// Rotary get
-		SPI_PIC_Send(PIC_GET_ROTARY, 0, PIC_ROTARY_1);
-		delay_1ms();
-		buttonz.rotaryValue = SPI_PIC_Receive();
+//		SPI_PIC_Send(PIC_GET_ROTARY, 0, PIC_ROTARY_1);
+//		delay_1ms();
+//		buttonz.rotaryValue = SPI_PIC_Receive();
 
 		// Button get
-		sequencerButtons = UIButtonRead();
+//		sequencerButtons = UIButtonRead();
 
-		buttonz.buttonOK = GPIO_ReadInputDataBit(GPIOE, GPIO_Pin_0);
-		buttonz.buttonBack = 0;
+//		buttonz.buttonOK = GPIO_ReadInputDataBit(GPIOE, GPIO_Pin_0);
+//		buttonz.buttonBack = 0;
 
 		switch (sequencer.instrID) {
 		case 0: sequencer.bassdrum.sequence ^= sequencerButtons; 	break;	// A1

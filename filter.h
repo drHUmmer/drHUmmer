@@ -69,6 +69,7 @@ typedef struct
 	uint16_t	dsFreq;
 	uint16_t	lpfFreq;
 	uint16_t	hpfFreq;
+	uint8_t		fxEnable;
 }FXsettings_t;
 
 /*VARIABLES*/

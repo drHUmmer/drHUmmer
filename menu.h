@@ -19,6 +19,7 @@ typedef struct {
 #include "menuHandlers.h"
 #include "ILI9325.h"
 #include "LCDitems.h"
+#include "UIhandler.h"
 
 /////////////////
 // Menu titles //
@@ -235,15 +236,15 @@ void 	MenuDrawInfo2				(uint8_t redraw);
 /////////////////////////
 MenuSettings_TypeDef gui;
 
-//////////////////////////
-// !!!! SIMULATION !!!! //
-//////////////////////////
-typedef struct {
-	uint8_t buttonBack 		: 1;
-	uint8_t buttonOK		: 1;
-	int8_t  rotaryValue;
-} ButtonSim_Typedef;
-
-ButtonSim_Typedef buttonz;
+////////////////////////////
+//// !!!! SIMULATION !!!! //
+////////////////////////////
+//typedef struct {
+//	uint8_t buttonBack 		: 1;
+//	uint8_t buttonOK		: 1;
+//	int8_t  rotaryValue;
+//} ButtonSim_Typedef;
+//
+//ButtonSim_Typedef buttonz;
 
 #endif	// MENU_H

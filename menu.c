@@ -689,37 +689,42 @@ void MenuUpdateSelectedItem() {
 // User Interface //
 ////////////////////
 uint8_t MenuBackpressed(uint8_t reset) {
-	uint8_t returnValue = 0;
-	if (buttonz.buttonBack) {					// BUTTONZ //
-		returnValue = 1;
+	return UIhandler_Menu_Back (reset);
 
-		if (reset)
-			buttonz.buttonBack = 0;
-	}
-
-	return returnValue;
+//	uint8_t returnValue = 0;
+//	if (buttonz.buttonBack) {					// BUTTONZ //
+//		returnValue = 1;
+//
+//		if (reset)
+//			buttonz.buttonBack = 0;
+//	}
+//
+//	return returnValue;
 }
 
 uint8_t MenuOKpressed(uint8_t reset) {
-	uint8_t returnValue = 0;
-	if (buttonz.buttonOK) {						// BUTTONZ //
-		returnValue = 1;
+	return UIhandler_Menu_Ok (reset);
 
-		if (reset)
-			buttonz.buttonOK = 0;
-	}
-
-	return returnValue;
+//	uint8_t returnValue = 0;
+//	if (buttonz.buttonOK) {						// BUTTONZ //
+//		returnValue = 1;
+//
+//		if (reset)
+//			buttonz.buttonOK = 0;
+//	}
+//
+//	return returnValue;
 }
 
 int8_t MenuRotaryRead(uint8_t reset) {
-	int8_t returnValue = 0;
-	returnValue = buttonz.rotaryValue;
-
-	if (reset)
-		buttonz.rotaryValue = 0;				// BUTTONZ //
-
-	return returnValue;
+	return UIhandler_Menu_Rotary (reset);
+//	int8_t returnValue = 0;
+//	returnValue = buttonz.rotaryValue;
+//
+//	if (reset)
+//		buttonz.rotaryValue = 0;				// BUTTONZ //
+//
+//	return returnValue;
 }
 
 void MenuDrawEffect1 (uint8_t redraw) {
