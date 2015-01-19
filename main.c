@@ -101,147 +101,74 @@ int main(void)
 	RingBufferInit();
 
 #ifndef USE_OS
-//	uint16_t i=0x00FF;
-//	int8_t	debug;
-//		uint16_t i;
-//		uint16_t bpm = 60;
-
 	SysTick_Init();
 	UART2_init(57600);
-
-//	buttonz.buttonBack 	= 0;
-//	buttonz.buttonOK 	= 0;
-//	buttonz.rotaryValue	= 0;
 
 	LCD_Init();
 	LCD_Clear(ColourConverterDec(Black));
 
-	FXsettings.fx1	= NONE;
-	FXsettings.fx2	= NONE;
-	FXsettings.bcBits = 3;
-	FXsettings.dsFreq = 800;
-	FXsettings.lpfFreq = 900;		// 3000
-	FXsettings.hpfFreq = 1000;		// 15000
+	FXsettings.fx1		= NONE;
+	FXsettings.fx2		= NONE;
+	FXsettings.bcBits 	= 5;
+	FXsettings.dsFreq 	= 1000;
+	FXsettings.lpfFreq 	= 1000;
+	FXsettings.hpfFreq 	= 1000;
 
 	sequencer.instr0.level 	= 100;
 	sequencer.instr1.level 	= 100;
 	sequencer.instr2.level 	= 100;
-	sequencer.instr3.level 	= 100;
+	sequencer.instr3.level 	= 5;
 
 	sequencer.instr0.tone 	= 1;
 	sequencer.instr1.tone 	= 1;
 	sequencer.instr2.tone 	= 1;
 	sequencer.instr3.tone 	= 1;
 
-	settings.filterbookmarks.bookmark1.fx1_filter 	= HPF;
-	settings.filterbookmarks.bookmark1.fx1_value 	= 12345;
-	settings.filterbookmarks.bookmark1.fx2_filter 	= LPF;
-	settings.filterbookmarks.bookmark1.fx2_value 	= 54321;
+	settings.filterbookmarks.bookmark1.fx1_filter 	= DS;
+	settings.filterbookmarks.bookmark1.fx1_value 	= 400;
+	settings.filterbookmarks.bookmark1.fx2_filter 	= BC;
+	settings.filterbookmarks.bookmark1.fx2_value 	= 8;
 
 	settings.filterbookmarks.bookmark2.fx1_filter 	= DS;
-	settings.filterbookmarks.bookmark2.fx1_value 	= 10101;
+	settings.filterbookmarks.bookmark2.fx1_value 	= 10000;
 	settings.filterbookmarks.bookmark2.fx2_filter 	= BC;
-	settings.filterbookmarks.bookmark2.fx2_value 	= 99;
+	settings.filterbookmarks.bookmark2.fx2_value 	= 3;
 
 	MenuSetup();
 
 	settings.midi.channel 		= 0;
 
-	gui.infobars.info1.setting = INFO_PATT_LIVE_MODE;
-	gui.infobars.info2.setting = INFO_PATT_LIVE_MODE;
+	gui.infobars.info1.setting = INFO_BPM;
+	gui.infobars.info2.setting = INFO_INSTRUMENT;
 
-	FXsettings.fx1				= LPF;
-	FXsettings.fx2				= BC;
+	FXsettings.fx1				= NONE;
+	FXsettings.fx2				= NONE;
+	FXsettings.fxEnable			= 1;
 
 	uint8_t rotaryNr			= 1;
 	uint8_t runs				= 0;
+	BPMUpdate(150);
 	while (1) {
 
-		if (runs % 2 == 0) {			// RUNS (20 ms) * 15 = 300 ms total
+		if (runs % 3 == 0) {			// RUNS (30 ms) * 17 = 510 ms total
 			if (rotaryNr < 12) {			// 1 2 3 ... 9 10 11
 				UIUpdateRotary(rotaryNr);
+				rotaryNr ++;
 			} else if (rotaryNr < 16) {		// 12 13 14 15
 				UIUpdateButton(rotaryNr - 11);
-			} else {						// 16 17 .. 255
+				rotaryNr ++;
+			} else if (rotaryNr < 17) {		// 16
+				UIhandler();
+				rotaryNr++;
+			} else {						// 17
+				Menu_Update_handler();
 				rotaryNr = 1;
 			}
-		}
-
-		if (runs % 5 == 0) {			// RUNS (50 ms)
-			UIhandler();
-			Menu_Update_handler();
 		}
 
 		delay_nms(10);
 
 		runs ++;
-		if (runs >= 200)
-			runs = 0;
-
-
-//	!!!	[ LOT OF GARBAGE DOWN BELOW ] [ JUST SAYING ] !!!
-//
-//		uint16_t buttonvalue = UIButtonRead();
-//		if (buttonvalue & 0x1000) {
-//			buttonz.buttonOK = 1;
-//			GPIO_SetBits(GPIOD, GPIO_Pin_12);
-//		}
-//
-//		if (buttonvalue & 0x2000) {
-//			buttonz.buttonBack = 1;
-//			GPIO_SetBits(GPIOD, GPIO_Pin_13);
-//		}
-//
-//		if (buttonvalue & 0x4000) {
-//			GPIO_SetBits(GPIOD, GPIO_Pin_14);
-//			buttonz.rotaryValue = 1;
-//		}
-//
-//		if (buttonvalue & 0x8000) {
-//			GPIO_SetBits(GPIOD, GPIO_Pin_15);
-//			buttonz.rotaryValue = -1;
-//		}
-//
-//		 BLUE BUTTON
-//		if (GPIO_ReadInputDataBit(GPIOA, GPIO_Pin_0)) {
-//			sequencer.instrID ++;
-//			sequencer.instrID %= 6;
-//		}
-//
-//		 Rotary get
-//		SPI_PIC_Send(PIC_GET_ROTARY, 0, PIC_ROTARY_1);
-//		delay_1ms();
-//		buttonz.rotaryValue = SPI_PIC_Receive();
-//
-//		 Button get
-//		sequencerButtons = UIButtonRead();
-//
-//		buttonz.buttonOK = GPIO_ReadInputDataBit(GPIOE, GPIO_Pin_0);
-//		buttonz.buttonBack = 0;
-//
-//		 TONE
-//		sequencer.instr0.tone += 1;
-//		if (sequencer.instr0.tone > 200)
-//			sequencer.instr0.tone = 0;
-//
-//		sequencer.instr1.tone -= 10;
-//		if (sequencer.instr1.tone < 0)
-//			sequencer.instr1.tone = 200;
-//
-//		sequencer.instr2.tone = 200 - sequencer.instr0.tone;
-//		sequencer.instr3.tone = 200 - sequencer.instr1.tone;
-//
-//		// LEVEL
-//		sequencer.instr0.level += 1;
-//		if (sequencer.instr0.level > 100)
-//			sequencer.instr0.level = 0;
-//
-//		sequencer.instr1.level -= 5;
-//		if (sequencer.instr1.level > 100)
-//			sequencer.instr1.level = 100;
-//
-//		sequencer.instr2.level = 100 - sequencer.instr0.level;
-//		sequencer.instr3.level = 100 - sequencer.instr1.level;
 	}
 
 	while(1) {};

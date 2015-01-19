@@ -23,6 +23,7 @@ void UIhandler_FX_SWTICH 		(void);
 
 // Drums
 void UIhandler_Drum_Levels		(void);
+void UIhandler_SelectDrums		(void);
 
 // Play button
 void UIhandler_PlayButton 		(void);

@@ -2,6 +2,8 @@
 
 void Menu_Info() {
 	gui.menus.current = &gui.menus.info;
+	gui.infobars.fx1.setting = NONE;
+	gui.infobars.fx2.setting = NONE;
 
 	// Clear screen
 	LCD_Clear(ColourConverterDec(gui.colours.background));

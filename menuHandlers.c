@@ -56,12 +56,14 @@ void Menu_Info_handler(void) {
 		case HPF:	gui.infobars.fx1.setting = HPF;	gui.infobars.fx1.value = FXsettings.hpfFreq;	break;
 		case BC:	gui.infobars.fx1.setting = BC;	gui.infobars.fx1.value = FXsettings.bcBits;		break;
 		case DS:	gui.infobars.fx1.setting = DS;	gui.infobars.fx1.value = FXsettings.dsFreq;		break;
+		case NONE:	gui.infobars.fx1.setting = NONE;gui.infobars.fx1.value = -1;					break;
 	}
 	switch (FXsettings.fx2) {
 		case LPF:	gui.infobars.fx2.setting = LPF;	gui.infobars.fx2.value = FXsettings.lpfFreq;	break;
 		case HPF:	gui.infobars.fx2.setting = HPF;	gui.infobars.fx2.value = FXsettings.hpfFreq;	break;
 		case BC:	gui.infobars.fx2.setting = BC;	gui.infobars.fx2.value = FXsettings.bcBits;		break;
 		case DS:	gui.infobars.fx2.setting = DS;	gui.infobars.fx2.value = FXsettings.dsFreq;		break;
+		case NONE:	gui.infobars.fx2.setting = NONE;gui.infobars.fx2.value = -1;					break;
 	}
 
 	 // Update info setting values
@@ -653,19 +655,19 @@ void Menu_UI_colours_handler(void) {
 	MenuUpdateSelectedItem();
 
 	if (MenuOKpressed(1)) {
-		if (MenuCompareSelected("Back colour"))
+		if (MenuCompareSelected("Background"))
 			Menu_UI_backcolour();
 
-		else if (MenuCompareSelected("Text colour"))
+		else if (MenuCompareSelected("Text"))
 			Menu_UI_textcolour();
 
-		else if (MenuCompareSelected("Level colour"))
+		else if (MenuCompareSelected("Level bar"))
 			Menu_UI_levelbarcolour();
 
-		else if (MenuCompareSelected("Tone + colour"))
+		else if (MenuCompareSelected("Tone bar +"))
 			Menu_UI_toneposbarcolour();
 
-		else if (MenuCompareSelected("Tone - colour"))
+		else if (MenuCompareSelected("Tone bar -"))
 			Menu_UI_tonenegbarcolour();
 	}
 }

@@ -732,12 +732,23 @@ void MenuDrawEffect1 (uint8_t redraw) {
 	static uint16_t	int_value 	= -1;
 
 	uint8_t filter = gui.infobars.fx1.setting;
-	uint8_t value = gui.infobars.fx1.value;
+	uint16_t value = gui.infobars.fx1.value;
 
 	if (redraw || (filter != int_filter) || (value != int_value)) {
 		LCD_StringLine(FXBAR_1_X, FXBAR_1_Y, "        ");
 
-		LCD_StringLine(FXBAR_1_X, FXBAR_1_Y, "Not set");
+		switch (filter) {
+		case LPF	: LCD_StringLine(FXBAR_1_X, FXBAR_1_Y, "LPF"); 	break;
+		case HPF	: LCD_StringLine(FXBAR_1_X, FXBAR_1_Y, "HPF"); 	break;
+		case DS		: LCD_StringLine(FXBAR_1_X, FXBAR_1_Y, "DS"); 	break;
+		case BC		: LCD_StringLine(FXBAR_1_X, FXBAR_1_Y, "BC"); 	break;
+		default		: LCD_StringLine(FXBAR_1_X, FXBAR_1_Y, "None"); break;
+		}
+
+		if (filter != NONE)
+			LCD_StringInt(FXBAR_1_X, FXBAR_1_Y + (3*CHARWIDTH), value, 1);
+
+//		LCD_StringLine(FXBAR_1_X, FXBAR_1_Y, "Not set");
 
 		int_filter 	= filter;
 		int_value 	= value;
@@ -749,13 +760,24 @@ void MenuDrawEffect2 (uint8_t redraw) {
 	static uint16_t	int_value 	= -1;
 
 	uint8_t filter = gui.infobars.fx2.setting;
-	uint8_t value = gui.infobars.fx2.value;
+	uint16_t value = gui.infobars.fx2.value;
 
 	if (redraw || (filter != int_filter) || (value != int_value)) {
 		LCD_StringLine(FXBAR_2_X, FXBAR_2_Y, "        ");
 
 		// redraw
-		LCD_StringLine(FXBAR_2_X, FXBAR_2_Y, "Not set");
+		switch (filter) {
+		case LPF	: LCD_StringLine(FXBAR_2_X, FXBAR_2_Y, "LP"); 	break;
+		case HPF	: LCD_StringLine(FXBAR_2_X, FXBAR_2_Y, "HP"); 	break;
+		case DS		: LCD_StringLine(FXBAR_2_X, FXBAR_2_Y, "DS"); 	break;
+		case BC		: LCD_StringLine(FXBAR_2_X, FXBAR_2_Y, "BC"); 	break;
+		case NONE 	: LCD_StringLine(FXBAR_2_X, FXBAR_2_Y, "None"); break;
+		}
+
+		if (filter != NONE)
+			LCD_StringInt(FXBAR_2_X, FXBAR_2_Y + (3*CHARWIDTH), value, 1);
+
+//		LCD_StringLine(FXBAR_1_X, FXBAR_1_Y, "Not set");
 
 		int_filter 	= filter;
 		int_value 	= value;
@@ -774,7 +796,7 @@ void MenuDrawInfo1 (uint8_t redraw) {
 
 		switch (filter) {
 			case INFO_NONE: 
-				LCD_StringLine(INFOBAR_1_X, INFOBAR_1_Y, "Info nr1");
+//				LCD_StringLine(INFOBAR_1_X, INFOBAR_1_Y, "Info nr1");
 				break;
 
 			case INFO_BPM: 	
@@ -850,7 +872,7 @@ void MenuDrawInfo2 (uint8_t redraw) {
 
 		switch (filter) {
 			case INFO_NONE: 
-				LCD_StringLine(INFOBAR_2_X, INFOBAR_2_Y, "Info nr2");
+//				LCD_StringLine(INFOBAR_2_X, INFOBAR_2_Y, "Info nr2");
 				break;
 
 			case INFO_BPM: 	

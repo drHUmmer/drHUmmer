@@ -17,6 +17,7 @@ void UIhandler() {
 
 	// Drums
 	UIhandler_Drum_Levels();
+	UIhandler_SelectDrums();
 
 	// Pattern buttons
 	// todo: pattern length
@@ -125,7 +126,7 @@ void UIhandler_FX_SWTICH (void) {
 		// FX 2
 		if (ROTARY_FX_2) {
 			tempValue = FXsettings.fx2;
-			tempValue += ROTARY_FX_1;
+			tempValue += ROTARY_FX_2;
 			while (tempValue > 4) {			// Effects are 0 till 4
 				tempValue -= 5;
 			}
@@ -134,6 +135,7 @@ void UIhandler_FX_SWTICH (void) {
 			}
 			FXsettings.fx2 = tempValue;
 		}
+		uiInput.buttons &= ~BUTTON_SHIFT;
 	}
 }
 
@@ -211,6 +213,29 @@ void UIhandler_Drum_Levels (void) {
 	UIhandler_Drum_Levels_Single (&sequencer.instr1, &ROTARY_DRUM_LEVEL_2, &ROTARY_DRUM_TONE_2);
 	UIhandler_Drum_Levels_Single (&sequencer.instr2, &ROTARY_DRUM_LEVEL_3, &ROTARY_DRUM_TONE_3);
 	UIhandler_Drum_Levels_Single (&sequencer.instr3, &ROTARY_DRUM_LEVEL_4, &ROTARY_DRUM_TONE_4);
+}
+
+void UIhandler_SelectDrums (void) {
+	if (BUTTON_DRUM_1)
+		sequencer.instrID = 0;
+
+	if (BUTTON_DRUM_2)
+		sequencer.instrID = 1;
+
+	if (BUTTON_DRUM_3)
+		sequencer.instrID = 2;
+
+	if (BUTTON_DRUM_4)
+		sequencer.instrID = 3;
+
+	if (BUTTON_DRUM_5)
+		sequencer.instrID = 4;
+
+	if (BUTTON_DRUM_6)
+		sequencer.instrID = 5;
+
+	// Clear drum inputs
+	uiInput.buttons &= ~(BUTTON_DRUM_1 | BUTTON_DRUM_2 | BUTTON_DRUM_3 | BUTTON_DRUM_4  | BUTTON_DRUM_5  | BUTTON_DRUM_6);
 }
 
 /////////////////
