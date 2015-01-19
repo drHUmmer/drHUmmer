@@ -37,6 +37,9 @@
 
 /*---------------------------- Include ---------------------------------------*/
 #include <coocox.h>
+
+#include "tm_stm32f4_delay.h"
+
 U64     OSTickCnt = 0;                  /*!< Current system tick counter      */ 																			 
 
 /**
@@ -92,6 +95,7 @@ void SysTick_Handler(void)
 {
     OSSchedLock++;                  /* Lock scheduler.                        */
     OSTickCnt++;                    /* Increment systerm time.                */
+    TimingDelay_Decrement();
 #if CFG_TASK_WAITTING_EN >0    
     if(DlyList != Co_NULL)             /* Have task in delay list?               */
     {

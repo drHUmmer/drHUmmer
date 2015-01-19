@@ -6,9 +6,17 @@
 
 //float wavCnt = 0;
 
+
+uint32_t SDCnt = 1;
+
+uint8_t bufFlag = BUFF_A;
+uint8_t bufABusy = FALSE;
+uint8_t bufBBusy = FALSE;
+uint8_t bufFillFlag = BUFFF_NF;
+
 void TIM2_IRQHandler(void)
 {
-	uint16_t GPIO_msk = 0;
+	//uint16_t GPIO_msk = 0;
 
 	if (TIM_GetITStatus(TIM2, TIM_IT_Update) != RESET)
 	{
@@ -23,6 +31,8 @@ void TIM2_IRQHandler(void)
 			}
 
 			sequencer.beatmask = (sequencer.beatmask >> 1) | (sequencer.beatmask << ((sizeof(sequencer.beatmask)*8) - 1));	//rotate right
+
+			GPIO_ToggleBits(GPIOD, GPIO_Pin_14);
 		}
 
 		if((sequencer.snaredrum.sequence &  sequencer.beatmask) && \
@@ -57,7 +67,7 @@ void TIM2_IRQHandler(void)
 		{
 			sequencer.instr3.triggerflag = 1;
 		}
-		GPIO_SetBits(GPIOD, GPIO_msk);
+		//GPIO_SetBits(GPIOD, GPIO_msk);
 
 		sequencer.submask = (sequencer.submask >> 1) | ((sequencer.submask & 0x1) << 5);	//rotate right
 
@@ -67,10 +77,11 @@ void TIM2_IRQHandler(void)
 		TIM_ClearITPendingBit(TIM2, TIM_IT_CC1);
 		if(!(sequencer.timerflag) || ((sequencer.timerflag == 1) && (sequencer.beatclk == 1)))
 		{
-			GPIO_ResetBits(GPIOD, (GPIO_Pin_12 | GPIO_Pin_13 | GPIO_Pin_14 | GPIO_Pin_15));
+			//GPIO_ResetBits(GPIOD, (GPIO_Pin_12 | GPIO_Pin_13 | GPIO_Pin_14 | GPIO_Pin_15));
 		}
 	}
 }
+
 
 void TIM5_IRQHandler(void)
 {
@@ -103,6 +114,73 @@ void TIM5_IRQHandler(void)
 			sequencer.instr3.buffer_loc = 0;
 			sequencer.instr3.triggerflag = 0;
 		}
+
+		//uint16_t SDData;
+		//int16_t offset = 2048;
+
+		if(bufFlag == BUFF_A){
+			if(!bufBBusy){
+				/*SDData = wavBufB[SDCnt];
+				SDData /= 16;
+				SDData += offset;
+				SDData &= 0x0FFF;*/
+				dacPut(wavBufB[SDCnt]);
+				SDCnt++;
+				SDCnt = SDCnt % WAV_BUF_SIZE;
+			}
+			if(SDCnt == 0){
+				bufFlag = BUFF_B;
+				bufFillFlag = BUFFF_NF;
+			}
+			//GPIO_ToggleBits(GPIOD,(GPIO_Pin_14 | GPIO_Pin_15));
+		}else {
+			if(!bufABusy){
+				/*SDData = wavBufB[SDCnt];
+				SDData /= 16;
+				SDData += offset;
+				SDData &= 0x0FFF;*/
+				dacPut(wavBufA[SDCnt]);
+				SDCnt++;
+				SDCnt = SDCnt % WAV_BUF_SIZE;
+			}
+
+			if(SDCnt == 0){
+				bufFlag = BUFF_A;
+				bufFillFlag = BUFFF_NF;
+			}
+			//GPIO_ToggleBits(GPIOD,(GPIO_Pin_14 | GPIO_Pin_15));
+		}
+
+		/*
+		if (SDCnt == 510){
+			SDCnt = 510;
+		}
+
+		if (SDCnt > 0){
+			dacPut(wavBufA[SDCnt-1]);
+			SDCnt++;
+			SDCnt = SDCnt % 513;
+
+		}
+		 */
+
+
+
+/*		uint16_t SDData = SDGet16(&(fnames[0]),SDCnt);
+		int16_t offset = 2048;
+
+		SDData /= 16;
+		SDData += offset;
+		SDData &= 0x0FFF;
+
+		SDData = (uint16_t) SDData;
+
+		dacPut(SDData);
+		if (SDCnt >= 45368) SDCnt=22;
+		else SDCnt++;*/
+
+
+
 
 /*		uint16_t sampleMix = 2048;
 		sampleMix = (hihatWav[sequencer.instr0.buffer_loc] + \

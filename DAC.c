@@ -48,7 +48,7 @@ void dacInit(void){
 void dacPut(uint16_t data){
 	/******************************************************
 	 * - Writes 12-bit data to DAC ch 1 output buffer
-	 * - bits are richt alight (MSB 1st)
+	 * - bits are right aligned (MSB 1st)
 	 ******************************************************/
 
 	DAC_SetChannel1Data(DAC_Align_12b_R,data);

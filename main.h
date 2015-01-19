@@ -1,15 +1,15 @@
 #ifndef MAIN_HEADER
 #define MAIN_HEADER
 
-#define DEBUG	// uncomment this line for debug mode
+//#define DEBUG	// uncomment this line for debug mode
 #define USE_OS
 
 #include "stm32f4xx.h"
 #include "stm32f4xx_tim.h"
 #include "stm32f4xx_gpio.h"
 #include "stm32f4xx_exti.h"
+#include "stm32f4xx_spi.h"
 #include "stm32f4xx_syscfg.h"
-//#include "stm32f4xx_spi.h"
 #include "misc.h"
 #include "ADC.h"
 #include "DAC.h"
@@ -27,8 +27,9 @@
 
 #include "sequencer.h"
 #include "UI.h"
-#include "ringbuff.h"
 #include "SPI.h"
+#include "ringbuff.h"
+#include "SD.h"
 
 #define MIDI_PRIO	0
 #define SEQ_PRIO	1
@@ -47,10 +48,5 @@ void Sequencer_task(void);
 void Filter_task(void);
 void MIDI_task(void);
 #endif	/*	USE_OS	*/
-
-#ifdef DEBUG
-void error_blink(void);
-void delay_us(uint32_t delay);
-#endif /* DEBUG */
 
 #endif /* MAIN_HEADER */
