@@ -159,9 +159,9 @@
     <File name="CoOS/kernel/OsTask.h" path="CoOS/kernel/OsTask.h" type="1"/>
     <File name="LIB21/tm_stm32f4_disco.c" path="LIB21/tm_stm32f4_disco.c" type="1"/>
     <File name="cmsis_lib/include/stm32f4xx_tim.h" path="cmsis_lib/include/stm32f4xx_tim.h" type="1"/>
-    <File name="includes/interrupt.h" path="interrupt.h" type="1"/>
     <File name="cmsis_boot/cmsis_lib/source/misc.c" path="cmsis_lib/source/misc.c" type="1"/>
     <File name="CoOS/kernel/timer.c" path="CoOS/kernel/timer.c" type="1"/>
+    <File name="includes/interrupt.h" path="interrupt.h" type="1"/>
     <File name="source/ADC.c" path="ADC.c" type="1"/>
     <File name="CoOS/Document" path="" type="2"/>
     <File name="cmsis_lib/source" path="" type="2"/>
@@ -197,8 +197,8 @@
     <File name="LIB21/fatfs_sd.h" path="LIB21/fatfs/drivers/fatfs_sd.h" type="1"/>
     <File name="cmsis_boot/cmsis_lib" path="" type="2"/>
     <File name="LIB21/diskio.h" path="LIB21/fatfs/diskio.h" type="1"/>
-    <File name="CoOS/portable" path="" type="2"/>
     <File name="cmsis_boot/cmsis_lib/include/misc.h" path="cmsis_lib/include/misc.h" type="1"/>
+    <File name="CoOS/portable" path="" type="2"/>
     <File name="CoOS/kernel/OsMM.h" path="CoOS/kernel/OsMM.h" type="1"/>
     <File name="CoOS/kernel/hook.c" path="CoOS/kernel/hook.c" type="1"/>
     <File name="cmsis_boot/cmsis_lib/source/stm32f4xx_adc.c" path="cmsis_lib/source/stm32f4xx_adc.c" type="1"/>

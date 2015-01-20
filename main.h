@@ -38,6 +38,13 @@
 #define	UI_PRIO		4
 #define LCD_PRIO	5
 
+#define MIDI_STK_SIZE		128
+#define SEQ_STK_SIZE		128
+#define SD_STK_SIZE			516
+#define FILTER_STK_SIZE		128
+#define UI_STK_SIZE			128
+#define LCD_STK_SIZE		128
+
 int main(void);
 
 #ifdef USE_OS

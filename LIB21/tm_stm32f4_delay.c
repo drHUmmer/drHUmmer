@@ -29,7 +29,7 @@ void Delay(__IO uint32_t nTime) {
 }
 
 void Delayms(__IO uint32_t nTime) {
-	TM_TimingDelay = 1000 * nTime;
+	TM_TimingDelay = nTime;		//1000 * nTime;
 
 	while (TM_TimingDelay != 0);
 }
@@ -44,7 +44,8 @@ void TimingDelay_Decrement(void) {
 		TM_TimingDelay--;
 	}
 }
-/*#else
+/*
+#else
 void SysTick_Handler(void) {
 	TM_Time++;
 	if (TM_Time2 != 0x00) {
@@ -54,19 +55,20 @@ void SysTick_Handler(void) {
 		TM_TimingDelay--;
 	}
 }
-#endif*/
+#endif
+*/
 
 void TM_DELAY_Init(void) {
 	if (TM_DELAY_Initialized) {
 		return;
 	}
-	RCC_HSEConfig(RCC_HSE_ON);
-	while (!RCC_WaitForHSEStartUp());
-	/* Set Systick interrupt every 1us */
-	if (SysTick_Config(SystemCoreClock / 1000000)) {
-		/* Capture error */
-		while (1);
-	}
+//	RCC_HSEConfig(RCC_HSE_ON);
+//	while (!RCC_WaitForHSEStartUp());
+//	/* Set Systick interrupt every 1us */
+//	if (SysTick_Config(SystemCoreClock / 1000)) {		//1000000
+//		/* Capture error */
+//		while (1);
+//	}
 	TM_DELAY_Initialized = 1;
 }
 
@@ -83,7 +85,7 @@ void TM_DELAY_SetTime(uint32_t time) {
 }
 
 void TM_DELAY_SetTime2(uint32_t time) {
-	TM_Time2 = (1000*time);
+	TM_Time2 = time;	//(1000*time);
 }
 
 void TM_DELAY_EnableSystick(void) {

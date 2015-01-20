@@ -52,7 +52,7 @@ void Timer5Init(void)
 	/* TIM IT enable */
 	TIM_ITConfig(TIM5, (TIM_IT_Update), ENABLE);
 
-	/* TIM2 enable counter */
+	/* TIM5 enable counter */
 	TIM_Cmd(TIM5, ENABLE);
 }
 

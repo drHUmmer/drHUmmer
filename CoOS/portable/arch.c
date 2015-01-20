@@ -95,13 +95,15 @@ void SysTick_Handler(void)
 {
     OSSchedLock++;                  /* Lock scheduler.                        */
     OSTickCnt++;                    /* Increment systerm time.                */
+
     TimingDelay_Decrement();
-#if CFG_TASK_WAITTING_EN >0    
+
+#if CFG_TASK_WAITTING_EN >0
     if(DlyList != Co_NULL)             /* Have task in delay list?               */
     {
         if(DlyList->delayTick > 1)  /* Delay time > 1?                        */
         {
-			DlyList->delayTick--;   /* Decrease delay time of the list head.  */         
+			DlyList->delayTick--;   /* Decrease delay time of the list head.  */
         }
 		else
 		{
@@ -110,20 +112,20 @@ void SysTick_Handler(void)
 		}
     }
 #endif
-    
-#if CFG_TMR_EN > 0	
+
+#if CFG_TMR_EN > 0
     if(TmrList != Co_NULL)             /* Have timer in working?                 */
     {
         if(TmrList->tmrCnt > 1)     /* Timer time > 1?                        */
         {
-			TmrList->tmrCnt--;      /* Decrease timer time of the list head.  */        
+			TmrList->tmrCnt--;      /* Decrease timer time of the list head.  */
         }
 		else
 		{
 			TmrList->tmrCnt = 0;
 			isr_TmrDispose();         /* Call hander for timer list             */
 		}
-    }	
+    }
 #endif
 	TaskSchedReq = Co_TRUE;
     OsSchedUnlock();

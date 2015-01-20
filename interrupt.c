@@ -151,35 +151,6 @@ void TIM5_IRQHandler(void)
 			//GPIO_ToggleBits(GPIOD,(GPIO_Pin_14 | GPIO_Pin_15));
 		}
 
-		/*
-		if (SDCnt == 510){
-			SDCnt = 510;
-		}
-
-		if (SDCnt > 0){
-			dacPut(wavBufA[SDCnt-1]);
-			SDCnt++;
-			SDCnt = SDCnt % 513;
-
-		}
-		 */
-
-
-
-/*		uint16_t SDData = SDGet16(&(fnames[0]),SDCnt);
-		int16_t offset = 2048;
-
-		SDData /= 16;
-		SDData += offset;
-		SDData &= 0x0FFF;
-
-		SDData = (uint16_t) SDData;
-
-		dacPut(SDData);
-		if (SDCnt >= 45368) SDCnt=22;
-		else SDCnt++;*/
-
-
 
 
 /*		uint16_t sampleMix = 2048;
