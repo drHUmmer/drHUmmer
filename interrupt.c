@@ -4,6 +4,8 @@
 //#include "basskick.h"
 //#include "cymbal.h"
 
+#include "ADC.h"
+
 //float wavCnt = 0;
 
 
@@ -85,7 +87,7 @@ void TIM2_IRQHandler(void)
 
 void TIM5_IRQHandler(void)
 {
-
+	uint16_t adc1_dat = adcGet();
 
 	if (TIM_GetITStatus(TIM5, TIM_IT_Update) != RESET)
 	{
@@ -120,10 +122,6 @@ void TIM5_IRQHandler(void)
 
 		if(bufFlag == BUFF_A){
 			if(!bufBBusy){
-				/*SDData = wavBufB[SDCnt];
-				SDData /= 16;
-				SDData += offset;
-				SDData &= 0x0FFF;*/
 				dacPut(wavBufB[SDCnt]);
 				SDCnt++;
 				SDCnt = SDCnt % WAV_BUF_SIZE;
@@ -132,13 +130,8 @@ void TIM5_IRQHandler(void)
 				bufFlag = BUFF_B;
 				bufFillFlag = BUFFF_NF;
 			}
-			//GPIO_ToggleBits(GPIOD,(GPIO_Pin_14 | GPIO_Pin_15));
 		}else {
 			if(!bufABusy){
-				/*SDData = wavBufB[SDCnt];
-				SDData /= 16;
-				SDData += offset;
-				SDData &= 0x0FFF;*/
 				dacPut(wavBufA[SDCnt]);
 				SDCnt++;
 				SDCnt = SDCnt % WAV_BUF_SIZE;
@@ -148,10 +141,7 @@ void TIM5_IRQHandler(void)
 				bufFlag = BUFF_A;
 				bufFillFlag = BUFFF_NF;
 			}
-			//GPIO_ToggleBits(GPIOD,(GPIO_Pin_14 | GPIO_Pin_15));
 		}
-
-
 
 /*		uint16_t sampleMix = 2048;
 		sampleMix = (hihatWav[sequencer.instr0.buffer_loc] + \

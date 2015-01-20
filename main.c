@@ -50,7 +50,7 @@ int main(void)
 	CoInitOS();
 
 	dacInit();
-//	adcInit();
+	adcInit();
 	NVICTimer2Init();
 	NVICTimer5Init();
 	Timer2Init();
@@ -58,7 +58,7 @@ int main(void)
 
 	BPMUpdate(sequencer.BPM);
 
-//	RingBufferInit();
+	RingBufferInit();
 
 	CoCreateTask((FUNCPtr)UI_task,(void *)0,UI_PRIO,&UI_task_stk[128-1],128);
 	CoCreateTask((FUNCPtr)LCD_task,(void *)0,LCD_PRIO,&LCD_task_stk[128-1],128);
