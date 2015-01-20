@@ -4,9 +4,6 @@
 // Main Handler //
 //////////////////
 void UIhandler() {
-	// Update LEDS
-	SPI_LED_Send();
-
 	// Sequencer
 	UIhandler_Sequencer();
 
@@ -28,6 +25,9 @@ void UIhandler() {
 
 	// Play Button
 	UIhandler_PlayButton();
+
+	// Update LEDS
+	SPI_LED_Send();
 }
 
 ///////////////
@@ -44,8 +44,6 @@ void UIhandler_Sequencer (void) {
 	case 4: sequencer.instr2.sequence 		^= sequencerButtons;	break;	// D3
 	case 5: sequencer.instr3.sequence 		^= sequencerButtons;	break;	// D4
 	}
-
-
 
 	/*
 	switch (sequencer.instrID) {
