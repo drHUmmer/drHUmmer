@@ -130,7 +130,7 @@ void TIM5_IRQHandler(void)
 				bufFlag = BUFF_B;
 				bufFillFlag = BUFFF_NF;
 			}
-			GPIO_ToggleBits(GPIOD,(GPIO_Pin_14 | GPIO_Pin_15));
+			GPIO_ToggleBits(GPIOD,GPIO_Pin_14);
 		}else {
 			if(!bufABusy){
 				/*SDData = wavBufB[SDCnt];
@@ -146,7 +146,7 @@ void TIM5_IRQHandler(void)
 				bufFlag = BUFF_A;
 				bufFillFlag = BUFFF_NF;
 			}
-			GPIO_ToggleBits(GPIOD,(GPIO_Pin_14 | GPIO_Pin_15));
+			GPIO_ToggleBits(GPIOD,GPIO_Pin_14);
 		}
 
 		/*
