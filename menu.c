@@ -558,6 +558,45 @@ void MenuSetup() {
 	gui.bars.digitalDrum4Tone.xSize							= 180;
 	gui.bars.digitalDrum4Tone.ySize							= 25;
 
+	// CUSTOM INIT VARIABLES
+	FXsettings.fx1		= NONE;
+	FXsettings.fx2		= NONE;
+	FXsettings.bcBits 	= 5;
+	FXsettings.dsFreq 	= 1000;
+	FXsettings.lpfFreq 	= 1000;
+	FXsettings.hpfFreq 	= 1000;
+
+	sequencer.instr0.level 	= 100;
+	sequencer.instr1.level 	= 100;
+	sequencer.instr2.level 	= 100;
+	sequencer.instr3.level 	= 100;
+
+	sequencer.instr0.tone 	= 1;
+	sequencer.instr1.tone 	= 1;
+	sequencer.instr2.tone 	= 1;
+	sequencer.instr3.tone 	= 1;
+
+	settings.filterbookmarks.bookmark1.fx1_filter 	= DS;
+	settings.filterbookmarks.bookmark1.fx1_value 	= 400;
+	settings.filterbookmarks.bookmark1.fx2_filter 	= BC;
+	settings.filterbookmarks.bookmark1.fx2_value 	= 8;
+
+	settings.filterbookmarks.bookmark2.fx1_filter 	= DS;
+	settings.filterbookmarks.bookmark2.fx1_value 	= 10000;
+	settings.filterbookmarks.bookmark2.fx2_filter 	= BC;
+	settings.filterbookmarks.bookmark2.fx2_value 	= 3;
+
+	settings.midi.channel 		= 0;
+
+	gui.infobars.info1.setting 	= INFO_BPM;
+	gui.infobars.info2.setting 	= INFO_INSTRUMENT;
+
+	FXsettings.fx1				= NONE;
+	FXsettings.fx2				= NONE;
+	FXsettings.fxEnable			= 1;
+
+	sequencer.instrID 			= 0;
+
 	// Start mainscreen
 	Menu_Info();
 }

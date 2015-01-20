@@ -84,7 +84,8 @@ void TIM5_IRQHandler(void)
 {
 	GPIO_SetBits(GPIOD, GPIO_Pin_12);
 	uint16_t sampleMix = DC_COMP;	//was 2048
-	uint32_t audioOut = DC_COMP;
+	uint16_t audioOut = DC_COMP;
+	uint32_t audioCalc = 0;
 
 	if (TIM_GetITStatus(TIM5, TIM_IT_Update) != RESET)
 	{
@@ -115,10 +116,12 @@ void TIM5_IRQHandler(void)
 		}
 
 ///*
-		 audioOut = (hihatWav[sequencer.instr0.buffer_loc] * sequencer.instr0.level + \
+		 audioCalc = (hihatWav[sequencer.instr0.buffer_loc] * sequencer.instr0.level + \
 					 snaredrumWav[sequencer.instr1.buffer_loc] * sequencer.instr1.level + \
 					 basskickmWav[sequencer.instr2.buffer_loc] * sequencer.instr2.level + \
 					 cymbalWav[sequencer.instr3.buffer_loc] * sequencer.instr3.level) / 400;
+
+		 audioOut = audioCalc;
 //*/
 //		audioOut = 0;
 

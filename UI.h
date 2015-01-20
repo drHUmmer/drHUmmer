@@ -66,42 +66,78 @@ UIInput_Typedef uiInput;
 #define ROTARY_FX_1			uiInput.rotary10
 #define ROTARY_FX_2			uiInput.rotary11
 
+#define BUTTON_SEQ_1		(uiInput.buttons & (1<<BUTTON_SEQ_1_NR))
+#define BUTTON_SEQ_2		(uiInput.buttons & (1<<BUTTON_SEQ_2_NR))
+#define BUTTON_SEQ_3		(uiInput.buttons & (1<<BUTTON_SEQ_3_NR))
+#define BUTTON_SEQ_4		(uiInput.buttons & (1<<BUTTON_SEQ_4_NR))
+#define BUTTON_SEQ_5		(uiInput.buttons & (1<<BUTTON_SEQ_5_NR))
+#define BUTTON_SEQ_6		(uiInput.buttons & (1<<BUTTON_SEQ_6_NR))
+#define BUTTON_SEQ_7		(uiInput.buttons & (1<<BUTTON_SEQ_7_NR))
+#define BUTTON_SEQ_8		(uiInput.buttons & (1<<BUTTON_SEQ_8_NR))
+#define BUTTON_SEQ_9		(uiInput.buttons & (1<<BUTTON_SEQ_9_NR))
+#define BUTTON_SEQ_10		(uiInput.buttons & (1<<BUTTON_SEQ_10_NR))
+#define BUTTON_SEQ_11		(uiInput.buttons & (1<<BUTTON_SEQ_11_NR))
+#define BUTTON_SEQ_12		(uiInput.buttons & (1<<BUTTON_SEQ_12_NR))
+#define BUTTON_SEQ_13		(uiInput.buttons & (1<<BUTTON_SEQ_13_NR))
+#define BUTTON_SEQ_14		(uiInput.buttons & (1<<BUTTON_SEQ_14_NR))
+#define BUTTON_SEQ_15		(uiInput.buttons & (1<<BUTTON_SEQ_15_NR))
+#define BUTTON_SEQ_16		(uiInput.buttons & (1<<BUTTON_SEQ_16_NR))
 
-#define BUTTON_SEQ_1		(uiInput.buttons & (1<<0))
-#define BUTTON_SEQ_2		(uiInput.buttons & (1<<1))
-#define BUTTON_SEQ_3		(uiInput.buttons & (1<<2))
-#define BUTTON_SEQ_4		(uiInput.buttons & (1<<3))
-#define BUTTON_SEQ_5		(uiInput.buttons & (1<<4))
-#define BUTTON_SEQ_6		(uiInput.buttons & (1<<5))
-#define BUTTON_SEQ_7		(uiInput.buttons & (1<<6))
-#define BUTTON_SEQ_8		(uiInput.buttons & (1<<7))
-#define BUTTON_SEQ_9		(uiInput.buttons & (1<<8))
-#define BUTTON_SEQ_10		(uiInput.buttons & (1<<9))
-#define BUTTON_SEQ_11		(uiInput.buttons & (1<<10))
-#define BUTTON_SEQ_12		(uiInput.buttons & (1<<11))
-#define BUTTON_SEQ_13		(uiInput.buttons & (1<<12))
-#define BUTTON_SEQ_14		(uiInput.buttons & (1<<13))
-#define BUTTON_SEQ_15		(uiInput.buttons & (1<<14))
-#define BUTTON_SEQ_16		(uiInput.buttons & (1<<15))
+#define BUTTON_DRUM_1		(uiInput.buttons & (1<<BUTTON_DRUM_1_NR))
+#define BUTTON_DRUM_2		(uiInput.buttons & (1<<BUTTON_DRUM_2_NR))
+#define BUTTON_DRUM_3		(uiInput.buttons & (1<<BUTTON_DRUM_3_NR))
+#define BUTTON_DRUM_4		(uiInput.buttons & (1<<BUTTON_DRUM_4_NR))
+#define BUTTON_DRUM_5		(uiInput.buttons & (1<<BUTTON_DRUM_5_NR))
+#define BUTTON_DRUM_6		(uiInput.buttons & (1<<BUTTON_DRUM_6_NR))
 
-#define BUTTON_DRUM_1		(uiInput.buttons & (1<<16))
-#define BUTTON_DRUM_2		(uiInput.buttons & (1<<17))
-#define BUTTON_DRUM_3		(uiInput.buttons & (1<<18))
-#define BUTTON_DRUM_4		(uiInput.buttons & (1<<19))
-#define BUTTON_DRUM_5		(uiInput.buttons & (1<<20))
-#define BUTTON_DRUM_6		(uiInput.buttons & (1<<21))
+#define BUTTON_PLAY			(uiInput.buttons & (1<<BUTTON_PLAY_NR))
+#define BUTTON_CLEAR		(uiInput.buttons & (1<<BUTTON_CLEAR_NR))
+#define BUTTON_SHIFT		(uiInput.buttons & (1<<BUTTON_SHIFT_NR))
+#define BUTTON_PATT_SEL		(uiInput.buttons & (1<<BUTTON_PATT_SELs_NR))
+#define BUTTON_PATT_LEN		(uiInput.buttons & (1<<BUTTON_PATT_LEN_NR))
 
-#define BUTTON_PLAY			(uiInput.buttons & (1<<22))
-#define BUTTON_CLEAR		(uiInput.buttons & (1<<23))
-#define BUTTON_SHIFT		(uiInput.buttons & (1<<24))
-#define BUTTON_PATT_SEL		(uiInput.buttons & (1<<25))
-#define BUTTON_PATT_LEN		(uiInput.buttons & (1<<26))
+#define BUTTON_FX_ONOFF		(uiInput.buttons & (1<<BUTTON_FX_ONOFF_NR))
+#define BUTTON_MENU_OK		(uiInput.buttons & (1<<BUTTON_MENU_OK_NR))
+#define BUTTON_MENU_BACK	(uiInput.buttons & (1<<BUTTON_MENU_BACK_NR))
+#define BUTTON_EXTRA_1		(uiInput.buttons & (1<<BUTTON_EXTRA_1_NR))
+#define BUTTON_EXTRA_2		(uiInput.buttons & (1<<BUTTON_EXTRA_2_NR))
 
-#define BUTTON_FX_ONOFF		(uiInput.buttons & (1<<27))
-#define BUTTON_MENU_OK		(uiInput.buttons & (1<<28))
-#define BUTTON_MENU_BACK	(uiInput.buttons & (1<<29))
-#define BUTTON_EXTRA_1		(uiInput.buttons & (1<<30))
-#define BUTTON_EXTRA_2		(uiInput.buttons & (1<<31))
+#define BUTTON_SEQ_1_NR		0
+#define BUTTON_SEQ_2_NR		1
+#define BUTTON_SEQ_3_NR		2
+#define BUTTON_SEQ_4_NR		3
+#define BUTTON_SEQ_5_NR		4
+#define BUTTON_SEQ_6_NR		5
+#define BUTTON_SEQ_7_NR		6
+#define BUTTON_SEQ_8_NR		7
+
+#define BUTTON_SEQ_9_NR		8
+#define BUTTON_SEQ_10_NR	9
+#define BUTTON_SEQ_11_NR	10
+#define BUTTON_SEQ_12_NR	11
+#define BUTTON_SEQ_13_NR	12
+#define BUTTON_SEQ_14_NR	13
+#define BUTTON_SEQ_15_NR	14
+#define BUTTON_SEQ_16_NR	15
+
+#define BUTTON_DRUM_1_NR	16
+#define BUTTON_DRUM_2_NR	17
+#define BUTTON_DRUM_3_NR	18
+#define BUTTON_DRUM_4_NR	19
+#define BUTTON_DRUM_5_NR	20
+#define BUTTON_DRUM_6_NR	21
+
+#define BUTTON_PLAY_NR		22
+#define BUTTON_CLEAR_NR		23
+#define BUTTON_SHIFT_NR		24
+#define BUTTON_PATT_SEL_NR	25
+#define BUTTON_PATT_LEN_NR	26
+
+#define BUTTON_FX_ONOFF_NR	27
+#define BUTTON_MENU_OK_NR	28
+#define BUTTON_MENU_BACK_NR	29
+#define BUTTON_EXTRA_1_NR	30
+#define BUTTON_EXTRA_2_NR	31
 
 
 // User functions

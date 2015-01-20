@@ -145,6 +145,8 @@ void LCD_Init(void) {
 
 	LCD_Clear(0, 0, 0);
 	Delay_ms(50);
+
+	LCD_Clear(ColourConverterDec(Black));
 }
 
 void LCD_SetWindow(u16 x1, u16 y1, u16 x2, u16 y2)

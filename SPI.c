@@ -74,11 +74,17 @@ void SPI_PIC_Send(uint8_t command,uint8_t setting,uint8_t address)
 }
 
 #ifdef DEBUG	/*	debug mode	*/
-void SPI_LED_Send(uint16_t data)
+void SPI_LED_Send(void)
 {
+	// EDIT ME! //
+	uint32_t data = 0xAA55F00F;
+
+
 	uint8_t dummy;
-	uint8_t dataMSB = ((data & 0xFF00)>>8);
-	uint8_t dataLSB = (data & 0x00FF);
+	uint8_t data1 = ((data & 0xFF000000)>>24);
+	uint8_t data2 = ((data & 0x00FF0000)>>16);
+	uint8_t data3 = ((data & 0x0000FF00)>>8);
+	uint8_t data4 = ( data & 0x000000FF);
 
 	while(!(SPI3->SR & SPI_I2S_FLAG_TXE));								//wait until SPI3 is available
 	while(SPI3->SR & SPI_I2S_FLAG_BSY);
@@ -91,21 +97,55 @@ void SPI_LED_Send(uint16_t data)
 	}
 
 	GPIO_ResetBits(GPIOC, LED_SS);										//select LEDs
-	SPI3->DR = dataMSB;													//send MSByte
+	SPI3->DR = data1;													//send MSByte
 	while(!(SPI3->SR & SPI_I2S_FLAG_TXE));								//wait until finished sending data
 	while(SPI3->SR & SPI_I2S_FLAG_BSY);									//
-	SPI3->DR = dataLSB;													//send LSByte
+	SPI3->DR = data2;													//send MSByte
 	while(!(SPI3->SR & SPI_I2S_FLAG_TXE));								//wait until finished sending data
-	while(SPI3->SR & SPI_I2S_FLAG_BSY);									//
-	GPIO_SetBits(GPIOC, LED_SS);										//deselect LEDs
+	while(SPI3->SR & SPI_I2S_FLAG_BSY);
+	SPI3->DR = data3;													//send MSByte
+	while(!(SPI3->SR & SPI_I2S_FLAG_TXE));								//wait until finished sending data
+	while(SPI3->SR & SPI_I2S_FLAG_BSY);
+	SPI3->DR = data4;													//send MSByte
+	while(!(SPI3->SR & SPI_I2S_FLAG_TXE));								//wait until finished sending data
+	while(SPI3->SR & SPI_I2S_FLAG_BSY);
 	dummy = SPI3->DR;													//access data register to avoid overrun error flag
 }
 #else	/*	LED drivers use different settings from shift registers	*/
-void SPI_LED_Send(uint16_t data)
+void SPI_LED_Send (void)
 {
+	uint32_t data	= 0x00;
+
+	// Instruments and pattern
+	switch (sequencer.instrID) {
+	case 0:	data |= sequencer.bassdrum.sequence;
+			data |= (1 << BUTTON_DRUM_1_NR);		break;
+	case 1:	data |= sequencer.snaredrum.sequence;
+			data |= (1 << BUTTON_DRUM_2_NR);		break;
+	case 2:	data |= sequencer.instr0.sequence;
+			data |= (1 << BUTTON_DRUM_3_NR);		break;
+	case 3:	data |= sequencer.instr1.sequence;
+			data |= (1 << BUTTON_DRUM_4_NR);		break;
+	case 4:	data |= sequencer.instr2.sequence;
+			data |= (1 << BUTTON_DRUM_5_NR);		break;
+	case 5:	data |= sequencer.instr3.sequence;
+			data |= (1 << BUTTON_DRUM_6_NR);		break;
+	}
+
+	// Play button
+	data |= (sequencer.playing == 1 ? (1 << BUTTON_PLAY_NR) : 0);
+
+	// FX on / off
+	data |= (FXsettings.fxEnable == 1 ? (1 << BUTTON_FX_ONOFF_NR) : 0);
+
+	// SHIFT
+	data |= (BUTTON_SHIFT != 0 ? (1 << BUTTON_SHIFT_NR) : 0);
+
 	uint16_t dummy;
-	uint8_t dataMSB = ((data & 0xFF00)>>8);
-	uint8_t dataLSB = (data & 0x00FF);
+	uint8_t data1 = ((data & 0xFF000000)>>24);
+	uint8_t data2 = ((data & 0x00FF0000)>>16);
+	uint8_t data3 = ((data & 0x0000FF00)>>8);
+	uint8_t data4 = ((data & 0x000000FF)>>0);
 
 	while(!(SPI3->SR & SPI_I2S_FLAG_TXE));								//wait until SPI3 is available
 	while(SPI3->SR & SPI_I2S_FLAG_BSY);
@@ -117,14 +157,34 @@ void SPI_LED_Send(uint16_t data)
 		SPI3->CR1 |= SPI_CR1_SPE;
 	}
 
-	GPIO_SetBits(GPIOC, LED_SS);										//select LEDs
-	SPI3->DR = ~data;													//send data (
-	while(!(SPI3->SR & SPI_I2S_FLAG_TXE));								//wait until finished sending data
-	while(SPI3->SR & SPI_I2S_FLAG_BSY);									//
-	SPI3->DR = dataLSB;													//send LSByte
-	while(!(SPI3->SR & SPI_I2S_FLAG_TXE));								//wait until finished sending data
-	while(SPI3->SR & SPI_I2S_FLAG_BSY);									//
-	GPIO_ResetBits(GPIOC, LED_SS);										//deselect LEDs
+	SPI3->DR = data4;
+	while(!(SPI3->SR & SPI_I2S_FLAG_TXE));
+	while(SPI3->SR & SPI_I2S_FLAG_BSY);
+
+	SPI3->DR = data3;
+	while(!(SPI3->SR & SPI_I2S_FLAG_TXE));
+	while(SPI3->SR & SPI_I2S_FLAG_BSY);
+
+	SPI3->DR = data2;
+	while(!(SPI3->SR & SPI_I2S_FLAG_TXE));
+	while(SPI3->SR & SPI_I2S_FLAG_BSY);
+
+	SPI3->DR = data1;
+	while(!(SPI3->SR & SPI_I2S_FLAG_TXE));
+	while(SPI3->SR & SPI_I2S_FLAG_BSY);
+
+//	SPI3->DR = ~data;													//send data (
+//	while(!(SPI3->SR & SPI_I2S_FLAG_TXE));								//wait until finished sending data
+//	while(SPI3->SR & SPI_I2S_FLAG_BSY);									//
+//	SPI3->DR = dataLSB;													//send LSByte
+//	while(!(SPI3->SR & SPI_I2S_FLAG_TXE));								//wait until finished sending data
+//	while(SPI3->SR & SPI_I2S_FLAG_BSY);									//
+
+	GPIO_SetBits(GPIOC, LED_SS);										// Latch Data
+	delay_nms(1);
+	GPIO_ResetBits(GPIOC, LED_SS);										// Delatch Data
+	delay_nms(1);
+
 	dummy = SPI3->DR;													//access data register to avoid overrun error flag
 }
 #endif		/*	DEBUG	*/

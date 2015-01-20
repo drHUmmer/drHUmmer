@@ -105,52 +105,16 @@ int main(void)
 	UART2_init(57600);
 
 	LCD_Init();
-	LCD_Clear(ColourConverterDec(Black));
-
-	FXsettings.fx1		= NONE;
-	FXsettings.fx2		= NONE;
-	FXsettings.bcBits 	= 5;
-	FXsettings.dsFreq 	= 1000;
-	FXsettings.lpfFreq 	= 1000;
-	FXsettings.hpfFreq 	= 1000;
-
-	sequencer.instr0.level 	= 100;
-	sequencer.instr1.level 	= 100;
-	sequencer.instr2.level 	= 100;
-	sequencer.instr3.level 	= 5;
-
-	sequencer.instr0.tone 	= 1;
-	sequencer.instr1.tone 	= 1;
-	sequencer.instr2.tone 	= 1;
-	sequencer.instr3.tone 	= 1;
-
-	settings.filterbookmarks.bookmark1.fx1_filter 	= DS;
-	settings.filterbookmarks.bookmark1.fx1_value 	= 400;
-	settings.filterbookmarks.bookmark1.fx2_filter 	= BC;
-	settings.filterbookmarks.bookmark1.fx2_value 	= 8;
-
-	settings.filterbookmarks.bookmark2.fx1_filter 	= DS;
-	settings.filterbookmarks.bookmark2.fx1_value 	= 10000;
-	settings.filterbookmarks.bookmark2.fx2_filter 	= BC;
-	settings.filterbookmarks.bookmark2.fx2_value 	= 3;
 
 	MenuSetup();
-
-	settings.midi.channel 		= 0;
-
-	gui.infobars.info1.setting = INFO_BPM;
-	gui.infobars.info2.setting = INFO_INSTRUMENT;
-
-	FXsettings.fx1				= NONE;
-	FXsettings.fx2				= NONE;
-	FXsettings.fxEnable			= 1;
 
 	uint8_t rotaryNr			= 1;
 	uint8_t runs				= 0;
 	BPMUpdate(150);
+
 	while (1) {
 
-		if (runs % 3 == 0) {			// RUNS (30 ms) * 17 = 510 ms total
+//		if (runs % 3 == 0) {			// RUNS (30 ms) * 17 = 510 ms total
 			if (rotaryNr < 12) {			// 1 2 3 ... 9 10 11
 				UIUpdateRotary(rotaryNr);
 				rotaryNr ++;
@@ -164,11 +128,11 @@ int main(void)
 				Menu_Update_handler();
 				rotaryNr = 1;
 			}
-		}
+//		}
 
-		delay_nms(10);
+//		delay_nms(10);
 
-		runs ++;
+//		runs ++;
 	}
 
 	while(1) {};

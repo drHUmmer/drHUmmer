@@ -4,6 +4,9 @@
 // Main Handler //
 //////////////////
 void UIhandler() {
+	// Update LEDS
+	SPI_LED_Send();
+
 	// Sequencer
 	UIhandler_Sequencer();
 
@@ -42,6 +45,9 @@ void UIhandler_Sequencer (void) {
 	case 5: sequencer.instr3.sequence 		^= sequencerButtons;	break;	// D4
 	}
 
+
+
+	/*
 	switch (sequencer.instrID) {
 	case 0: SPI_LED_Send(sequencer.bassdrum.sequence);				break;	// A1
 	case 1: SPI_LED_Send(sequencer.snaredrum.sequence);				break;	// A2
@@ -50,6 +56,7 @@ void UIhandler_Sequencer (void) {
 	case 4: SPI_LED_Send(sequencer.instr2.sequence);				break;	// D3
 	case 5: SPI_LED_Send(sequencer.instr3.sequence);				break;	// D4
 	}
+	*/
 
 	// Reset sequencer button values
 	uiInput.buttons &= ~0xFFFF;

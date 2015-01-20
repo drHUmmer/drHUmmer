@@ -7,6 +7,7 @@
 #include "stm32f4xx_rcc.h"
 #include "UART.h"
 #include "delay.h"
+#include "LCDitems.h"
 #include <math.h>
 
 /* LCD color */

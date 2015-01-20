@@ -2,11 +2,12 @@
 #include "stm32f4xx_spi.h"
 #include "stm32f4xx_gpio.h"
 #include "stm32f4xx_rcc.h"
+#include "ui.h"
 
-#define DEBUG
+//#define DEBUG
 
-#define PIC_NSS		GPIO_Pin_8
-#define LED_SS 		GPIO_Pin_9
+#define PIC_NSS		GPIO_Pin_9		// 8
+#define LED_SS 		GPIO_Pin_8		// 9
 
 #define DUMMY_BYTE	0x00
 
@@ -74,8 +75,8 @@ void SPI_PIC_Send(uint8_t command,uint8_t setting,uint8_t address);
 int8_t SPI_PIC_Receive(void);
 
 #ifdef DEBUG	/*	Debug mode	*/
-void SPI_LED_Send(uint16_t data);
+void SPI_LED_Send(void);
 #else
-void SPI_LED_Send(uint16_t data);
+void SPI_LED_Send(void);
 #endif
 
