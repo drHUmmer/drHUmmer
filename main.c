@@ -56,10 +56,7 @@ int main(void)
 	LCD_Init();
 	MenuSetup();
 
-	NVICTimer2Init();
-	NVICTimer5Init();
-	Timer2Init();
-	Timer5Init();
+
 
 	BPMUpdate(sequencer.BPM);
 	RingBufferInit();
@@ -71,6 +68,7 @@ int main(void)
 	CoCreateTask((FUNCPtr)Filter_task,(void *)0,FILTER_PRIO,&filter_task_stk[128-1],128);
 	CoCreateTask((FUNCPtr)MIDI_task,(void *)0,MIDI_PRIO,&MIDI_task_stk[128-1],128);
 
+	sequencer.playing = 1;
 	GPIO_SetBits(GPIOD, GPIO_Pin_12);
 
 	CoStartOS();
@@ -81,8 +79,6 @@ int main(void)
 void UI_task(void)
 {
 	uint8_t i;
-	uint8_t cur_buttons[4];
-	int8_t cur_rotaries[11];
 	for(;;)
 	{
 		GPIO_ToggleBits(GPIOD, GPIO_Pin_14);
@@ -111,6 +107,7 @@ void LCD_task(void)
 {
 	for(;;)
 	{
+		GPIO_ToggleBits(GPIOD, GPIO_Pin_15);
 		Menu_Update_handler();
 		CoTickDelay(10);
 	}
@@ -121,23 +118,139 @@ void SD_task(void)
 {
 	#define FILENR 0
 
-	uint32_t filesize;
-	uint32_t i=44;
+	uint32_t SD_filesize[4];
+//	uint32_t i=44;
+	uint8_t j;
 
 	GPIO_SetBits(GPIOD, GPIO_Pin_13);
 	if( SDInit() == FR_OK ){
 			SDGetNames("/"); 		// root directory
-			GPIO_ResetBits(GPIOD, GPIO_Pin_13);
+			GPIO_ResetBits(GPIOD, GPIO_Pin_13);			//TODO
 		}
 
-	filesize = getFileSize(fnames[FILENR]);
-	bufFlag = BUFF_A;
+	for(j=0;j<4;j++)
+		SD_filesize[j] = getFileSize(fnames[j]);
+
+	NVICTimer2Init();
+	NVICTimer5Init();
+	Timer2Init();
+	Timer5Init();
+
+	/*	bufFlag = BUFF_A;
 	SDGet512(wavBufA, fnames[FILENR] ,44);
-	bufFlag = BUFF_B;
+	bufFlag = BUFF_B;*/
 
 	for(;;)
 	{
-		if (bufFillFlag == BUFFF_NF){
+		if(sequencer.instr0.file_nr <= 3)
+		{
+			sequencer.instr0.file_length = SD_filesize[sequencer.instr0.file_nr];
+
+			if (sequencer.instr0.bufFillFlag == BUFFF_NF){
+				if(sequencer.instr0.bufFlag == BUFF_A){
+					if((sequencer.instr0.i+=(WAV_BUF_SIZE*2)) > sequencer.instr0.file_length){
+						sequencer.instr0.i = 44;
+					}
+					sequencer.instr0.bufABusy = TRUE;
+					SDGet512(sequencer.instr0.wBufA, fnames[sequencer.instr0.file_nr], (DWORD)sequencer.instr0.i);
+					sequencer.instr0.bufABusy = FALSE;
+					sequencer.instr0.bufFillFlag = BUFFF_F;
+				}
+				else {
+					if((sequencer.instr0.i+=(WAV_BUF_SIZE*2)) > sequencer.instr0.file_length){
+						sequencer.instr0.i = 44;
+					}
+					sequencer.instr0.bufBBusy = TRUE;
+					SDGet512(sequencer.instr0.wBufB, fnames[sequencer.instr0.file_nr], (DWORD)sequencer.instr0.i);
+
+					sequencer.instr0.bufBBusy = FALSE;
+					sequencer.instr0.bufFillFlag = BUFFF_F;
+				}
+			}
+		}
+
+		if(sequencer.instr1.file_nr <= 3)
+		{
+			sequencer.instr1.file_length = SD_filesize[sequencer.instr1.file_nr];
+
+			if (sequencer.instr1.bufFillFlag == BUFFF_NF){
+				if(sequencer.instr1.bufFlag == BUFF_A){
+					if((sequencer.instr1.i+=(WAV_BUF_SIZE*2)) > sequencer.instr1.file_length){
+						sequencer.instr1.i = 44;
+					}
+					sequencer.instr1.bufABusy = TRUE;
+					SDGet512(sequencer.instr1.wBufA, fnames[sequencer.instr1.file_nr], (DWORD)sequencer.instr1.i);
+					sequencer.instr1.bufABusy = FALSE;
+					sequencer.instr1.bufFillFlag = BUFFF_F;
+				}
+				else {
+					if((sequencer.instr1.i+=(WAV_BUF_SIZE*2)) > sequencer.instr1.file_length){
+						sequencer.instr1.i = 44;
+					}
+					sequencer.instr1.bufBBusy = TRUE;
+					SDGet512(sequencer.instr1.wBufB, fnames[sequencer.instr1.file_nr], (DWORD)sequencer.instr1.i);
+
+					sequencer.instr1.bufBBusy = FALSE;
+					sequencer.instr1.bufFillFlag = BUFFF_F;
+				}
+			}
+		}
+
+		if(sequencer.instr2.file_nr <= 3)
+		{
+			sequencer.instr2.file_length = SD_filesize[sequencer.instr2.file_nr];
+
+			if (sequencer.instr2.bufFillFlag == BUFFF_NF){
+				if(sequencer.instr2.bufFlag == BUFF_A){
+					if((sequencer.instr2.i+=(WAV_BUF_SIZE*2)) > sequencer.instr2.file_length){
+						sequencer.instr2.i = 44;
+					}
+					sequencer.instr2.bufABusy = TRUE;
+					SDGet512(sequencer.instr2.wBufA, fnames[sequencer.instr2.file_nr], (DWORD)sequencer.instr2.i);
+					sequencer.instr2.bufABusy = FALSE;
+					sequencer.instr2.bufFillFlag = BUFFF_F;
+				}
+				else {
+					if((sequencer.instr2.i+=(WAV_BUF_SIZE*2)) > sequencer.instr2.file_length){
+						sequencer.instr2.i = 44;
+					}
+					sequencer.instr2.bufBBusy = TRUE;
+					SDGet512(sequencer.instr2.wBufB, fnames[sequencer.instr2.file_nr], (DWORD)sequencer.instr2.i);
+
+					sequencer.instr2.bufBBusy = FALSE;
+					sequencer.instr2.bufFillFlag = BUFFF_F;
+				}
+			}
+		}
+
+	if(sequencer.instr3.file_nr <= 3)
+		{
+			sequencer.instr3.file_length = SD_filesize[sequencer.instr3.file_nr];
+
+			if (sequencer.instr3.bufFillFlag == BUFFF_NF){
+				if(sequencer.instr3.bufFlag == BUFF_A){
+					if((sequencer.instr3.i+=(WAV_BUF_SIZE*2)) > sequencer.instr3.file_length){
+						sequencer.instr3.i = 44;
+					}
+					sequencer.instr3.bufABusy = TRUE;
+					SDGet512(sequencer.instr3.wBufA, fnames[sequencer.instr3.file_nr], (DWORD)sequencer.instr3.i);
+					sequencer.instr3.bufABusy = FALSE;
+					sequencer.instr3.bufFillFlag = BUFFF_F;
+				}
+				else {
+					if((sequencer.instr3.i+=(WAV_BUF_SIZE*2)) > sequencer.instr3.file_length){
+						sequencer.instr3.i = 44;
+					}
+					sequencer.instr3.bufBBusy = TRUE;
+					SDGet512(sequencer.instr3.wBufB, fnames[sequencer.instr3.file_nr], (DWORD)sequencer.instr3.i);
+
+					sequencer.instr3.bufBBusy = FALSE;
+					sequencer.instr3.bufFillFlag = BUFFF_F;
+				}
+			}
+		}
+
+/*		if (bufFillFlag == BUFFF_NF){
 			if(bufFlag == BUFF_A){
 				if((i+=(WAV_BUF_SIZE*2)) > filesize){
 					i = 44;
@@ -146,7 +259,7 @@ void SD_task(void)
 				SDGet512(wavBufA, fnames[FILENR], (DWORD)i);
 				bufABusy = FALSE;
 				bufFillFlag = BUFFF_F;
-				GPIO_ToggleBits(GPIOD, GPIO_Pin_15);
+				//GPIO_ToggleBits(GPIOD, GPIO_Pin_15);
 
 			}else {
 				if((i+=(WAV_BUF_SIZE*2)) > filesize){
@@ -158,9 +271,10 @@ void SD_task(void)
 				bufBBusy = FALSE;
 				bufFillFlag = BUFFF_F;
 
-				GPIO_ToggleBits(GPIOD, GPIO_Pin_15);
+				//GPIO_ToggleBits(GPIOD, GPIO_Pin_15);
 			}
-		}
+		}*/
+
 		CoTickDelay(1);
 	}
 }
