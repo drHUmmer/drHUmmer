@@ -183,7 +183,7 @@ void MenuSetup() {
 
 	gui.menus.file_save_pattern.selectedOption				= 1;
 	gui.menus.file_save_pattern.nrOfOptions					= 1;
-	gui.menus.file_save_pattern.showCursor					= 1;
+	gui.menus.file_save_pattern.showCursor					= 0;
 	gui.menus.file_save_pattern.handler						= Menu_File_Save_Pattern_handler;
 	gui.menus.file_save_pattern.parent						= Menu_File;
 	strcpy(gui.menus.file_save_pattern.menuTitle			, TITLE_FILE_SAVE_PATTERN);
@@ -191,7 +191,7 @@ void MenuSetup() {
 
 	gui.menus.file_load_pattern.selectedOption				= 1;
 	gui.menus.file_load_pattern.nrOfOptions					= 1;
-	gui.menus.file_load_pattern.showCursor					= 1;
+	gui.menus.file_load_pattern.showCursor					= 0;
 	gui.menus.file_load_pattern.handler						= Menu_File_Load_Pattern_handler;
 	gui.menus.file_load_pattern.parent						= Menu_File;
 	strcpy(gui.menus.file_load_pattern.menuTitle			, TITLE_FILE_LOAD_PATTERN);

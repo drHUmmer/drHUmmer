@@ -55,6 +55,56 @@ int main(void)
 
 #else	/* if debug mode */
 
+// DELETE ME vv
+static void DEBUG_SPI_LED(uint32_t data) {
+		uint16_t dummy;
+		uint8_t data1 = ((data & 0xFF000000)>>24);
+		uint8_t data2 = ((data & 0x00FF0000)>>16);
+		uint8_t data3 = ((data & 0x0000FF00)>>8);
+		uint8_t data4 = ((data & 0x000000FF)>>0);
+
+		while(!(SPI3->SR & SPI_I2S_FLAG_TXE));								//wait until SPI3 is available
+		while(SPI3->SR & SPI_I2S_FLAG_BSY);
+
+		if(SPI3->CR1 & SPI_CPHA_2Edge)
+		{
+			SPI3->CR1 &= (uint16_t)~((uint16_t)SPI_CR1_SPE);
+			SPI3->CR1 &= (uint16_t)~((uint16_t)SPI_CPHA_2Edge);
+			SPI3->CR1 |= SPI_CR1_SPE;
+		}
+
+		SPI3->DR = data4;
+		while(!(SPI3->SR & SPI_I2S_FLAG_TXE));
+		while(SPI3->SR & SPI_I2S_FLAG_BSY);
+
+		SPI3->DR = data3;
+		while(!(SPI3->SR & SPI_I2S_FLAG_TXE));
+		while(SPI3->SR & SPI_I2S_FLAG_BSY);
+
+		SPI3->DR = data2;
+		while(!(SPI3->SR & SPI_I2S_FLAG_TXE));
+		while(SPI3->SR & SPI_I2S_FLAG_BSY);
+
+		SPI3->DR = data1;
+		while(!(SPI3->SR & SPI_I2S_FLAG_TXE));
+		while(SPI3->SR & SPI_I2S_FLAG_BSY);
+
+	//	SPI3->DR = ~data;													//send data (
+	//	while(!(SPI3->SR & SPI_I2S_FLAG_TXE));								//wait until finished sending data
+	//	while(SPI3->SR & SPI_I2S_FLAG_BSY);									//
+	//	SPI3->DR = dataLSB;													//send LSByte
+	//	while(!(SPI3->SR & SPI_I2S_FLAG_TXE));								//wait until finished sending data
+	//	while(SPI3->SR & SPI_I2S_FLAG_BSY);									//
+
+		GPIO_SetBits(GPIOC, LED_SS);										// Latch Data
+		delay_nms(1);
+		GPIO_ResetBits(GPIOC, LED_SS);										// Delatch Data
+		delay_nms(1);
+
+		dummy = SPI3->DR;
+	}
+// DELETE ME ^^
+
 int main(void)
 {
 	PLLInit();
@@ -112,6 +162,32 @@ int main(void)
 	uint8_t runs				= 0;
 	BPMUpdate(150);
 
+
+//	while (1) {
+//		// DELETE ME AFTER TESTING
+//
+//		DEBUG_SPI_LED(0x00000001);
+//		delay_nms(100);
+//		DEBUG_SPI_LED(0x00000000);
+//		delay_nms(100);
+//		DEBUG_SPI_LED(0x00000001);
+//		delay_nms(100);
+//		DEBUG_SPI_LED(0x00000000);
+//		delay_nms(100);
+//		DEBUG_SPI_LED(0x00000001);
+//		delay_nms(100);
+//		DEBUG_SPI_LED(0x00000000);
+//		delay_nms(100);
+//
+//		char i;
+//		for (i = 0; i < 32; i++) {
+//			DEBUG_SPI_LED(1<<i);
+//			delay_nms(100);
+//		}
+//
+//		// END OF DELETION
+//	}
+
 	while (1) {
 
 //		if (runs % 3 == 0) {			// RUNS (30 ms) * 17 = 510 ms total
@@ -129,9 +205,7 @@ int main(void)
 				rotaryNr = 1;
 			}
 //		}
-
 //		delay_nms(10);
-
 //		runs ++;
 	}
 

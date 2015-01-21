@@ -11,14 +11,14 @@ void Menu_Update_handler(void) {
 		if (MenuCompareSelected(BACKSTRING)) {
 			Menu_GotoParent();
 			MenuOKpressed(1);		// Reset OK button
-			GPIO_SetBits(GPIOD, GPIO_Pin_14);					// GPIO //
+//			GPIO_SetBits(GPIOD, GPIO_Pin_14);					// GPIO //
 			return;												// RETURN //
 		}
 	}
 
 	if (MenuBackpressed(1)) {
 		Menu_GotoParent();
-		GPIO_SetBits(GPIOD, GPIO_Pin_15);						// GPIO //
+//		GPIO_SetBits(GPIOD, GPIO_Pin_15);						// GPIO //
 		return;													// RETURN //
 	}
 
@@ -227,7 +227,7 @@ void Menu_SEQ_BPM_handler (void) {
 		sequencer.BPM = BPM;
 		BPMUpdate(BPM);
 
-		LCD_StringInt(SCREENLINE2, SCREENSTART + (18*5), sequencer.BPM, 1);
+		LCD_StringInt(SCREENLINE2, SCREENSTART + (CHARWIDTH*5), sequencer.BPM, 1);
 	}
 }
 
@@ -269,12 +269,52 @@ void Menu_File_Sample_Select_handler (void) { // ToDo
 
 }
 
-void Menu_File_Save_Pattern_handler (void) { // ToDo
+void Menu_File_Save_Pattern_handler (void) {
+	int8_t rotary = MenuRotaryRead(1);
+	static saveNr = 1;
 
+	if (rotary) {
+		saveNr += rotary;
+		if (saveNr > 4)
+			saveNr = 4;
+		if (saveNr < 1)
+			saveNr = 1;
+
+		// Display update
+		LCD_StringInt(SCREENLINE2, SCREENSTART + (CHARWIDTH*6), saveNr, 0);
+	} else {
+		if (MenuOKpressed(1)) {
+			LCD_StringLine(SCREENLINE6, SCREENSTART, "Pattern saved");
+
+			// todo: SAVE PATTERN
+
+//			Menu_GotoParent();
+		}
+	}
 }
 
-void Menu_File_Load_Pattern_handler (void) { // ToDo
+void Menu_File_Load_Pattern_handler (void) {
+	int8_t rotary = MenuRotaryRead(1);
+	static loadNr = 1;
 
+	if (rotary) {
+		loadNr += rotary;
+		if (loadNr > 4)
+			loadNr = 4;
+		if (loadNr < 1)
+			loadNr = 1;
+
+		// Display update
+		LCD_StringInt(SCREENLINE2, SCREENSTART + (CHARWIDTH*6), loadNr, 0);
+	} else {
+		if (MenuOKpressed(1)) {
+			LCD_StringLine(SCREENLINE6, SCREENSTART, "Pattern loaded");
+
+			// todo: LOAD PATTERN
+
+//			Menu_GotoParent();
+		}
+	}
 }
 
 //////////////////////
@@ -385,7 +425,7 @@ void Menu_Filter_Bookmark_1_Set_Filter_2_handler (void) {
 }
 
 void Menu_Filter_Bookmark_1_Set_Value_1_handler (void) {
-int8_t rotaryValue = MenuRotaryRead(1);
+	int8_t rotaryValue = MenuRotaryRead(1);
 	uint8_t fxFilter	= settings.filterbookmarks.bookmark1.fx1_filter;
 	int16_t fxValue 	= settings.filterbookmarks.bookmark1.fx1_value;
 

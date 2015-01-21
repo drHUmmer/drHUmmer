@@ -114,6 +114,9 @@ void Menu_File_Sample_Select (void) {
 void Menu_File_Save_Pattern (void) {
 	gui.menus.current = &gui.menus.file_save_pattern;
 	MenuRedrawScreen();
+
+	LCD_StringLine(SCREENLINE2, SCREENSTART, "Name:");
+	LCD_StringLine(SCREENLINE4, SCREENSTART, "press OK to save");
 }
 
 void Menu_File_Load_Pattern (void) {
