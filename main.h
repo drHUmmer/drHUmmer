@@ -17,16 +17,21 @@
 #include "UART.h"
 #include "interrupt.h"
 #include "timers.h"
+#include "UI.h"
+#include "UIhandler.h"
 
-#ifdef USE_OS
+#include "ILI9325.h"
+#include "menu.h"
+#include "LCDitems.h"
+#include "menuHandlers.h"
+#include "menuScreens.h"
+
 #include "CoOS/OsConfig.h"  /*!< CoOS configure header file*/
 #include "CoOS/kernel/coocox.h"  /*!< CoOS header file  */
-#else
-#include "delay.h"
-#endif	/*	USE_OS	*/
 
 #include "sequencer.h"
 #include "UI.h"
+#include "filter.h"
 #include "SPI.h"
 #include "ringbuff.h"
 #include "SD.h"
@@ -47,13 +52,11 @@
 
 int main(void);
 
-#ifdef USE_OS
 void UI_task(void);
 void LCD_task(void);
 void SD_task(void);
 void Sequencer_task(void);
 void Filter_task(void);
 void MIDI_task(void);
-#endif	/*	USE_OS	*/
 
 #endif /* MAIN_HEADER */

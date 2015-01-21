@@ -3,6 +3,10 @@
 //#include "snaredrum.h"
 //#include "basskick.h"
 //#include "cymbal.h"
+#include "filter.h"
+#include "DAC.h"
+
+extern IIRfilter_t testFilter;
 
 #include "ADC.h"
 
@@ -18,7 +22,7 @@ uint8_t bufFillFlag = BUFFF_NF;
 
 void TIM2_IRQHandler(void)
 {
-	//uint16_t GPIO_msk = 0;
+	//uint16_t GPIO_msk = 0;			// TODO
 
 	if (TIM_GetITStatus(TIM2, TIM_IT_Update) != RESET)
 	{
@@ -69,7 +73,7 @@ void TIM2_IRQHandler(void)
 		{
 			sequencer.instr3.triggerflag = 1;
 		}
-		//GPIO_SetBits(GPIOD, GPIO_msk);
+		//GPIO_SetBits(GPIOD, GPIO_msk);	//TODO
 
 		sequencer.submask = (sequencer.submask >> 1) | ((sequencer.submask & 0x1) << 5);	//rotate right
 
@@ -79,7 +83,7 @@ void TIM2_IRQHandler(void)
 		TIM_ClearITPendingBit(TIM2, TIM_IT_CC1);
 		if(!(sequencer.timerflag) || ((sequencer.timerflag == 1) && (sequencer.beatclk == 1)))
 		{
-			//GPIO_ResetBits(GPIOD, (GPIO_Pin_12 | GPIO_Pin_13 | GPIO_Pin_14 | GPIO_Pin_15));
+			//GPIO_ResetBits(GPIOD, (GPIO_Pin_12 | GPIO_Pin_13 | GPIO_Pin_14 | GPIO_Pin_15)); //TODO
 		}
 	}
 }
@@ -88,6 +92,9 @@ void TIM2_IRQHandler(void)
 void TIM5_IRQHandler(void)
 {
 	uint16_t adc1_dat = adcGet();
+	uint16_t sampleMix = DC_COMP;	//was 2048
+	uint16_t audioOut = DC_COMP;
+	uint32_t audioCalc = 0;
 
 	if (TIM_GetITStatus(TIM5, TIM_IT_Update) != RESET)
 	{
@@ -117,9 +124,6 @@ void TIM5_IRQHandler(void)
 			sequencer.instr3.triggerflag = 0;
 		}
 
-		//uint16_t SDData;
-		//int16_t offset = 2048;
-
 		if(bufFlag == BUFF_A){
 			if(!bufBBusy){
 				dacPut(wavBufB[SDCnt]);
@@ -143,13 +147,54 @@ void TIM5_IRQHandler(void)
 			}
 		}
 
-/*		uint16_t sampleMix = 2048;
-		sampleMix = (hihatWav[sequencer.instr0.buffer_loc] + \
-					 snaredrumWav[sequencer.instr1.buffer_loc] + \
-					 basskickmWav[sequencer.instr2.buffer_loc] + \
-					 cymbalWav[sequencer.instr3.buffer_loc]) / 4;
+/*
+		 audioCalc = (hihatWav[sequencer.instr0.buffer_loc] * sequencer.instr0.level + \
+					 snaredrumWav[sequencer.instr1.buffer_loc] * sequencer.instr1.level + \
+					 basskickmWav[sequencer.instr2.buffer_loc] * sequencer.instr2.level + \
+					 cymbalWav[sequencer.instr3.buffer_loc] * sequencer.instr3.level) / 400;
 
-		dacPut(sampleMix);
+		 audioOut = audioCalc;
+*/
+		audioOut = 0;
+
+
+		 if (FXsettings.fxEnable) {
+			 if (FXsettings.fx1 != NONE) {
+				switch(FXsettings.fx1)	//select which effect to demo with the (blue) user button
+				{
+					case LPF:	IIRFilterCalc(&testFilter, FXsettings.lpfFreq, LPF);
+								IIRFilterDo(&testFilter, audioOut, &audioOut);	//apply filter
+								break;
+					case HPF:	IIRFilterCalc(&testFilter, FXsettings.hpfFreq, HPF);
+								IIRFilterDo(&testFilter, audioOut, &audioOut);	//apply filter
+								break;
+					case BC:	BitCrush(audioOut, &audioOut, FXsettings.bcBits);
+								break;
+					case DS:	DownSample(audioOut, &audioOut, FXsettings.dsFreq);
+								break;
+					default:	break;
+				}
+			}
+
+			if (FXsettings.fx2 != NONE) {
+				switch(FXsettings.fx2)	//select which effect to demo with the (blue) user button
+				{
+					case LPF:	IIRFilterCalc(&testFilter, FXsettings.lpfFreq, LPF);
+								IIRFilterDo(&testFilter, audioOut, &audioOut);	//apply filter
+								break;
+					case HPF:	IIRFilterCalc(&testFilter, FXsettings.hpfFreq, HPF);
+								IIRFilterDo(&testFilter, audioOut, &audioOut);	//apply filter
+								break;
+					case BC:	BitCrush(audioOut, &audioOut, FXsettings.bcBits);
+								break;
+					case DS:	DownSample(audioOut, &audioOut, FXsettings.dsFreq);
+								break;
+					default:	break;
+				}
+			}
+		 }
+
+		dacPut(audioOut);	//actual sound is made hear (pun intended)
 
 		if((sequencer.instr0.buffer_loc += sequencer.instr0.tone) >= sequencer.instr0.file_length)
 		{
@@ -169,8 +214,10 @@ void TIM5_IRQHandler(void)
 		if((sequencer.instr3.buffer_loc += sequencer.instr3.tone) >= sequencer.instr3.file_length)
 		{
 			sequencer.instr3.buffer_loc = sequencer.instr3.file_length-1;
-		}*/
+		}
 	}
+
+	GPIO_ResetBits(GPIOD, GPIO_Pin_12);
 }
 
 void NVICTimer2Init(void)

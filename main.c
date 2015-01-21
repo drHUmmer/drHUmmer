@@ -3,7 +3,8 @@
 extern uint32_t SDCnt;
 extern uint8_t bufFlag;
 extern uint8_t bufFillFlag;
-
+extern IIRfilter_t testFilter;
+extern uint16_t filterStatus;
 
 OS_STK UI_task_stk[128];
 OS_STK LCD_task_stk[128];
@@ -51,13 +52,16 @@ int main(void)
 
 	dacInit();
 	adcInit();
+
+	LCD_Init();
+	MenuSetup();
+
 	NVICTimer2Init();
 	NVICTimer5Init();
 	Timer2Init();
 	Timer5Init();
 
 	BPMUpdate(sequencer.BPM);
-
 	RingBufferInit();
 
 	CoCreateTask((FUNCPtr)UI_task,(void *)0,UI_PRIO,&UI_task_stk[128-1],128);
@@ -68,10 +72,10 @@ int main(void)
 	CoCreateTask((FUNCPtr)MIDI_task,(void *)0,MIDI_PRIO,&MIDI_task_stk[128-1],128);
 
 	GPIO_SetBits(GPIOD, GPIO_Pin_12);
+
 	CoStartOS();
 
-	while(1);
-
+	for(;;);
 }
 
 void UI_task(void)
@@ -79,27 +83,26 @@ void UI_task(void)
 	uint8_t i;
 	uint8_t cur_buttons[4];
 	int8_t cur_rotaries[11];
-
 	for(;;)
 	{
 		GPIO_ToggleBits(GPIOD, GPIO_Pin_14);
 		SPI_PIC_Send(PIC_GET_BUTTON,0,PIC_BUTTONS_ALL);
 		CoTickDelay(1);
+
 		for(i=0;i<4;i++)
-		{
 			cur_buttons[i] = SPI_PIC_Receive();
-		}
+
 		CoTickDelay(1);
 
 		SPI_PIC_Send(PIC_GET_ROTARY,0,PIC_ROTARY_ALL);
 		CoTickDelay(1);
+
 		for(i=0;i<11;i++)
-		{
 			cur_rotaries[i] = SPI_PIC_Receive();
-		}
+
 		CoTickDelay(1);
 
-		SPI_LED_Send((cur_buttons[0] << 8) | cur_buttons[1]);
+		SPI_LED_Send();
 		CoTickDelay(40);
 	}
 }
@@ -111,6 +114,7 @@ void LCD_task(void)
 		CoTickDelay(4);
 	}
 }
+
 
 void SD_task(void)
 {
@@ -126,7 +130,6 @@ void SD_task(void)
 		}
 
 	filesize = getFileSize(fnames[FILENR]);
-
 	bufFlag = BUFF_A;
 	SDGet512(wavBufA, fnames[FILENR] ,44);
 	bufFlag = BUFF_B;
@@ -142,7 +145,6 @@ void SD_task(void)
 				SDGet512(wavBufA, fnames[FILENR], (DWORD)i);
 				bufABusy = FALSE;
 				bufFillFlag = BUFFF_F;
-
 				GPIO_ToggleBits(GPIOD, GPIO_Pin_15);
 
 			}else {
