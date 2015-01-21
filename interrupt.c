@@ -37,8 +37,6 @@ void TIM2_IRQHandler(void)
 			}
 
 			sequencer.beatmask = (sequencer.beatmask >> 1) | (sequencer.beatmask << ((sizeof(sequencer.beatmask)*8) - 1));	//rotate right
-
-			GPIO_ToggleBits(GPIOD, GPIO_Pin_14);
 		}
 
 		if((sequencer.snaredrum.sequence &  sequencer.beatmask) && \
@@ -147,7 +145,7 @@ void TIM5_IRQHandler(void)
 			}
 		}
 
-/*
+/*	//TODO
 		 audioCalc = (hihatWav[sequencer.instr0.buffer_loc] * sequencer.instr0.level + \
 					 snaredrumWav[sequencer.instr1.buffer_loc] * sequencer.instr1.level + \
 					 basskickmWav[sequencer.instr2.buffer_loc] * sequencer.instr2.level + \
@@ -194,7 +192,7 @@ void TIM5_IRQHandler(void)
 			}
 		 }
 
-		dacPut(audioOut);	//actual sound is made hear (pun intended)
+		//dacPut(audioOut);	//actual sound is made hear (pun intended)	//TODO
 
 		if((sequencer.instr0.buffer_loc += sequencer.instr0.tone) >= sequencer.instr0.file_length)
 		{
@@ -216,8 +214,6 @@ void TIM5_IRQHandler(void)
 			sequencer.instr3.buffer_loc = sequencer.instr3.file_length-1;
 		}
 	}
-
-	GPIO_ResetBits(GPIOD, GPIO_Pin_12);
 }
 
 void NVICTimer2Init(void)

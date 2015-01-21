@@ -90,7 +90,7 @@ void UI_task(void)
 		CoTickDelay(1);
 
 		for(i=0;i<4;i++)
-			cur_buttons[i] = SPI_PIC_Receive();
+			uiInput.buttons |= (SPI_PIC_Receive() << (i*8));
 
 		CoTickDelay(1);
 
@@ -98,11 +98,11 @@ void UI_task(void)
 		CoTickDelay(1);
 
 		for(i=0;i<11;i++)
-			cur_rotaries[i] = SPI_PIC_Receive();
+			*(&uiInput.rotary1 + i) = SPI_PIC_Receive();
 
 		CoTickDelay(1);
 
-		SPI_LED_Send();
+		UIhandler();
 		CoTickDelay(40);
 	}
 }
@@ -111,7 +111,8 @@ void LCD_task(void)
 {
 	for(;;)
 	{
-		CoTickDelay(4);
+		Menu_Update_handler();
+		CoTickDelay(10);
 	}
 }
 
@@ -176,8 +177,7 @@ void Filter_task(void)
 {
 	for(;;)
 	{
-
-		CoTickDelay(7);
+		CoTickDelay(1);
 	}
 }
 
