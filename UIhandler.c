@@ -11,6 +11,7 @@ void UIhandler() {
 	UIhandler_FX_IO();
 	UIhandler_FX_ROT();
 	UIhandler_FX_SWTICH();
+	UIhandler_FX_Bookmarks();
 
 	// Menu
 	// Functions called in menu.c
@@ -186,6 +187,51 @@ static void UIhandler_FX_ROT_single (int8_t inRotary, uint8_t inFX) {
 void UIhandler_FX_ROT (void) {
 	UIhandler_FX_ROT_single(ROTARY_FX_1, FXsettings.fx1);
 	UIhandler_FX_ROT_single(ROTARY_FX_2, FXsettings.fx2);
+}
+
+void UIhandler_FX_Bookmarks (void) {
+	if (BUTTON_EXTRA_1) {
+		switch (settings.filterbookmarks.bookmark1.fx1_filter) {
+			case LPF: 	FXsettings.lpfFreq 	= settings.filterbookmarks.bookmark1.fx1_value; break;
+			case HPF: 	FXsettings.hpfFreq 	= settings.filterbookmarks.bookmark1.fx1_value; break;
+			case BC: 	FXsettings.bcBits 	= settings.filterbookmarks.bookmark1.fx1_value; break;
+			case DS: 	FXsettings.dsFreq 	= settings.filterbookmarks.bookmark1.fx1_value; break;
+			case NONE:  break;
+		}
+
+		switch (settings.filterbookmarks.bookmark1.fx2_filter) {
+			case LPF: 	FXsettings.lpfFreq 	= settings.filterbookmarks.bookmark1.fx2_value; break;
+			case HPF: 	FXsettings.hpfFreq 	= settings.filterbookmarks.bookmark1.fx2_value; break;
+			case BC: 	FXsettings.bcBits 	= settings.filterbookmarks.bookmark1.fx2_value; break;
+			case DS: 	FXsettings.dsFreq 	= settings.filterbookmarks.bookmark1.fx2_value; break;
+			case NONE:  break;
+		}
+
+		FXsettings.fx1 = settings.filterbookmarks.bookmark1.fx1_filter;
+		FXsettings.fx2 = settings.filterbookmarks.bookmark1.fx2_filter;
+	}
+	else if (BUTTON_EXTRA_2) {
+		switch (settings.filterbookmarks.bookmark2.fx1_filter) {
+			case LPF: 	FXsettings.lpfFreq 	= settings.filterbookmarks.bookmark2.fx1_value; break;
+			case HPF: 	FXsettings.hpfFreq 	= settings.filterbookmarks.bookmark2.fx1_value; break;
+			case BC: 	FXsettings.bcBits 	= settings.filterbookmarks.bookmark2.fx1_value; break;
+			case DS: 	FXsettings.dsFreq 	= settings.filterbookmarks.bookmark2.fx1_value; break;
+			case NONE:  break;
+		}
+
+		switch (settings.filterbookmarks.bookmark2.fx2_filter) {
+			case LPF: 	FXsettings.lpfFreq 	= settings.filterbookmarks.bookmark2.fx2_value; break;
+			case HPF: 	FXsettings.hpfFreq 	= settings.filterbookmarks.bookmark2.fx2_value; break;
+			case BC: 	FXsettings.bcBits 	= settings.filterbookmarks.bookmark2.fx2_value; break;
+			case DS: 	FXsettings.dsFreq 	= settings.filterbookmarks.bookmark2.fx2_value; break;
+			case NONE:  break;
+		}
+
+		FXsettings.fx1 = settings.filterbookmarks.bookmark2.fx1_filter;
+		FXsettings.fx2 = settings.filterbookmarks.bookmark2.fx2_filter;
+	}
+
+	uiInput.buttons &= ~(BUTTON_EXTRA_1 | BUTTON_EXTRA_2);
 }
 
 ///////////

@@ -20,6 +20,7 @@ int8_t 	UIhandler_Menu_Rotary 	(uint8_t reset);
 void UIhandler_FX_IO			(void);
 void UIhandler_FX_ROT			(void);
 void UIhandler_FX_SWTICH 		(void);
+void UIhandler_FX_Bookmarks 	(void);
 
 // Drums
 void UIhandler_Drum_Levels		(void);
