@@ -22,7 +22,7 @@ uint8_t bufFillFlag = BUFFF_NF;
 
 void TIM2_IRQHandler(void)
 {
-	//uint16_t GPIO_msk = 0;			// TODO
+	uint16_t GPIO_msk = 0;			// TODO
 
 	if (TIM_GetITStatus(TIM2, TIM_IT_Update) != RESET)
 	{
@@ -43,12 +43,12 @@ void TIM2_IRQHandler(void)
 			if((sequencer.snaredrum.sequence &  sequencer.beatmask) && \
 					(sequencer.snaredrum.substeps[sequencer.stepcnt] &  sequencer.submask))
 			{
-				//GPIO_msk |= GPIO_Pin_12;				//green
+				GPIO_msk |= GPIO_Pin_13;				//green
 			}
 			if((sequencer.bassdrum.sequence &  sequencer.beatmask) && \
 					  (sequencer.bassdrum.substeps[sequencer.stepcnt] &  sequencer.submask))
 			{
-				//GPIO_msk |= GPIO_Pin_13;				//orange
+				GPIO_msk |= GPIO_Pin_14;				//orange
 			}
 			if((sequencer.instr0.sequence &  sequencer.beatmask) && \
 					  (sequencer.instr0.substeps[sequencer.stepcnt] &  sequencer.submask))
@@ -72,7 +72,7 @@ void TIM2_IRQHandler(void)
 			{
 				sequencer.instr3.triggerflag = 1;
 			}
-				//GPIO_SetBits(GPIOD, GPIO_msk);	//TODO
+				GPIO_SetBits(GPIOC, GPIO_msk);	//TODO
 
 			sequencer.submask = (sequencer.submask >> 1) | ((sequencer.submask & 0x1) << 5);	//rotate right
 
@@ -87,7 +87,7 @@ void TIM2_IRQHandler(void)
 		TIM_ClearITPendingBit(TIM2, TIM_IT_CC1);
 		if(!(sequencer.timerflag) || ((sequencer.timerflag == 1) && (sequencer.beatclk == 1)))
 		{
-			//GPIO_ResetBits(GPIOD, (GPIO_Pin_12 | GPIO_Pin_13 | GPIO_Pin_14 | GPIO_Pin_15)); //TODO
+			GPIO_ResetBits(GPIOC, (GPIO_Pin_14 | GPIO_Pin_13)); //TODO
 		}
 	}
 }

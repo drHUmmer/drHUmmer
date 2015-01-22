@@ -27,24 +27,23 @@ int main(void)
  * 	PD14 = Red
  * 	PD15 = Blue
  *****************/
-/*	RCC_AHB1PeriphClockCmd(RCC_AHB1Periph_GPIOD, ENABLE);
+	RCC_AHB1PeriphClockCmd(RCC_AHB1Periph_GPIOD, ENABLE);
 	RCC_AHB1PeriphClockCmd(RCC_AHB1Periph_GPIOA, ENABLE);
 
 	GPIO_InitTypeDef GPIO_InitStruct;
 
-	GPIO_InitStruct.GPIO_Pin = GPIO_Pin_15 | GPIO_Pin_14 | GPIO_Pin_13
-	| GPIO_Pin_12;
+	GPIO_InitStruct.GPIO_Pin = GPIO_Pin_13	| GPIO_Pin_14;
 	GPIO_InitStruct.GPIO_Mode = GPIO_Mode_OUT;
 	GPIO_InitStruct.GPIO_Speed = GPIO_Speed_100MHz;
 	GPIO_InitStruct.GPIO_OType = GPIO_OType_PP;
 	GPIO_InitStruct.GPIO_PuPd = GPIO_PuPd_NOPULL;
-	GPIO_Init(GPIOD, &GPIO_InitStruct);
+	GPIO_Init(GPIOC, &GPIO_InitStruct);
 
-	GPIO_InitStruct.GPIO_Pin = GPIO_Pin_3;
+/*	GPIO_InitStruct.GPIO_Pin = GPIO_Pin_3;
 	GPIO_InitStruct.GPIO_Mode = GPIO_Mode_IN;
 	GPIO_InitStruct.GPIO_PuPd = GPIO_PuPd_UP;
 	GPIO_Init(GPIOE, &GPIO_InitStruct);*/
-/* End LED IO init */
+// End LED IO init
 
 //	UIInit();
 
