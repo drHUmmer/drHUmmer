@@ -22,14 +22,14 @@ void SPI3_Init(void)
 	GPIO_InitStruct.GPIO_Mode = GPIO_Mode_OUT;
 	GPIO_InitStruct.GPIO_OType = GPIO_OType_PP;
 	GPIO_InitStruct.GPIO_PuPd = GPIO_PuPd_UP;
-	GPIO_InitStruct.GPIO_Speed = GPIO_Speed_50MHz;
+	GPIO_InitStruct.GPIO_Speed = GPIO_Speed_25MHz;			//50MHz
 	GPIO_Init(GPIOC, &GPIO_InitStruct);
 
 	GPIO_InitStruct.GPIO_Pin = GPIO_Pin_12 | GPIO_Pin_11 | GPIO_Pin_10;	//MOSI | MISO | CLK
 	GPIO_InitStruct.GPIO_Mode = GPIO_Mode_AF;
 	GPIO_InitStruct.GPIO_OType = GPIO_OType_PP;
 	GPIO_InitStruct.GPIO_PuPd = GPIO_PuPd_NOPULL;			//DOWN;
-	GPIO_InitStruct.GPIO_Speed = GPIO_Speed_50MHz;
+	GPIO_InitStruct.GPIO_Speed = GPIO_Speed_25MHz;			//50MHz
 	GPIO_PinAFConfig(GPIOC,GPIO_PinSource12,GPIO_AF_SPI3);		//connect alt functions to pins
 	GPIO_PinAFConfig(GPIOC,GPIO_PinSource11,GPIO_AF_SPI3);
 	GPIO_PinAFConfig(GPIOC,GPIO_PinSource10,GPIO_AF_SPI3);
@@ -40,7 +40,7 @@ void SPI3_Init(void)
 	SPI3_InitStruct.SPI_CPHA = SPI_CPHA_1Edge;							//capture on 1st edge
 	SPI3_InitStruct.SPI_FirstBit = SPI_FirstBit_MSB;					//Shift MSB first
 	SPI3_InitStruct.SPI_DataSize = SPI_DataSize_8b;						//8 bits per transfer
-	SPI3_InitStruct.SPI_BaudRatePrescaler = SPI_BaudRatePrescaler_8;	//BaudRate = APB1 / Prescaler = 42MHz / 8 = 5.25MHz
+	SPI3_InitStruct.SPI_BaudRatePrescaler = SPI_BaudRatePrescaler_16;	//BaudRate = APB1 / Prescaler = 42MHz / 8 = 5.25MHz
 	SPI3_InitStruct.SPI_Mode = SPI_Mode_Master;							//Master mode
 	SPI3_InitStruct.SPI_NSS = SPI_NSS_Soft;								//Software managed Slave Select to leave pin available
 	SPI3_InitStruct.SPI_Direction = SPI_Direction_2Lines_FullDuplex;	//Full duplex over 2 data lines
@@ -162,9 +162,9 @@ void SPI_LED_Send (void)
 //	while(SPI3->SR & SPI_I2S_FLAG_BSY);									//
 
 	GPIO_SetBits(GPIOC, LED_SS);										// Latch Data
-	Delayms(1);
+	Delayms(2);
 	GPIO_ResetBits(GPIOC, LED_SS);										// Delatch Data
-	Delayms(1);
+	Delayms(2);
 
 	dummy = SPI3->DR;													//access data register to avoid overrun error flag
 }

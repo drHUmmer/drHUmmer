@@ -27,7 +27,7 @@ int main(void)
  * 	PD14 = Red
  * 	PD15 = Blue
  *****************/
-	RCC_AHB1PeriphClockCmd(RCC_AHB1Periph_GPIOD, ENABLE);
+/*	RCC_AHB1PeriphClockCmd(RCC_AHB1Periph_GPIOD, ENABLE);
 	RCC_AHB1PeriphClockCmd(RCC_AHB1Periph_GPIOA, ENABLE);
 
 	GPIO_InitTypeDef GPIO_InitStruct;
@@ -43,7 +43,7 @@ int main(void)
 	GPIO_InitStruct.GPIO_Pin = GPIO_Pin_3;
 	GPIO_InitStruct.GPIO_Mode = GPIO_Mode_IN;
 	GPIO_InitStruct.GPIO_PuPd = GPIO_PuPd_UP;
-	GPIO_Init(GPIOE, &GPIO_InitStruct);
+	GPIO_Init(GPIOE, &GPIO_InitStruct);*/
 /* End LED IO init */
 
 //	UIInit();
@@ -56,8 +56,6 @@ int main(void)
 	LCD_Init();
 	MenuSetup();
 
-
-
 	BPMUpdate(sequencer.BPM);
 	RingBufferInit();
 
@@ -69,7 +67,7 @@ int main(void)
 	CoCreateTask((FUNCPtr)MIDI_task,(void *)0,MIDI_PRIO,&MIDI_task_stk[128-1],128);
 
 	sequencer.playing = 1;
-	GPIO_SetBits(GPIOD, GPIO_Pin_12);
+//	GPIO_SetBits(GPIOD, GPIO_Pin_12);
 
 	CoStartOS();
 
@@ -81,7 +79,7 @@ void UI_task(void)
 	uint8_t i;
 	for(;;)
 	{
-		GPIO_ToggleBits(GPIOD, GPIO_Pin_14);
+//		GPIO_ToggleBits(GPIOD, GPIO_Pin_14);
 		SPI_PIC_Send(PIC_GET_BUTTON,0,PIC_BUTTONS_ALL);
 		CoTickDelay(1);
 
@@ -107,7 +105,7 @@ void LCD_task(void)
 {
 	for(;;)
 	{
-		GPIO_ToggleBits(GPIOD, GPIO_Pin_15);
+//		GPIO_ToggleBits(GPIOD, GPIO_Pin_15);
 		Menu_Update_handler();
 		CoTickDelay(10);
 	}
@@ -122,10 +120,10 @@ void SD_task(void)
 //	uint32_t i=44;
 	uint8_t j;
 
-	GPIO_SetBits(GPIOD, GPIO_Pin_13);
+//	GPIO_SetBits(GPIOD, GPIO_Pin_13);
 	if( SDInit() == FR_OK ){
 			SDGetNames("/"); 		// root directory
-			GPIO_ResetBits(GPIOD, GPIO_Pin_13);			//TODO
+//			GPIO_ResetBits(GPIOD, GPIO_Pin_13);			//TODO
 		}
 
 	for(j=0;j<4;j++)
