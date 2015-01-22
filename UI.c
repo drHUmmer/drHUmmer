@@ -11,9 +11,9 @@ uint8_t UIGetButton(uint8_t nr) {
 	if (nr < 1 || nr > 4)						// Range check
 		return 0;
 
-	Delayms(1);
+	Delayms(2);
 	SPI_PIC_Send (PIC_GET_BUTTON, 0, nr);		// Send
-	Delayms(1);									// Wait (process)
+	Delayms(2);									// Wait (process)
 	return SPI_PIC_Receive();					// Receive
 }
 
@@ -21,9 +21,9 @@ int8_t UIGetRotary(uint8_t nr) {
 	if (nr < 1 || nr > 11)						// Range check
 		return 0;
 
-	Delayms(1);
+	Delayms(2);
 	SPI_PIC_Send(PIC_GET_ROTARY, 0, nr);		// Send
-	Delayms(1);									// Wait (process)
+	Delayms(2);									// Wait (process)
 	return SPI_PIC_Receive();					// Receive
 }
 

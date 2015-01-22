@@ -75,6 +75,49 @@ void SPI_PIC_Send(uint8_t command,uint8_t setting,uint8_t address)
 	dummy = SPI3->DR;													//access data register to avoid overrun error flag
 }
 
+#ifdef LEDDEBUG
+void SPI_LED_Send (uint32_t data)
+{
+	uint16_t dummy;
+	uint8_t data1 = ((data & 0xFF000000)>>24);
+	uint8_t data2 = ((data & 0x00FF0000)>>16);
+	uint8_t data3 = ((data & 0x0000FF00)>>8);
+	uint8_t data4 = ((data & 0x000000FF)>>0);
+
+	while(!(SPI3->SR & SPI_I2S_FLAG_TXE));								//wait until SPI3 is available
+	while(SPI3->SR & SPI_I2S_FLAG_BSY);
+
+	if(SPI3->CR1 & SPI_CPHA_2Edge)
+	{
+		SPI3->CR1 &= (uint16_t)~((uint16_t)SPI_CR1_SPE);
+		SPI3->CR1 &= (uint16_t)~((uint16_t)SPI_CPHA_2Edge);
+		SPI3->CR1 |= SPI_CR1_SPE;
+	}
+
+	SPI3->DR = data4;
+	while(!(SPI3->SR & SPI_I2S_FLAG_TXE));
+	while(SPI3->SR & SPI_I2S_FLAG_BSY);
+
+	SPI3->DR = data3;
+	while(!(SPI3->SR & SPI_I2S_FLAG_TXE));
+	while(SPI3->SR & SPI_I2S_FLAG_BSY);
+
+	SPI3->DR = data2;
+	while(!(SPI3->SR & SPI_I2S_FLAG_TXE));
+	while(SPI3->SR & SPI_I2S_FLAG_BSY);
+
+	SPI3->DR = data1;
+	while(!(SPI3->SR & SPI_I2S_FLAG_TXE));
+	while(SPI3->SR & SPI_I2S_FLAG_BSY);
+
+	GPIO_SetBits(GPIOC, LED_SS);										// Latch Data
+	Delayms(2);
+	GPIO_ResetBits(GPIOC, LED_SS);										// Delatch Data
+	Delayms(2);
+
+	dummy = SPI3->DR;													//access data register to avoid overrun error flag
+}
+#else
 void SPI_LED_Send (void)
 {
 	uint32_t data	= 0x00;
@@ -114,7 +157,7 @@ void SPI_LED_Send (void)
 	}
 
 	// Play button
-	data |= (sequencer.playing == 1 ? (1 << BUTTON_PLAY_NR) : 0);
+	data |= (sequencer.playing != 0 ? (1 << BUTTON_PLAY_NR) : 0);
 
 	// FX on / off
 	data |= (FXsettings.fxEnable == 1 ? (1 << BUTTON_FX_ONOFF_NR) : 0);
@@ -168,6 +211,7 @@ void SPI_LED_Send (void)
 
 	dummy = SPI3->DR;													//access data register to avoid overrun error flag
 }
+#endif
 
 int8_t SPI_PIC_Receive(void)
 {

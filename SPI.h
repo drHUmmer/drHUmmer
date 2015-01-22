@@ -5,6 +5,7 @@
 #include "ui.h"
 
 //#define DEBUG
+//#define LEDDEBUG
 
 #define PIC_NSS		GPIO_Pin_9		// 8
 #define LED_SS 		GPIO_Pin_8		// 9
@@ -74,9 +75,14 @@ void SPI3_Init(void);
 void SPI_PIC_Send(uint8_t command,uint8_t setting,uint8_t address);
 int8_t SPI_PIC_Receive(void);
 
-#ifdef DEBUG	/*	Debug mode	*/
-void SPI_LED_Send(void);
+//#ifdef DEBUG	/*	Debug mode	*/
+//void SPI_LED_Send(void);
+//#else
+
+#ifdef LEDDEBUG
+void SPI_LED_Send(uint32_t data);
 #else
 void SPI_LED_Send(void);
 #endif
+//#endif
 

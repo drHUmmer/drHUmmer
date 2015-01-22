@@ -79,20 +79,27 @@ void UI_task(void)
 	uint8_t i;
 	for(;;)
 	{
-//		GPIO_ToggleBits(GPIOD, GPIO_Pin_14);
-		SPI_PIC_Send(PIC_GET_BUTTON,0,PIC_BUTTONS_ALL);
+
+#ifdef LEDDEBUG
+		for (;;) {
+			SPI_LED_Send(0xFFFFFFFF);
+			CoTickDelay(200);
+			SPI_LED_Send(0x00);
+			CoTickDelay(200);
+		}
+#endif
+
+		for(i=0;i<4;i++) {
+			UIUpdateButton(i + 1);
+			CoTickDelay(1);
+		}
+
 		CoTickDelay(1);
 
-		for(i=0;i<4;i++)
-			uiInput.buttons |= (SPI_PIC_Receive() << (i*8));
-
-		CoTickDelay(1);
-
-		SPI_PIC_Send(PIC_GET_ROTARY,0,PIC_ROTARY_ALL);
-		CoTickDelay(1);
-
-		for(i=0;i<11;i++)
-			*(&uiInput.rotary1 + i) = SPI_PIC_Receive();
+		for(i=0;i<11;i++) {
+			UIUpdateRotary(i + 1);
+			CoTickDelay(1);
+		}
 
 		CoTickDelay(1);
 
