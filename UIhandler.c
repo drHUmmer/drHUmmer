@@ -27,7 +27,9 @@ void UIhandler() {
 	UIhandler_PlayButton();
 
 	// Update LEDS
+#ifndef LEDDEBUG
 	SPI_LED_Send();
+#endif
 }
 
 ///////////////

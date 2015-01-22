@@ -80,7 +80,7 @@ int8_t SPI_PIC_Receive(void);
 //#else
 
 #ifdef LEDDEBUG
-void SPI_LED_Send(uint32_t data);
+void SPI_LED_Send(uint16_t data);
 #else
 void SPI_LED_Send(void);
 #endif

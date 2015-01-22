@@ -60,7 +60,7 @@ int main(void)
 
 	CoCreateTask((FUNCPtr)UI_task,(void *)0,UI_PRIO,&UI_task_stk[128-1],128);
 	CoCreateTask((FUNCPtr)LCD_task,(void *)0,LCD_PRIO,&LCD_task_stk[128-1],128);
-	CoCreateTask((FUNCPtr)SD_task,(void *)0,SD_PRIO,&SD_task_stk[SD_STK_SIZE-1],SD_STK_SIZE);
+//	CoCreateTask((FUNCPtr)SD_task,(void *)0,SD_PRIO,&SD_task_stk[SD_STK_SIZE-1],SD_STK_SIZE);
 	CoCreateTask((FUNCPtr)Sequencer_task,(void *)0,SEQ_PRIO,&sequencer_task_stk[128-1],128);
 	CoCreateTask((FUNCPtr)Filter_task,(void *)0,FILTER_PRIO,&filter_task_stk[128-1],128);
 	CoCreateTask((FUNCPtr)MIDI_task,(void *)0,MIDI_PRIO,&MIDI_task_stk[128-1],128);
@@ -80,30 +80,49 @@ void UI_task(void)
 	{
 
 #ifdef LEDDEBUG
-		for (;;) {
-			SPI_LED_Send(0xFFFFFFFF);
-			CoTickDelay(200);
-			SPI_LED_Send(0x00);
-			CoTickDelay(200);
+		uint16_t data = 0xAAAA;
+		SPI_LED_Send(data);
+
+		CoTickDelay(400);
+
+		for (;;) {				// KERSTVERLICHTING
+			data = 0xAAAA;
+			SPI_LED_Send(data);
+			CoTickDelay(400);
+			data = 0x5555;
+			SPI_LED_Send(data);
+			CoTickDelay(400);
+			data = 0xFFFF;
+			SPI_LED_Send(data);
+			CoTickDelay(400);
+		}
+
+		for (;;) {							// KNOPPEN INVERT TEST
+			for(i=0;i<4;i++) {
+				UIUpdateButton(i + 1);
+				CoTickDelay(20);				// 60
+			}
+
+			data ^= (uiInput.buttons & 0XFFFF);
+			uiInput.buttons = 0x00;
+
+			SPI_LED_Send(data);
+			CoTickDelay(20);
 		}
 #endif
 
 		for(i=0;i<4;i++) {
 			UIUpdateButton(i + 1);
-			CoTickDelay(1);
+			CoTickDelay(15);				// 60
 		}
 
-		CoTickDelay(1);
-
-		for(i=0;i<11;i++) {
-			UIUpdateRotary(i + 1);
-			CoTickDelay(1);
-		}
-
-		CoTickDelay(1);
+//		for(i=0;i<11;i++) {
+//			UIUpdateRotary(i + 1);
+//			CoTickDelay(15);				// 165
+//		}
 
 		UIhandler();
-		CoTickDelay(40);
+		CoTickDelay(25);					// 25		= 250
 	}
 }
 
@@ -113,7 +132,7 @@ void LCD_task(void)
 	{
 //		GPIO_ToggleBits(GPIOD, GPIO_Pin_15);
 		Menu_Update_handler();
-		CoTickDelay(10);
+		CoTickDelay(200);
 	}
 }
 

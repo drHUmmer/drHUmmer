@@ -4,7 +4,7 @@ void sequencerInit(void)
 {
 	uint16_t i;
 
-	sequencer.BPM = 100;
+	sequencer.BPM = 120;
 	sequencer.beatclk = 0;
 	sequencer.stepcnt = 0;
 	sequencer.beatmask = 0x8000;				// MSB, first beat
@@ -31,7 +31,7 @@ void sequencerInit(void)
 	sequencer.instr3.level 		= 100;
 
 	sequencer.snaredrum.sequence 	= 0xAAAA;	// 0000 0000 0000 0000			//(a)snare
-	sequencer.bassdrum.sequence 	= 0x5555;	// 0000 0000 0000 0000			//(a)bass
+	sequencer.bassdrum.sequence 	= 0xF055;	// 0000 0000 0000 0000			//(a)bass
 	sequencer.instr0.sequence 		= 0x2222;	// 0010 0010 0010 0010			//hihat
 	sequencer.instr1.sequence 		= 0x0808;	// 0000 1000 0000 1000			//snare
 	sequencer.instr2.sequence 		= 0x8080;	// 1000 1000 1000 1000			//basskick
