@@ -85,12 +85,12 @@ void UI_task(void)
 		for(i=0;i<4;i++) {
 			UIUpdateButton(i + 1);
 //			UIUpdateButtons();
-			CoTickDelay(10);				// 60
+			CoTickDelay(1);				// 60
 		}
 
 		for(i=0;i<11;i++) {
 			UIUpdateRotary(i + 1);
-			CoTickDelay(10);				// 165
+			CoTickDelay(1);				// 165
 		}
 	}
 }
@@ -99,7 +99,7 @@ void UIhandler_task(void) {
 	for (;;) {
 		GPIO_ToggleBits(GPIOD, GPIO_Pin_13);
 		UIhandler();
-		CoTickDelay(100);
+		CoTickDelay(70);
 	}
 }
 
@@ -109,8 +109,10 @@ void LCD_task(void)
 	for(;;)
 	{
 		GPIO_ToggleBits(GPIOD, GPIO_Pin_14);
+		CoSchedLock();
 		Menu_Update_handler();
-		CoTickDelay(500);
+		CoSchedUnlock();
+		CoTickDelay(800);
 	}
 }
 

@@ -127,6 +127,7 @@ void UIhandler_FX_SWTICH (void) {
 
 		// FX 1
 		if (ROTARY_FX_1) {
+			FXsettings.fxEnable = 0;
 			tempValue = FXsettings.fx1;
 			tempValue += ROTARY_FX_1;
 			while (tempValue > 4) {			// Effects are 0 till 4
@@ -136,10 +137,12 @@ void UIhandler_FX_SWTICH (void) {
 				tempValue += 5;
 			}
 			FXsettings.fx1 = tempValue;
+			FXsettings.fxEnable = 1;
 		}
 
 		// FX 2
 		if (ROTARY_FX_2) {
+			FXsettings.fxEnable = 0;
 			tempValue = FXsettings.fx2;
 			tempValue += ROTARY_FX_2;
 			while (tempValue > 4) {			// Effects are 0 till 4
@@ -149,6 +152,7 @@ void UIhandler_FX_SWTICH (void) {
 				tempValue += 5;
 			}
 			FXsettings.fx2 = tempValue;
+			FXsettings.fxEnable = 1;
 		}
 		uiInput.buttons &= ~BUTTON_SHIFT;
 	}

@@ -148,22 +148,26 @@ void SPI_LED_Send(uint16_t data)
 #else
 void SPI_LED_Send (void)
 {
-	uint32_t data	= 0x00;
+	uint32_t data		= 0x00;
+	uint16_t blinkbit 	= 0x00;
+
+	if (sequencer.submask == 0x20 || sequencer.submask == 0x10)
+		blinkbit = sequencer.beatmask;
 
 	// Instruments and pattern
 	if(sequencer.playing)
 		switch (sequencer.instrID) {
-			case 0:	data |= (sequencer.bassdrum.sequence | sequencer.beatmask);
+			case 0:	data |= (sequencer.bassdrum.sequence ^ blinkbit);
 					data |= (1 << BUTTON_DRUM_1_NR);		break;
-			case 1:	data |= (sequencer.snaredrum.sequence | sequencer.beatmask);
+			case 1:	data |= (sequencer.snaredrum.sequence ^ blinkbit);
 					data |= (1 << BUTTON_DRUM_2_NR);		break;
-			case 2:	data |= (sequencer.instr0.sequence | sequencer.beatmask);
+			case 2:	data |= (sequencer.instr0.sequence ^ blinkbit);
 					data |= (1 << BUTTON_DRUM_3_NR);		break;
-			case 3:	data |= (sequencer.instr1.sequence | sequencer.beatmask);
+			case 3:	data |= (sequencer.instr1.sequence ^ blinkbit);
 					data |= (1 << BUTTON_DRUM_4_NR);		break;
-			case 4:	data |= (sequencer.instr2.sequence | sequencer.beatmask);
+			case 4:	data |= (sequencer.instr2.sequence ^ blinkbit);
 					data |= (1 << BUTTON_DRUM_5_NR);		break;
-			case 5:	data |= (sequencer.instr3.sequence | sequencer.beatmask);
+			case 5:	data |= (sequencer.instr3.sequence ^ blinkbit);
 					data |= (1 << BUTTON_DRUM_6_NR);		break;
 		}
 	else
