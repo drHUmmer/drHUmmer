@@ -40,7 +40,7 @@ void SPI3_Init(void)
 	SPI3_InitStruct.SPI_CPHA = SPI_CPHA_1Edge;							//capture on 1st edge
 	SPI3_InitStruct.SPI_FirstBit = SPI_FirstBit_MSB;					//Shift MSB first
 	SPI3_InitStruct.SPI_DataSize = SPI_DataSize_8b;						//8 bits per transfer
-	SPI3_InitStruct.SPI_BaudRatePrescaler = SPI_BaudRatePrescaler_128;	//BaudRate = APB1 / Prescaler = 42MHz / 8 = 5.25MHz
+	SPI3_InitStruct.SPI_BaudRatePrescaler = SPI_BaudRatePrescaler_32;	//BaudRate = APB1 / Prescaler = 42MHz / 8 = 5.25MHz
 	SPI3_InitStruct.SPI_Mode = SPI_Mode_Master;							//Master mode
 	SPI3_InitStruct.SPI_NSS = SPI_NSS_Soft;								//Software managed Slave Select to leave pin available
 	SPI3_InitStruct.SPI_Direction = SPI_Direction_2Lines_FullDuplex;	//Full duplex over 2 data lines

@@ -7,6 +7,7 @@ extern IIRfilter_t testFilter;
 extern uint16_t filterStatus;
 
 OS_STK UI_task_stk[128];
+OS_STK UIhandler_task_stk[128];
 OS_STK LCD_task_stk[128];
 OS_STK SD_task_stk[SD_STK_SIZE];
 OS_STK sequencer_task_stk[128];
@@ -32,12 +33,12 @@ int main(void)
 
 	GPIO_InitTypeDef GPIO_InitStruct;
 
-	GPIO_InitStruct.GPIO_Pin = GPIO_Pin_13	| GPIO_Pin_14;
+	GPIO_InitStruct.GPIO_Pin = GPIO_Pin_13	| GPIO_Pin_14 | GPIO_Pin_12 | GPIO_Pin_15;
 	GPIO_InitStruct.GPIO_Mode = GPIO_Mode_OUT;
 	GPIO_InitStruct.GPIO_Speed = GPIO_Speed_100MHz;
 	GPIO_InitStruct.GPIO_OType = GPIO_OType_PP;
 	GPIO_InitStruct.GPIO_PuPd = GPIO_PuPd_NOPULL;
-	GPIO_Init(GPIOC, &GPIO_InitStruct);
+	GPIO_Init(GPIOD, &GPIO_InitStruct);
 
 /*	GPIO_InitStruct.GPIO_Pin = GPIO_Pin_3;
 	GPIO_InitStruct.GPIO_Mode = GPIO_Mode_IN;
@@ -59,11 +60,12 @@ int main(void)
 	RingBufferInit();
 
 	CoCreateTask((FUNCPtr)UI_task,(void *)0,UI_PRIO,&UI_task_stk[128-1],128);
+	CoCreateTask((FUNCPtr)UIhandler_task,(void *)0,UIHANDLER_PRIO,&UIhandler_task_stk[128-1],128);
 	CoCreateTask((FUNCPtr)LCD_task,(void *)0,LCD_PRIO,&LCD_task_stk[128-1],128);
-//	CoCreateTask((FUNCPtr)SD_task,(void *)0,SD_PRIO,&SD_task_stk[SD_STK_SIZE-1],SD_STK_SIZE);
-	CoCreateTask((FUNCPtr)Sequencer_task,(void *)0,SEQ_PRIO,&sequencer_task_stk[128-1],128);
-	CoCreateTask((FUNCPtr)Filter_task,(void *)0,FILTER_PRIO,&filter_task_stk[128-1],128);
-	CoCreateTask((FUNCPtr)MIDI_task,(void *)0,MIDI_PRIO,&MIDI_task_stk[128-1],128);
+	CoCreateTask((FUNCPtr)SD_task,(void *)0,SD_PRIO,&SD_task_stk[SD_STK_SIZE-1],SD_STK_SIZE);
+//	CoCreateTask((FUNCPtr)Sequencer_task,(void *)0,SEQ_PRIO,&sequencer_task_stk[128-1],128);
+//	CoCreateTask((FUNCPtr)Filter_task,(void *)0,FILTER_PRIO,&filter_task_stk[128-1],128);
+//	CoCreateTask((FUNCPtr)MIDI_task,(void *)0,MIDI_PRIO,&MIDI_task_stk[128-1],128);
 
 	sequencer.playing = 1;
 //	GPIO_SetBits(GPIOD, GPIO_Pin_12);
@@ -78,61 +80,37 @@ void UI_task(void)
 	uint8_t i;
 	for(;;)
 	{
-
-#ifdef LEDDEBUG
-		uint16_t data = 0xAAAA;
-		SPI_LED_Send(data);
-
-		CoTickDelay(400);
-
-		for (;;) {				// KERSTVERLICHTING
-			data = 0xAAAA;
-			SPI_LED_Send(data);
-			CoTickDelay(400);
-			data = 0x5555;
-			SPI_LED_Send(data);
-			CoTickDelay(400);
-			data = 0xFFFF;
-			SPI_LED_Send(data);
-			CoTickDelay(400);
-		}
-
-		for (;;) {							// KNOPPEN INVERT TEST
-			for(i=0;i<4;i++) {
-				UIUpdateButton(i + 1);
-				CoTickDelay(20);				// 60
-			}
-
-			data ^= (uiInput.buttons & 0XFFFF);
-			uiInput.buttons = 0x00;
-
-			SPI_LED_Send(data);
-			CoTickDelay(20);
-		}
-#endif
+		GPIO_ToggleBits(GPIOD, GPIO_Pin_12);
 
 		for(i=0;i<4;i++) {
 			UIUpdateButton(i + 1);
-			CoTickDelay(15);				// 60
+//			UIUpdateButtons();
+			CoTickDelay(10);				// 60
 		}
 
-//		for(i=0;i<11;i++) {
-//			UIUpdateRotary(i + 1);
-//			CoTickDelay(15);				// 165
-//		}
+		for(i=0;i<11;i++) {
+			UIUpdateRotary(i + 1);
+			CoTickDelay(10);				// 165
+		}
+	}
+}
 
+void UIhandler_task(void) {
+	for (;;) {
+		GPIO_ToggleBits(GPIOD, GPIO_Pin_13);
 		UIhandler();
-		CoTickDelay(25);					// 25		= 250
+		CoTickDelay(100);
 	}
 }
 
 void LCD_task(void)
 {
+	CoTickDelay(500);
 	for(;;)
 	{
-//		GPIO_ToggleBits(GPIOD, GPIO_Pin_15);
+		GPIO_ToggleBits(GPIOD, GPIO_Pin_14);
 		Menu_Update_handler();
-		CoTickDelay(200);
+		CoTickDelay(500);
 	}
 }
 

@@ -30,6 +30,14 @@ void UIhandler() {
 #ifndef LEDDEBUG
 	SPI_LED_Send();
 #endif
+
+	sequencer.bassdrum.tone = 1;
+	sequencer.snaredrum.tone = 1;
+
+	sequencer.instr0.tone = 1;
+	sequencer.instr1.tone = 1;
+	sequencer.instr2.tone = 1;
+	sequencer.instr3.tone = 1;
 }
 
 ///////////////
@@ -204,11 +212,11 @@ static void UIhandler_Drum_Levels_Single (Instrument_TypeDef* instr, int8_t* rot
 	instr->level = temp;
 
 	// Tone
-	temp = instr->tone;
-	temp += *rotaryTone;
-	temp = (temp > 100 	? 100 	: temp);
-	temp = (temp < 0	? 0		: temp);
-	instr->tone = temp;
+//	temp = instr->tone;
+//	temp += *rotaryTone;
+//	temp = (temp > 100 	? 100 	: temp);
+//	temp = (temp < 0	? 0		: temp);
+//	instr->tone = temp;
 
 	// Reset drums
 	*rotaryLevel 	= 0;

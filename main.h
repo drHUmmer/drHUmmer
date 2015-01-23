@@ -36,22 +36,25 @@
 #include "ringbuff.h"
 #include "SD.h"
 
-#define MIDI_PRIO	0
-#define SEQ_PRIO	1
+//#define MIDI_PRIO	0
+//#define SEQ_PRIO	4
 #define SD_PRIO		2
-#define FILTER_PRIO	3
-#define	UI_PRIO		4
+//#define FILTER_PRIO	3
+#define	UI_PRIO		1
 #define LCD_PRIO	5
 
-#define MIDI_STK_SIZE		128
-#define SEQ_STK_SIZE		128
+#define	UIHANDLER_PRIO		3		//TEST
+
+#define MIDI_STK_SIZE		256 //128
+#define SEQ_STK_SIZE		256 //128
 #define SD_STK_SIZE			516
-#define FILTER_STK_SIZE		128
-#define UI_STK_SIZE			128
-#define LCD_STK_SIZE		128
+#define FILTER_STK_SIZE		256 //128
+#define UI_STK_SIZE			256 //128
+#define LCD_STK_SIZE		516//128
 
 int main(void);
 
+void UIhandler_task(void);
 void UI_task(void);
 void LCD_task(void);
 void SD_task(void);

@@ -2,21 +2,21 @@
  ********************************************************************************
  *
  * Pin configuration
+ *							  vvvv
+ * X  15  D7 : LCD Pin D15 -> PD10 [FSMC D15] (1.42)
+ * X  14  D6 : LCD Pin D14 -> PD9  [FSMC D14] (1.41)
+ * X  13  D5 : LCD Pin D13 -> PD8  [FSMC D13] (1.40)
+ * X  12  D4 : LCD Pin D12 -> PE15 [FSMC D12] (1.33)
+ * X  11  D3 : LCD Pin D11 -> PE14 [FSMC D11] (1.32)
+ * X  10  D2 : LCD Pin D10 -> PE13 [FSMC D10] (1.31)
+ * X   9  D1 : LCD Pin D9  -> PE12 [FSMC D09] (1.30)
+ * X   8  D0 : LCD Pin D8  -> PE11 [FSMC D08] (1.29)
  *
- *        D7 : LCD Pin D15 -> PD10 [FSMC D15] (1.42)
- *        D6 : LCD Pin D14 -> PD9  [FSMC D14] (1.41)
- *        D5 : LCD Pin D13 -> PD8  [FSMC D13] (1.40)
- *        D4 : LCD Pin D12 -> PE15 [FSMC D12] (1.33)
- *        D3 : LCD Pin D11 -> PE14 [FSMC D11] (1.32)
- *        D2 : LCD Pin D10 -> PE13 [FSMC D10] (1.31)
- *        D1 : LCD Pin D9  -> PE12 [FSMC D09] (1.30)
- *        D0 : LCD Pin D8  -> PE11 [FSMC D08] (1.29)
- *
- *        RS :     		   -> PD11 [FSMS A16] (1.43)
- *       ~RW :             -> PD5  [FSMS NWE] (2.29) (USB OTG Over Current LED)
- *       ~RD :             -> PD4  [FSMS NOE] (2.32)
- *       ~CS :             -> PD7  [FSMS NE1] (2.27)
- *       ~RST:   		   -> PE10 (1.28)
+ * X      RS :     		   -> PD11 [FSMS A16] (1.43)
+ * X     ~RW :             -> PD5  [FSMS NWE] (2.29) (USB OTG Over Current LED)
+ * X     ~RD :             -> PD4  [FSMS NOE] (2.32)
+ * X     ~CS :             -> PD7  [FSMS NE1] (2.27)
+ * X     ~RST:   		   -> PE10 (1.28)
  *       LED Backlight :   -> PE9  (1.27) (Timer 1 channel 1)
  */
 //#include "stm32f4xx_conf.h"
@@ -26,7 +26,7 @@
 #include "tm_stm32f4_delay.h"
 //#include "Stdlib.h"
 
-#define Delay_ms(x)	Delayms(x)
+#define Delay_ms(x)	Delayms(x * 3)
 
 #define LCD_REG      (*((volatile short *) 0x60000000)) 
 #define LCD_RAM      (*((volatile short *) 0x60020000)) 

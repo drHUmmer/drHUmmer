@@ -36,8 +36,8 @@ void Menu_Info_handler(void) {
 		return;
 	}
 
-	LCD_Levelbar(&gui.bars.analogDrum1Level	, sequencer.bassdrum.level);
-	LCD_Levelbar(&gui.bars.analogDrum2Level	, sequencer.snaredrum.level);
+	LCD_Levelbar(&gui.bars.analogDrum1Level		, sequencer.bassdrum.level);
+	LCD_Levelbar(&gui.bars.analogDrum2Level		, sequencer.snaredrum.level);
 	LCD_Levelbar(&gui.bars.digitalDrum1Level	, sequencer.instr0.level);
 	LCD_Levelbar(&gui.bars.digitalDrum2Level	, sequencer.instr1.level);
 	LCD_Levelbar(&gui.bars.digitalDrum3Level	, sequencer.instr2.level);
