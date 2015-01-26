@@ -72,7 +72,7 @@ void TIM2_IRQHandler(void)
 			{
 				sequencer.instr3.triggerflag = 1;
 			}
-				GPIO_SetBits(GPIOC, GPIO_msk);	//TODO
+				GPIO_SetBits(GPIOD, GPIO_msk);	//TODO
 
 			sequencer.submask = (sequencer.submask >> 1) | ((sequencer.submask & 0x1) << 5);	//rotate right
 
@@ -87,7 +87,7 @@ void TIM2_IRQHandler(void)
 		TIM_ClearITPendingBit(TIM2, TIM_IT_CC1);
 		if(!(sequencer.timerflag) || ((sequencer.timerflag == 1) && (sequencer.beatclk == 1)))
 		{
-			GPIO_ResetBits(GPIOC, (GPIO_Pin_14 | GPIO_Pin_13)); //TODO
+			GPIO_ResetBits(GPIOD, (GPIO_Pin_14 | GPIO_Pin_13)); //TODO
 		}
 	}
 }

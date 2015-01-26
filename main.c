@@ -97,7 +97,7 @@ void UI_task(void)
 
 void UIhandler_task(void) {
 	for (;;) {
-		GPIO_ToggleBits(GPIOD, GPIO_Pin_13);
+//		GPIO_ToggleBits(GPIOD, GPIO_Pin_13);
 		UIhandler();
 		CoTickDelay(70);
 	}
@@ -108,7 +108,7 @@ void LCD_task(void)
 	CoTickDelay(500);
 	for(;;)
 	{
-		GPIO_ToggleBits(GPIOD, GPIO_Pin_14);
+//		GPIO_ToggleBits(GPIOD, GPIO_Pin_14);
 		CoSchedLock();
 		Menu_Update_handler();
 		CoSchedUnlock();
